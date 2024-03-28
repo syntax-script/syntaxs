@@ -20,6 +20,7 @@ export enum TokenType {
     ImportKeyword='keyword_import',
     ExportKeyword='keyword_export',
     Raw='raw',
+    VarSeperator='var_sep',
     EndOfFile='eof'
 }
 

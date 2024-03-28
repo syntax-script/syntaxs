@@ -44,6 +44,7 @@ export function tokenize(source: string): Token[] {
         else if (src[0] == '>') tokens.push({ type: TokenType.CloseDiamond, value: src.shift() });
         else if (src[0] == '\'') tokens.push({ type: TokenType.SingleQuote, value: src.shift() });
         else if (src[0] == '"') tokens.push({ type: TokenType.DoubleQuote, value: src.shift() });
+        else if (src[0] == '|') tokens.push({ type: TokenType.VarSeperator, value: src.shift() });
         else if (src[0] == '+'&&chars.includes(src[1])){
             if(src[1]==='s') tokens.push({type: TokenType.WhitespaceIdentifier,value:'+s'});
             else log.exit.error(`Unexpected identifier: '${src[1]}'`);
@@ -56,8 +57,7 @@ export function tokenize(source: string): Token[] {
                 ident += src.shift();
             }
 
-            const reserved = keywords[ident];
-            tokens.push({ type: reserved ?? TokenType.IntNumber, value: ident });
+            tokens.push({ type: TokenType.IntNumber, value: ident });
         }
         else if (isAlphabetic(src[0])) {
             log.debug('Found identifier');
