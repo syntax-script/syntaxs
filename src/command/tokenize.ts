@@ -2,7 +2,7 @@ import chalk from 'chalk';
 import { arg } from '../module/arg.js';
 import { errorChecks } from '../utils.js';
 import { join } from 'path';
-import { existsSync, readFileSync, writeFileSync } from 'fs';
+import { existsSync, readFileSync, writeFile, writeFileSync } from 'fs';
 import { tokenize } from '../compiler/lexer.js';
 import { log } from '../log.js';
 import { timer } from '../module/timer.js';
@@ -26,12 +26,12 @@ export async function runTokenize() {
     timer.mark('tokenize');
     const tokens = await tokenize(readFileSync(inputPath).toString());
     if(write==='')log.info('',...JSON.stringify(tokens,undefined,4).split('\n'),'');
-    log.info(`Created ${tokens.length} tokens from source file '${inputPath}' in ${timer.sinceMarker('tokenize')/1000}s`);
+    log.info(`Created ${tokens.length} tokens from source file '${inputPath}' in ${timer.sinceMarker('tokenize')}ms`);
     if(write!==''){
 
         timer.mark('writeo');
-        await writeFileSync(join(process.cwd(),write),JSON.stringify(tokens,undefined,4));
-        log.info(`Wrote the output into the file ${join(process.cwd(),write)} in ${timer.sinceMarker('writeo')/1000}`);
+        writeFileSync(join(process.cwd(),write),JSON.stringify(tokens,undefined,4));
+        log.info(`Wrote the output into the file ${join(process.cwd(),write)} in ${timer.sinceMarker('writeo')}ms`);
     }
-    log.success(`Done in ${timer.sinceStart()/1000}s total.`);
+    log.success(`Done in ${timer.sinceStart()}ms total.`);
 }
