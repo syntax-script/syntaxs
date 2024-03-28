@@ -1,5 +1,5 @@
 import chalk from 'chalk';
-import { arg } from '../util/arg.js';
+import { arg } from '../module/arg.js';
 import { errorChecks } from '../utils.js';
 import { join } from 'path';
 import { existsSync, readFileSync, writeFileSync } from 'fs';
