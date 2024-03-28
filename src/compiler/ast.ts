@@ -1,5 +1,6 @@
 import { log } from '../log.js';
-import { BraceExpression, Expression, Node, NodeType, OperatorStatement, ProgramStatement, Token, TokenType } from './types.js';
+import { errorChecks } from '../utils.js';
+import { BraceExpression, CompileStatement, Expression, Node, NodeType, OperatorStatement, ProgramStatement, Token, TokenType, VariableExpression } from './types.js';
 
 export namespace parser {
 
@@ -40,15 +41,41 @@ export namespace parser {
                 return node({ type: NodeType.Import, path: (ex as Expression).value }, put);
             } else if (tt == TokenType.OperatorKeyword) {
                 const statement: OperatorStatement = { type: NodeType.Operator, regex: [], body: [] };
-                
-                
-                while (at().type!==TokenType.OpenBrace) {
+
+
+                while (at().type !== TokenType.OpenBrace) {
                     statement.regex.push(parseExpression(false));
                 }
 
                 const braceExpr = parseExpression(false) as BraceExpression;
 
+                if (braceExpr.body.some(r => r.type == NodeType.Operator || r.type == NodeType.Import || r.type == NodeType.Export)) log.exit.error('Statement not allowed.');
+
                 statement.body = braceExpr.body;
+
+                return node(statement, put);
+            } else if (tt == TokenType.CompileKeyword) {
+                const statement: CompileStatement = { type: NodeType.Compile, formats: [], body: [] };
+
+                log.debug(at());
+                if(at().type!=TokenType.OpenParen) log.exit.error('Expected parens after \'compile\' statement.');
+
+                tokens.shift(); // skip OpenParen
+                while (at().type!=TokenType.CloseParen) {
+                    const t = tokens.shift();
+
+                    if(t.type==TokenType.Comma&&at().type!=TokenType.Identifier) log.exit.error('Expected identifier after comma.');
+                    else if (t.type==TokenType.Comma&&statement.formats.length==0) log.exit.error('Can\'t start with comma.');
+                    else if (t.type==TokenType.Comma) {}
+                    else if (t.type==TokenType.Identifier) statement.formats.push(t.value);
+                    else {log.debug(t);log.exit.error('Unexpected token.');}
+                }
+                tokens.shift(); // skip CloseParen
+
+                while(at().type!=TokenType.Semicolon){
+                    statement.body.push(parseExpression(false,false) as Expression);
+                }
+                tokens.shift(); // skip Semicolon
 
                 return node(statement, put);
             }
@@ -62,14 +89,12 @@ export namespace parser {
         return node;
     }
 
-    export function parseExpression(put: boolean = true): Node {
+    export function parseExpression(put: boolean = true,statements: boolean = true): Node {
         const tt = at().type;
         log.debug(`Parsing expr ${tt}`);
 
         if (tt == TokenType.SingleQuote) {
             let s = '';
-
-
 
             tokens.shift();
             while (at().type != TokenType.SingleQuote) {
@@ -79,7 +104,6 @@ export namespace parser {
             return node({ type: NodeType.String, value: s }, put);
 
         } else if (tt == TokenType.DoubleQuote) {
-
             let s = '';
 
             tokens.shift();
@@ -136,8 +160,19 @@ export namespace parser {
             tokens.shift();
             return node(expr, put);
 
+        } else if(tt == TokenType.Identifier&&at(1).type==TokenType.VarSeperator){
+
+            if(at(2).type!=TokenType.IntNumber) log.exit.error(`Expected index after variable '${at().value}|'`);
+
+            const expr:VariableExpression = {index:parseInt(at(2).value),type:NodeType.Variable,value:at().value};
+            tokens.shift(); // id
+            tokens.shift(); // sep
+            tokens.shift(); // index
+            return node(expr,put);
+        } else if (keywords.includes(tt)) {
+            if (!statements) log.exit.error('Unexpected statement.');
+            return parseStatement();
         }
-        else if (keywords.includes(tt)) { return parseStatement(); } // skip keywords for statements
         else log.exit.error(`Unexpected expression: '${at().value}'`);
 
 
