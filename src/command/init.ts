@@ -63,7 +63,7 @@ export async function runInit(){
 
     const fileToWrite = JSON.stringify(file,undefined,4);
 
-    log.raw('',fileToWrite,'');
+    log.info('',...fileToWrite.split('\n'),'');
     const r:{r:boolean} = await inquirer.prompt({
         message:'Are you okay with this output?',
         type:'confirm',
