@@ -1,5 +1,5 @@
 import chalk from 'chalk';
-import { arg } from './argument/ArgResolver.js';
+import { arg } from './util/arg.js';
 
 export namespace log {
 

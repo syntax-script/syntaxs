@@ -1,4 +1,4 @@
-import { arg } from './argument/ArgResolver.js';
+import { arg } from './util/arg.js';
 import { log } from './log.js';
 import chalk from 'chalk';
 import { runLogs } from './command/logs.js';

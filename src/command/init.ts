@@ -2,7 +2,7 @@ import { existsSync, mkdirSync, writeFileSync } from 'fs';
 import { join } from 'path';
 import { log } from '../log.js';
 import inquirer from 'inquirer';
-import { arg } from '../argument/ArgResolver.js';
+import { arg } from '../util/arg.js';
 import chalk from 'chalk';
 import { errorChecks } from '../utils.js';
 
