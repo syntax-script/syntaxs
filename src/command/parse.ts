@@ -2,10 +2,11 @@ import chalk from 'chalk';
 import { arg } from '../module/arg.js';
 import { errorChecks } from '../utils.js';
 import { join } from 'path';
-import { existsSync, readFileSync, writeFileSync } from 'fs';
+import { existsSync, readFileSync, writeFile, writeFileSync } from 'fs';
 import { tokenize } from '../compiler/lexer.js';
 import { log } from '../log.js';
 import { parser } from '../compiler/ast.js';
+import { timer } from '../module/timer.js';
 
 export async function runParse() {
     
@@ -23,12 +24,15 @@ export async function runParse() {
     ]);
 
 
+    timer.mark('parse');
     const parsed = parser.parseTokens(tokenize(readFileSync(inputPath).toString()));
     if(write==='')log.info('',...JSON.stringify(parsed,undefined,4).split('\n'),'');
-    log.info(`Created ${parsed.body.length} statements from source file '${inputPath}'`);
+    log.info(`Created ${parsed.body.length} statements from source file '${inputPath}' in ${timer.sinceMarker('parse')}ms`);
     if(write!==''){
 
+        timer.mark('writeo');
         writeFileSync(join(process.cwd(),write),JSON.stringify(parsed,undefined,4));
-        log.info(`Wrote the output into the file ${join(process.cwd(),write)}`);
+        log.info(`Wrote the output into the file '${join(process.cwd(),write)}' in ${timer.sinceMarker('writeo')}ms`);
     }
+    log.success(`Done in ${timer.sinceStart()}ms total.`);
 }
