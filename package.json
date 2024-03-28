@@ -1,0 +1,35 @@
+{
+  "name": "syntaxs",
+  "version": "0.0.1-alpha",
+  "description": "Syntax Script Command Line Interface.",
+  "main": "./dist/index.js",
+  "scripts": {
+    "build": "eslint ./src/**/*.ts --fix && eslint ./src/**/*.ts && tsc && cls"
+  },
+  "keywords": [
+    "syntax",
+    "ss",
+    "script"
+  ],
+  "author": "efekos",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/chalk": "^2.2.0",
+    "@types/figlet": "^1.5.8",
+    "@types/inquirer": "^9.0.7",
+    "@types/node": "^20.11.30",
+    "@typescript-eslint/eslint-plugin": "^7.4.0",
+    "@typescript-eslint/parser": "^7.4.0",
+    "eslint": "^8.57.0"
+  },
+  "dependencies": {
+    "chalk": "^5.3.0",
+    "figlet": "^1.7.0",
+    "inquirer": "9.2.16",
+    "nanospinner": "1.1.0"
+  },
+  "type": "module",
+  "bin": {
+    "syntaxs": "./dist/index.js"
+  }
+}

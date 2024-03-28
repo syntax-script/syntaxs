@@ -1,0 +1,12 @@
+{
+    "compilerOptions": {
+        "module": "NodeNext",
+        "rootDir": "./src",
+        "outDir": "./dist",
+        "moduleResolution": "nodenext",
+        "target": "ESNext",
+        "skipLibCheck": true,
+        "allowUnreachableCode": true,
+        "declaration": true
+    }
+}

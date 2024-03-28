@@ -1,0 +1,7 @@
+/.git
+/dist
+/syx
+/node_modules
+
+package-lock.json
+syxconfig.json
