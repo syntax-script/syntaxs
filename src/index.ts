@@ -6,7 +6,9 @@ import { runHelp } from './command/help.js';
 import { runInit } from './command/init.js';
 import { runTokenize } from './command/tokenize.js';
 import { runParse } from './command/parse.js';
+import { timer } from './module/timer.js';
 
+timer.start();
 arg.resolve();
 
 if (arg.getCommand() === 'version' || arg.hasFlag('v') || arg.hasFlag('version')) log.exit.raw('0.0.1-alpha');

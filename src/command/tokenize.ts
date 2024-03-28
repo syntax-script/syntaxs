@@ -5,6 +5,7 @@ import { join } from 'path';
 import { existsSync, readFileSync, writeFileSync } from 'fs';
 import { tokenize } from '../compiler/lexer.js';
 import { log } from '../log.js';
+import { timer } from '../module/timer.js';
 
 export async function runTokenize() {
     
@@ -22,12 +23,14 @@ export async function runTokenize() {
     ]);
 
 
-    const tokens = tokenize(readFileSync(inputPath).toString());
+    timer.mark('tokenize');
+    const tokens = await tokenize(readFileSync(inputPath).toString());
     if(write==='')log.info('',...JSON.stringify(tokens,undefined,4).split('\n'),'');
-    log.info(`Created ${tokens.length} tokens from source file '${inputPath}'`);
+    log.info(`Created ${tokens.length} tokens from source file '${inputPath}' in ${timer.sinceMarker('tokenize')/1000}s`);
     if(write!==''){
 
         writeFileSync(join(process.cwd(),write),JSON.stringify(tokens,undefined,4));
         log.info(`Wrote the output into the file ${join(process.cwd(),write)}`);
     }
+    log.success(`Done in ${timer.sinceStart()/1000}s total.`);
 }
