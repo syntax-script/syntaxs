@@ -78,6 +78,10 @@ export namespace parser {
                 tokens.shift(); // skip Semicolon
 
                 return node(statement, put);
+            } else if (tt == TokenType.ExportKeyword) {
+                const stmt = parseStatement(false);
+                if(stmt.type!=NodeType.Operator) log.exit.error('Expected operator statement after export.');
+                return node({type:NodeType.Export,body:stmt},put);
             }
 
         }
