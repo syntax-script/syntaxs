@@ -1,4 +1,7 @@
 /.git
+/.vscode
+
+
 /dist
 /syx
 /node_modules
