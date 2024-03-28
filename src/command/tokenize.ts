@@ -29,8 +29,9 @@ export async function runTokenize() {
     log.info(`Created ${tokens.length} tokens from source file '${inputPath}' in ${timer.sinceMarker('tokenize')/1000}s`);
     if(write!==''){
 
-        writeFileSync(join(process.cwd(),write),JSON.stringify(tokens,undefined,4));
-        log.info(`Wrote the output into the file ${join(process.cwd(),write)}`);
+        timer.mark('writeo');
+        await writeFileSync(join(process.cwd(),write),JSON.stringify(tokens,undefined,4));
+        log.info(`Wrote the output into the file ${join(process.cwd(),write)} in ${timer.sinceMarker('writeo')/1000}`);
     }
     log.success(`Done in ${timer.sinceStart()/1000}s total.`);
 }
