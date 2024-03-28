@@ -4,11 +4,11 @@ import { arg } from './argument/ArgResolver.js';
 export namespace log {
 
     export function success(...message: any[]) {
-        message.forEach(m => console.log(`${chalk.whiteBright(chalk.bgGreen(' SUCCESS '))} ${m}`));
+        message.forEach(m => console.log(`${chalk.whiteBright(chalk.bgGreen(' SUCCESS '))}`,m));
     }
 
     export function error(...message: any[]) {
-        message.forEach(m => console.log(`${chalk.bgRed(' ERROR ')} ${m}`));
+        message.forEach(m => console.log(`${chalk.bgRed(' ERROR ')}`,m));
     }
 
     export function raw(...message: any[]) {
@@ -16,11 +16,11 @@ export namespace log {
     }
 
     export function info(...message: any[]) {
-        message.forEach(m => console.log(`${chalk.bgBlue(' INFO ')} ${m}`));
+        message.forEach(m => console.log(`${chalk.bgBlue(' INFO ')}`,m));
     }
 
     export function warn(...message: any[]) {
-        message.forEach(m => console.log(`${chalk.whiteBright(chalk.bgYellow(' WARN '))} ${m}`));
+        message.forEach(m => console.log(`${chalk.whiteBright(chalk.bgYellow(' WARN '))}`,m));
     }
 
     export function debug(...message: any[]) {
@@ -29,7 +29,7 @@ export namespace log {
     }
 
     export function notice(...message: any[]) {
-        message.forEach(m => console.log(`${chalk.whiteBright(chalk.bgBlue(' NOTICE '))} ${m}`));
+        message.forEach(m => console.log(`${chalk.whiteBright(chalk.bgBlue(' NOTICE '))}`,m));
     }
 
     export namespace exit {
