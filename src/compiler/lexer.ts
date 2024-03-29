@@ -26,7 +26,7 @@ function isInt(src: string) {
     return src.match(/^[0-9]+$/);
 }
 
-export function tokenize(source: string): Token[] {
+export function tokenizeSyx(source: string): Token[] {
     const tokens: Token[] = [];
     const src = source.split('');
 

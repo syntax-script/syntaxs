@@ -3,9 +3,9 @@ import { arg } from '../module/arg.js';
 import { errorChecks } from '../utils.js';
 import { join } from 'path';
 import { existsSync, readFileSync, writeFile, writeFileSync } from 'fs';
-import { tokenize } from '../compiler/lexer.js';
+import { tokenizeSyx } from '../compiler/lexer.js';
 import { log } from '../log.js';
-import { parser } from '../compiler/ast.js';
+import { syxparser } from '../compiler/ast.js';
 import { timer } from '../module/timer.js';
 
 export async function runParse() {
@@ -25,7 +25,7 @@ export async function runParse() {
 
 
     timer.mark('parse');
-    const parsed = parser.parseTokens(tokenize(readFileSync(inputPath).toString()));
+    const parsed = syxparser.parseTokens(tokenizeSyx(readFileSync(inputPath).toString()));
     if(write==='')log.info('',...JSON.stringify(parsed,undefined,4).split('\n'),'');
     log.info(`Created ${parsed.body.length} statements from source file '${inputPath}' in ${timer.sinceMarker('parse')}ms`);
     if(write!==''){
@@ -34,5 +34,5 @@ export async function runParse() {
         writeFileSync(join(process.cwd(),write),JSON.stringify(parsed,undefined,4));
         log.info(`Wrote the output into the file '${join(process.cwd(),write)}' in ${timer.sinceMarker('writeo')}ms`);
     }
-    log.success(`Done in ${timer.sinceStart()}ms total.`);
+    log.info(`Done in ${timer.sinceStart()}ms total.`);
 }

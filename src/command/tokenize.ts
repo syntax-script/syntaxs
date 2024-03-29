@@ -3,7 +3,7 @@ import { arg } from '../module/arg.js';
 import { errorChecks } from '../utils.js';
 import { join } from 'path';
 import { existsSync, readFileSync, writeFile, writeFileSync } from 'fs';
-import { tokenize } from '../compiler/lexer.js';
+import { tokenizeSyx } from '../compiler/lexer.js';
 import { log } from '../log.js';
 import { timer } from '../module/timer.js';
 
@@ -24,7 +24,7 @@ export async function runTokenize() {
 
 
     timer.mark('tokenize');
-    const tokens = await tokenize(readFileSync(inputPath).toString());
+    const tokens = await tokenizeSyx(readFileSync(inputPath).toString());
     if(write==='')log.info('',...JSON.stringify(tokens,undefined,4).split('\n'),'');
     log.info(`Created ${tokens.length} tokens from source file '${inputPath}' in ${timer.sinceMarker('tokenize')}ms`);
     if(write!==''){
@@ -33,5 +33,5 @@ export async function runTokenize() {
         writeFileSync(join(process.cwd(),write),JSON.stringify(tokens,undefined,4));
         log.info(`Wrote the output into the file ${join(process.cwd(),write)} in ${timer.sinceMarker('writeo')}ms`);
     }
-    log.success(`Done in ${timer.sinceStart()}ms total.`);
+    log.info(`Done in ${timer.sinceStart()}ms total.`);
 }
