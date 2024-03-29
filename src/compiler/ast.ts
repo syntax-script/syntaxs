@@ -1,8 +1,7 @@
 import { log } from '../log.js';
-import { errorChecks } from '../utils.js';
 import { BraceExpression, CompileStatement, Expression, Node, NodeType, OperatorStatement, ProgramStatement, Token, TokenType, VariableExpression } from './types.js';
 
-export namespace parser {
+export namespace syxparser {
 
     let tokens: Token[];
 
@@ -29,6 +28,7 @@ export namespace parser {
     function at(i: number = 0): Token {
         return tokens[i];
     }
+
 
     export function parseStatement(put: boolean = true): Node {
         if (keywords.includes(at().type)) {
