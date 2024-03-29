@@ -21,6 +21,10 @@ export enum TokenType {
     ExportKeyword='keyword_export',
     Raw='raw',
     VarSeperator='var_sep',
+    GlobalKeyword='keyword_global',
+    FunctionKeyword='keyword_function',
+    ClassKeyword='keyword_class',
+    ImportsKeyword='keyword_imports',
     EndOfFile='eof'
 }
 
