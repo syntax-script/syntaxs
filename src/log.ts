@@ -3,10 +3,6 @@ import { arg } from './module/arg.js';
 
 export namespace log {
 
-    export function success(...message: any[]) {
-        message.forEach(m => console.log(`${chalk.whiteBright(chalk.bgGreen(' SUCCESS '))}`,m));
-    }
-
     export function error(...message: any[]) {
         message.forEach(m => console.log(`${chalk.bgRed(' ERROR ')}`,m));
     }
@@ -45,11 +41,6 @@ export namespace log {
             process.exit(0);
         }
 
-        export function success(...message: any[]) {
-            log.success(...message);
-            log.raw('', '', process.cwd(), 'syntaxs@0.0.1-alpha');
-            process.exit(0);
-        }
     }
 
 }
