@@ -125,3 +125,16 @@ export interface ExportStatement extends Statement {
 export type Node = 
 ProgramStatement|OperatorStatement|CompileStatement|ImportStatement|ExportStatement|
 StringExpression|PrimitiveTypeExpression|VariableExpression|WhitespaceIdentifierExpression|BraceExpression|SquareExpression|ParenExpression;
+
+export interface SyxConfig {
+    name:string;
+    description?:string;
+    version:string;
+    compile:SyxConfigCompile;
+}
+
+export interface SyxConfigCompile {
+    root:string;
+    out:string;
+    format:string;
+}
