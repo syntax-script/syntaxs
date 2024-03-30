@@ -1,8 +1,8 @@
-import { readFileSync, readdirSync, stat, statSync } from 'fs';
-import { join } from 'path';
-import { syxparser } from './ast.js';
-import { tokenizeSyx } from './lexer.js';
-import { CompileStatement, ExportStatement, ImportsStatement, NodeType, OperatorStatement, PrimitiveTypeExpression, Statement, StringExpression, VariableExpression } from './types.js';
+import { existsSync, readFileSync, readdirSync, stat, statSync, writeFileSync } from 'fs';
+import { dirname, join } from 'path';
+import { sysparser, syxparser } from './ast.js';
+import { tokenizeSys, tokenizeSyx } from './lexer.js';
+import { CompileStatement, ExportStatement, ImportStatement, ImportsStatement, NodeType, OperatorStatement, PrimitiveTypeExpression, Statement, StringExpression, VariableExpression } from './types.js';
 import { log } from '../log.js';
 
 export class SyntaxScriptCompiler {
@@ -20,7 +20,7 @@ export class SyntaxScriptCompiler {
     /**
      * Stores exports for every .syx file.
      */
-    public readonly exportData: Record<string, AnyExport[]> = {};
+    public readonly exportData: Record<string, AnyExportable[]> = {};
 
     constructor(rootDir: string, outDir: string, format: string) {
         this.rootDir = join(process.cwd(), rootDir);
@@ -29,26 +29,27 @@ export class SyntaxScriptCompiler {
     }
 
     public async compile() {
-        
-        console.log('root dir is',this.rootDir);
+
+        console.log('root dir is', this.rootDir);
         await this.compileSyxFiles(this.rootDir);
+        await this.compileSysFiles(this.rootDir);
 
     }
 
     public compileSyxFiles(folderPath: string) {
 
         const files = readdirSync(folderPath);
-        log.debug('HEREHEREHERE',folderPath,files);
+        log.debug('HEREHEREHERE', folderPath, files);
 
-        files.forEach(f=>{
-            if(f.endsWith('.syx')) this.compileSyx(join(folderPath,f));
-            else if (statSync(join(folderPath,f)).isDirectory())this.compileSyxFiles(join(folderPath,f));
+        files.forEach(f => {
+            if (f.endsWith('.syx')) this.compileSyx(join(folderPath, f));
+            else if (statSync(join(folderPath, f)).isDirectory()) this.compileSyxFiles(join(folderPath, f));
         });
     }
 
     public compileSyx(file: string) {
         const ast = syxparser.parseTokens(tokenizeSyx(readFileSync(file).toString()));
-        const out: AnyExport[] = [];
+        const out: AnyExportable[] = [];
 
         ast.body.forEach(statement => {
             if (statement.type !== NodeType.Export) return;
@@ -73,7 +74,7 @@ export class SyntaxScriptCompiler {
 
                 });
 
-                const operatorStmtExport: OperatorExport = { imports: {}, outputGenerators: {}, regexMatcher, type: ExportType.Operator };
+                const operatorStmtExport: Operator = { imports: {}, outputGenerators: {}, regexMatcher, type: ExportType.Operator };
 
                 //# Handle statements
                 operatorStmt.body.forEach(stmt => {
@@ -90,8 +91,10 @@ export class SyntaxScriptCompiler {
                                     if (e.type === NodeType.String) out += e.value;
                                     else if (e.type === NodeType.Variable) {
                                         const varExpr = e as VariableExpression;
-                                        const v = src.match(regexes[varExpr.value])[varExpr.index];
-                                        if (v === undefined) log.exit.error('Missing variable.');
+                                        const v = src.match(new RegExp(regexes[varExpr.value].source,'g'))[varExpr.index];
+                                        log.debug(src.match(new RegExp(regexes[varExpr.value].source,'g')));
+                                        
+                                        if (v === undefined) log.exit.error('Unknown statement/expression.');
                                         out += v;
                                     }
                                 });
@@ -118,8 +121,61 @@ export class SyntaxScriptCompiler {
 
         });
 
-        
+
         this.exportData[file] = out;
+    }
+
+    public compileSysFiles(folderPath: string) {
+        const files = readdirSync(folderPath);
+        log.debug('HEREHEREHERE', folderPath, files);
+
+        files.forEach(f => {
+            if (f.endsWith('.sys')) this.compileSys(join(folderPath, f));
+            else if (statSync(join(folderPath, f)).isDirectory()) this.compileSysFiles(join(folderPath, f));
+        });
+    }
+
+    public compileSys(file: string) {
+        const ast = sysparser.parseTokens(tokenizeSys(readFileSync(file).toString()));
+
+        //# Handle import statements 
+        var imported: AnyExportable[] = [];
+        ast.body.forEach(stmt => {
+            if (stmt.type == NodeType.Import) {
+                const importStmt = stmt as ImportStatement;
+
+                const pathToImport = join(dirname(file), importStmt.path.endsWith('.syx') ? importStmt.path : importStmt.path + '.syx');
+                if (!existsSync(pathToImport)) log.exit.error(`File \'${pathToImport}\' from \'${file}\' does not exist.`);
+                this.exportData[pathToImport].forEach(exported => {
+                    if (imported.some(i => exported.regexMatcher === i.regexMatcher)) log.exit.error(`There are more than one operators with the same syntax imported to \'${file}\'.`);
+                    imported.push(exported);
+                });
+            }
+        });
+
+        //# Get the actual file content to compile 
+        const src = readFileSync(file).toString().split('');
+
+        while (src.length > 0 && `${src[0]}${src[1]}${src[2]}` !== ':::') {
+            src.shift();
+        }
+        src.shift();
+        src.shift();
+        src.shift();
+
+        let fileContent = src.join('');
+
+        imported.forEach(i => {
+
+            if (i.type === ExportType.Operator) {
+                if (i.outputGenerators[this.mainFileFormat] === undefined) log.exit.error(`Can't compile operator to target language (${this.mainFileFormat}).`);
+                fileContent = fileContent.replace(new RegExp(i.regexMatcher.source, 'g'), i.outputGenerators[this.mainFileFormat]);
+            }
+
+        });
+
+        writeFileSync(file.replace(this.rootDir, this.outDir) + '.' + this.mainFileFormat, fileContent);
+
     }
 
 }
@@ -132,7 +188,7 @@ export interface Export {
     type: ExportType;
 }
 
-export interface OperatorExport extends Export {
+export interface Operator extends Export {
     type: ExportType.Operator,
     regexMatcher: RegExp;
     outputGenerators: Record<string, OneParameterMethod<string, string>>;
@@ -142,7 +198,7 @@ export interface OperatorExport extends Export {
 export type OneParameterMethod<V, R> = (v: V) => R;
 export type ReturnerMethod<R> = () => R;
 
-export type AnyExport = OperatorExport;
+export type AnyExportable = Operator;
 
 export const regexes: Record<string, RegExp> = {
     int: /[0-9]+/,
@@ -151,6 +207,6 @@ export const regexes: Record<string, RegExp> = {
     '+s': /(\s+)?/
 };
 
-export function escapeRegex(src:string):string{
+export function escapeRegex(src: string): string {
     return src.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
