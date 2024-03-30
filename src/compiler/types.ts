@@ -39,7 +39,8 @@ export enum NodeType {
     // stmt
     Operator='operator',
     Compile='compile',
-    Import='import',
+    Import='import', // Import some file
+    Imports='imports', // imports() method
     Export='export',
 
     // expr
@@ -109,6 +110,12 @@ export interface OperatorStatement extends Statement {
     regex:Statement[];
 }
 
+export interface ImportsStatement extends Statement {
+    type:NodeType.Imports,
+    formats:string[];
+    module:string;
+}
+
 export interface CompileStatement extends Statement {
     type:NodeType.Compile,
     formats:string[],
@@ -127,7 +134,7 @@ export interface ExportStatement extends Statement {
 
 
 export type Node = 
-ProgramStatement|OperatorStatement|CompileStatement|ImportStatement|ExportStatement|
+ProgramStatement|OperatorStatement|CompileStatement|ImportStatement|ExportStatement|ImportsStatement|
 StringExpression|PrimitiveTypeExpression|VariableExpression|WhitespaceIdentifierExpression|BraceExpression|SquareExpression|ParenExpression;
 
 export interface SyxConfig {

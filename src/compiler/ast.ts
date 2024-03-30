@@ -1,5 +1,5 @@
 import { log } from '../log.js';
-import { BraceExpression, CompileStatement, Expression, Node, NodeType, OperatorStatement, ProgramStatement, Token, TokenType, VariableExpression } from './types.js';
+import { BraceExpression, CompileStatement, Expression, ImportsStatement, Node, NodeType, OperatorStatement, ProgramStatement, StringExpression, Token, TokenType, VariableExpression } from './types.js';
 
 export namespace syxparser {
 
@@ -82,6 +82,34 @@ export namespace syxparser {
                 const stmt = parseStatement(false);
                 if(stmt.type!=NodeType.Operator) log.exit.error('Expected operator statement after export.');
                 return node({type:NodeType.Export,body:stmt},put);
+            } else if (tt == TokenType.ImportsKeyword) {
+                const statement: ImportsStatement = { type: NodeType.Imports, formats: [], module:'' };
+
+                log.debug(at());
+                if(at().type!=TokenType.OpenParen) log.exit.error('Expected parens after \'imports\' statement.');
+
+                tokens.shift(); // skip OpenParen
+                while (at().type!=TokenType.CloseParen) {
+                    const t = tokens.shift();
+
+                    if(t.type==TokenType.Comma&&at().type!=TokenType.Identifier) log.exit.error('Expected identifier after comma.');
+                    else if (t.type==TokenType.Comma&&statement.formats.length==0) log.exit.error('Can\'t start with comma.');
+                    else if (t.type==TokenType.Comma) {}
+                    else if (t.type==TokenType.Identifier) statement.formats.push(t.value);
+                    else {log.debug(t);log.exit.error('Unexpected token.');}
+                }
+                tokens.shift(); // skip CloseParen
+
+                const moduleExpr = parseExpression(false,false);
+
+                if(moduleExpr.type!==NodeType.String) log.exit.error('Expected string after parens of imports statement.');
+
+                statement.module = (moduleExpr as StringExpression).value;
+
+                if(at().type!==TokenType.Semicolon) log.exit.error('Expected \';\' after imports statement.');
+                tokens.shift();
+
+                return node(statement,put);
             }
 
         }
@@ -182,8 +210,8 @@ export namespace syxparser {
 
     }
 
-    const primitiveTypes = /^(int|string|array|boolean)$/;
+    const primitiveTypes = /^(int|string|boolean)$/;
 
-    const keywords = [TokenType.ImportKeyword, TokenType.ExportKeyword, TokenType.CompileKeyword, TokenType.OperatorKeyword];
+    const keywords = [TokenType.ImportKeyword, TokenType.ExportKeyword, TokenType.CompileKeyword, TokenType.OperatorKeyword,TokenType.ImportsKeyword];
 
 }
