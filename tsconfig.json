@@ -8,5 +8,7 @@
         "skipLibCheck": true,
         "allowUnreachableCode": false,
         "declaration": true
-    }
+    },
+    "exclude": ["./syx/**/*"],
+    "include": ["./src"]
 }
