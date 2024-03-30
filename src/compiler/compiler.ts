@@ -87,8 +87,9 @@ export class SyntaxScriptCompiler {
                             operatorStmtExport.outputGenerators[frmt] = (src) => {
                                 let out = '';
 
+                                log.debug(src);
                                 compileStmt.body.forEach(e => {
-                                    if (e.type === NodeType.String) out += e.value;
+                                    if (e.type === NodeType.String) {out += e.value;log.debug(e);}
                                     else if (e.type === NodeType.Variable) {
                                         const varExpr = e as VariableExpression;
                                         const v = src.match(new RegExp(regexes[varExpr.value].source,'g'))[varExpr.index];
@@ -169,6 +170,7 @@ export class SyntaxScriptCompiler {
 
             if (i.type === ExportType.Operator) {
                 if (i.outputGenerators[this.mainFileFormat] === undefined) log.exit.error(`Can't compile operator to target language (${this.mainFileFormat}).`);
+                log.debug(i.regexMatcher);
                 fileContent = fileContent.replace(new RegExp(i.regexMatcher.source, 'g'), i.outputGenerators[this.mainFileFormat]);
             }
 
@@ -201,10 +203,10 @@ export type ReturnerMethod<R> = () => R;
 export type AnyExportable = Operator;
 
 export const regexes: Record<string, RegExp> = {
-    int: /[0-9]+/,
-    string: /('(\p{Any}{*})'|"(\p{Any}{*})")/,
-    boolean: /true|false/,
-    '+s': /(\s+)?/
+    int: /([0-9]+)/,
+    string: /('[\u0000-\uffff]*'|"[\u0000-\uffff]*")/,
+    boolean: /(true|false)/,
+    '+s': /\s*/
 };
 
 export function escapeRegex(src: string): string {
