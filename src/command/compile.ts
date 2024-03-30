@@ -24,6 +24,4 @@ export async function runCompile() {
     log.info('Starting compilation');
     await compiler.compile();
     log.info('Compilation successful');
-    console.log(compiler.exportData);
-
 }
