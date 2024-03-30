@@ -215,3 +215,91 @@ export namespace syxparser {
     const keywords = [TokenType.ImportKeyword, TokenType.ExportKeyword, TokenType.CompileKeyword, TokenType.OperatorKeyword,TokenType.ImportsKeyword];
 
 }
+
+
+
+export namespace sysparser {
+
+    let tokens: Token[];
+
+    function canGo(): boolean {
+        return tokens[0].type !== TokenType.EndOfFile;
+    }
+
+    let program: ProgramStatement;
+
+    export function parseTokens(t: Token[]): ProgramStatement {
+        tokens = t;
+
+        program = { body: [], type: NodeType.Program };
+
+        while (canGo()) {
+            log.debug(tokens[0]);
+            parseStatement();
+        }
+
+        return program;
+
+    }
+
+    function at(i: number = 0): Token {
+        return tokens[i];
+    }
+
+
+    export function parseStatement(put: boolean = true): Node {
+        if (keywords.includes(at().type)) {
+            const tt = at().type;
+            tokens.shift();
+
+            if (tt == TokenType.ImportKeyword) {
+                const ex = parseExpression(false);
+                if (ex.type !== NodeType.String) log.exit.error('Expected string after import statement.');
+                return node({ type: NodeType.Import, path: (ex as Expression).value }, put);
+            }
+
+        }
+        else parseExpression();
+    }
+
+    function node(node: Node, put: boolean) {
+        if (put) program.body.push(node);
+        return node;
+    }
+
+    export function parseExpression(put: boolean = true,statements: boolean = true): Node {
+        const tt = at().type;
+        log.debug(`Parsing expr ${tt}`);
+
+        if (tt == TokenType.SingleQuote) {
+            let s = '';
+
+            tokens.shift();
+            while (at().type != TokenType.SingleQuote) {
+                s += tokens.shift().value;
+            }
+            tokens.shift();
+            return node({ type: NodeType.String, value: s }, put);
+
+        } else if (tt == TokenType.DoubleQuote) {
+            let s = '';
+
+            tokens.shift();
+            while (at().type != TokenType.DoubleQuote) {
+                s += tokens.shift().value;
+            }
+            tokens.shift();
+            return node({ type: NodeType.String, value: s }, put);
+
+        } else if (keywords.includes(tt)) {
+            if (!statements) log.exit.error('Unexpected statement.');
+            return parseStatement();
+        }
+        else log.exit.error(`Unexpected expression: '${at().value}'`);
+
+
+    }
+
+    const keywords = [TokenType.ImportKeyword];
+
+}

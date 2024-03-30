@@ -78,3 +78,31 @@ export function tokenizeSyx(source: string): Token[] {
     tokens.push({ type: TokenType.EndOfFile, value: 'EOF' });
     return tokens;
 }
+
+export function tokenizeSys(source: string): Token[] {
+    const src = source.split('');
+    const tokens: Token[] = [];
+
+    while (src.length > 0 && `${src[0]}${src[1]}${src[2]}`!==':::') {
+        if (!isSkippable(src[0])) log.debug(`Parsing token: '${src[0]}'`);
+        else if (src[0] == ';') tokens.push({ type: TokenType.Semicolon, value: src.shift() });
+        else if (src[0] == '\'') tokens.push({ type: TokenType.SingleQuote, value: src.shift() });
+        else if (src[0] == '"') tokens.push({ type: TokenType.DoubleQuote, value: src.shift() });
+        else if (isAlphabetic(src[0])) {
+            log.debug('Found identifier');
+            let ident = '';
+            while (src.length > 0 && isAlphabetic(src[0])) {
+                ident += src.shift();
+            }
+
+            const reserved = keywords[ident];
+            if (reserved !== undefined) log.debug(`Found keyword: '${reserved}'`);
+            tokens.push({ type: reserved ?? TokenType.Identifier, value: ident });
+        } else if (isSkippable(src[0])) { log.debug('Found skippable char'); src.shift(); }
+        else tokens.push({ type: TokenType.Raw, value: src.shift() });
+
+    }
+
+    tokens.push({type:TokenType.EndOfFile,value:'eof'});
+    return tokens;
+}
