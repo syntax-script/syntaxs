@@ -97,7 +97,7 @@ export class SyntaxScriptCompiler {
                                         
                                         if (v === undefined) log.exit.error('Unknown statement/expression.');
                                         out += v;
-                                    }
+                                    } else if (e.type === NodeType.WhitespaceIdentifier) out += ' ';
                                 });
 
                                 return out;
