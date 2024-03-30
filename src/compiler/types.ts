@@ -1,31 +1,31 @@
 export enum TokenType {
-    OpenBrace='open_brace',
-    CloseBrace='close_brace',
-    DefinitionEnd='definition_end',
-    Semicolon='semicolon',
-    Comma='comma',
-    OpenParen='open_paren',
-    CloseParen='close_paren',
-    OpenSquare='open_square',
-    CloseSquare='close_square',
-    OperatorKeyword='keyword_operator',
-    CompileKeyword='keyword_compile',
-    Identifier='identifier',
-    OpenDiamond='open_diamond',
-    CloseDiamond='close_dimaond',
-    WhitespaceIdentifier='whitespace',
-    IntNumber='number_int',
-    SingleQuote='quote_single',
-    DoubleQuote='quote_double',
-    ImportKeyword='keyword_import',
-    ExportKeyword='keyword_export',
-    Raw='raw',
-    VarSeperator='var_sep',
-    GlobalKeyword='keyword_global',
-    FunctionKeyword='keyword_function',
-    ClassKeyword='keyword_class',
-    ImportsKeyword='keyword_imports',
-    EndOfFile='eof'
+    OpenBrace,
+    CloseBrace,
+    DefinitionEnd,
+    Semicolon,
+    Comma,
+    OpenParen,
+    CloseParen,
+    OpenSquare,
+    CloseSquare,
+    OperatorKeyword,
+    CompileKeyword,
+    Identifier,
+    OpenDiamond,
+    CloseDiamond,
+    WhitespaceIdentifier,
+    IntNumber,
+    SingleQuote,
+    DoubleQuote,
+    ImportKeyword,
+    ExportKeyword,
+    Raw,
+    VarSeperator,
+    GlobalKeyword,
+    FunctionKeyword,
+    ClassKeyword,
+    ImportsKeyword,
+    EndOfFile
 }
 
 export interface Token {
@@ -34,23 +34,23 @@ export interface Token {
 }
 
 export enum NodeType {
-    Program='program',
+    Program,
 
     // stmt
-    Operator='operator',
-    Compile='compile',
-    Import='import', // Import some file
-    Imports='imports', // imports() method
-    Export='export',
+    Operator,
+    Compile,
+    Import, // Import some file
+    Imports, // imports() method
+    Export,
 
     // expr
-    PrimitiveType='primitive',
-    WhitespaceIdentifier='whitespace_id',
-    Variable='var',
-    String='string',
-    Brace='brace',
-    Paren='paren',
-    Square='square'
+    PrimitiveType,
+    WhitespaceIdentifier,
+    Variable,
+    String,
+    Brace,
+    Paren,
+    Square
 }
 
 export interface ProgramStatement extends Statement{
