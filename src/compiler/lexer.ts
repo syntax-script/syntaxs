@@ -84,8 +84,8 @@ export function tokenizeSys(source: string): Token[] {
     const tokens: Token[] = [];
 
     while (src.length > 0 && `${src[0]}${src[1]}${src[2]}`!==':::') {
-        if (!isSkippable(src[0])) log.debug(`Parsing token: '${src[0]}'`);
-        else if (src[0] == ';') tokens.push({ type: TokenType.Semicolon, value: src.shift() });
+        if (!isSkippable(src[0])) log.debug(`Parsing tokenmm: '${src[0]}'`);
+        if (src[0] == ';') tokens.push({ type: TokenType.Semicolon, value: src.shift() });
         else if (src[0] == '\'') tokens.push({ type: TokenType.SingleQuote, value: src.shift() });
         else if (src[0] == '"') tokens.push({ type: TokenType.DoubleQuote, value: src.shift() });
         else if (isAlphabetic(src[0])) {

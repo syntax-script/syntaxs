@@ -255,6 +255,8 @@ export namespace sysparser {
             if (tt == TokenType.ImportKeyword) {
                 const ex = parseExpression(false);
                 if (ex.type !== NodeType.String) log.exit.error('Expected string after import statement.');
+                if(at().type!==TokenType.Semicolon) log.exit.error('Expected semicolon after import statement.');
+                tokens.shift();
                 return node({ type: NodeType.Import, path: (ex as Expression).value }, put);
             }
 
