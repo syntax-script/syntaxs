@@ -4,8 +4,9 @@ import { log } from '../log.js';
 import chalk from 'chalk';
 import { SyxConfig } from '../compiler/types.js';
 import { errorChecks } from '../utils.js';
+import { SyntaxScriptCompiler } from '../compiler/compiler.js';
 
-export function runCompile() {
+export async function runCompile() {
 
     if (!existsSync(join(process.cwd(), 'syxconfig.json'))) log.exit.error(`Could not find 'syxconfig.json' file. Try running '${chalk.yellow('syntaxs')} init'. `);
 
@@ -18,6 +19,11 @@ export function runCompile() {
         ['compile' in config &&!('format' in config.compile),'syxconfig.json.compile.format: Missing']
     ]);
 
-    log.info('Compiler isn\'t done yet. See you later!');
+    const compiler = new SyntaxScriptCompiler(config.compile.root,config.compile.out,config.compile.format);
+
+    log.info('Starting compilation');
+    await compiler.compile();
+    log.info('Compilation successful');
+    console.log(compiler.exportData);
 
 }
