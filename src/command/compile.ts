@@ -5,6 +5,7 @@ import chalk from 'chalk';
 import { SyxConfig } from '../compiler/types.js';
 import { errorChecks } from '../utils.js';
 import { SyntaxScriptCompiler } from '../compiler/compiler.js';
+import { timer } from '../module/timer.js';
 
 export async function runCompile() {
 
@@ -22,6 +23,7 @@ export async function runCompile() {
     const compiler = new SyntaxScriptCompiler(config.compile.root,config.compile.out,config.compile.format);
 
     log.info('Starting compilation');
+    timer.mark('compilerstart');
     await compiler.compile();
-    log.info('Compilation successful');
+    log.info(`Compilation successful in ${timer.sinceMarker('compilerstart')}ms`);
 }
