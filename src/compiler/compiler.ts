@@ -165,18 +165,22 @@ export class SyntaxScriptCompiler {
         src.shift();
 
         let fileContent = src.join('');
+        const imports = [];
 
+        //# Compile
         imported.forEach(i => {
 
             if (i.type === ExportType.Operator) {
                 if (i.outputGenerators[this.mainFileFormat] === undefined) log.exit.error(`Can't compile operator to target language (${this.mainFileFormat}).`);
                 log.debug(i.regexMatcher);
                 fileContent = fileContent.replace(new RegExp(i.regexMatcher.source, 'g'), i.outputGenerators[this.mainFileFormat]);
+
+                if(i.imports[this.mainFileFormat]!==undefined&&!imports.includes(i.imports[this.mainFileFormat])) imports.push(i.imports[this.mainFileFormat]); 
             }
 
         });
 
-        writeFileSync(file.replace(this.rootDir, this.outDir) + '.' + this.mainFileFormat, fileContent);
+        writeFileSync(file.replace(this.rootDir, this.outDir).replace(/\.[^/.]+$/, '') + '.' + this.mainFileFormat, imports.map(i=>`import ${i}`).join('\n')+'\n'+fileContent);
 
     }
 
