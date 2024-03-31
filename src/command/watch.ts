@@ -41,11 +41,19 @@ export async function runWatch() {
         }).catch(err=>log.error('Could not compile. Waiting for file changes.'));
     }
 
-    const watcher = watch(dir,{persistent:true});
-    watcher.on('all',()=>{
+    const watcher = watch(dir,{
+        awaitWriteFinish:{
+            pollInterval:10,
+            stabilityThreshold:50
+        },
+        ignoreInitial:true,
+        disableGlobbing: true
+    });
+    watcher.on('change',()=>{
         if(initializing)return;
         cmpl();
     });
+    watcher.on('add',()=>{log.debug('Added file');});
     watcher.on('ready',()=>{
         initializing = false;
         cmpl();
