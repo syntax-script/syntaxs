@@ -113,6 +113,8 @@ export namespace syxparser {
                 tokens.shift();
 
                 return node(statement,put);
+            } else if (tt == TokenType.FunctionKeyword) {
+                
             }
 
         }
@@ -213,9 +215,9 @@ export namespace syxparser {
 
     }
 
-    const primitiveTypes = /^(int|string|boolean)$/;
+    const primitiveTypes = /^(int|string|boolean|decimal)$/;
 
-    const keywords = [TokenType.ImportKeyword, TokenType.ExportKeyword, TokenType.CompileKeyword, TokenType.OperatorKeyword,TokenType.ImportsKeyword];
+    const keywords = [TokenType.ImportKeyword, TokenType.ExportKeyword, TokenType.CompileKeyword, TokenType.OperatorKeyword,TokenType.ImportsKeyword,TokenType.GlobalKeyword,TokenType.FunctionKeyword];
 
 }
 

@@ -211,6 +211,7 @@ export const regexes: Record<string, RegExp> = {
     int: /([0-9]+)/,
     string: /('[\u0000-\uffff]*'|"[\u0000-\uffff]*")/,
     boolean: /(true|false)/,
+    decimal: /([0-9]+(\.[0-9]+)?)/,
     '+s': /\s*/
 };
 
