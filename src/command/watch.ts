@@ -27,17 +27,30 @@ export async function runWatch() {
 
     const compiler = new SyntaxScriptCompiler(config.compile.root, config.compile.out, config.compile.format,true);
     let alreadyCompiling = false;
+    let initializing = true;
 
     const dir = join(process.cwd(), config.compile.root);
     
-    const watcher = watch(dir);
-    watcher.on('all',(e)=>{
+    function cmpl(){
         if(alreadyCompiling) return;
         log.info('File change detected, compiling...');
         alreadyCompiling = true;
         compiler.compile().then(()=>{
             log.info('Compiled. Waiting for file changes.');
             alreadyCompiling = false;
-        }).catch((ignored)=>{});
+        }).catch(err=>log.error('Could not compile. Waiting for file changes.'));
+    }
+
+    const watcher = watch(dir,{persistent:true});
+    watcher.on('all',()=>{
+        if(initializing)return;
+        cmpl();
+    });
+    watcher.on('ready',()=>{
+        initializing = false;
+        cmpl();
+    });
+    watcher.on('error',()=>{
+        log.error('Could not compile. Waiting for file changes.');
     });
 }
