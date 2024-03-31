@@ -34,7 +34,7 @@ export class SyntaxScriptCompiler {
 
         await this.compileSyxFiles(this.rootDir);
         await this.compileSysFiles(this.rootDir);
-
+        return Promise.resolve();
     }
 
     public compileSyxFiles(folderPath: string) {
