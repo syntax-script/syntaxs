@@ -25,7 +25,7 @@ export async function runWatch() {
         ['compile' in config && 'out' in config.compile && !existsSync(join(process.cwd(), config.compile.out)), `Could not find out directory '${join(process.cwd(), config.compile.out)}'`]
     ]);
 
-    const compiler = new SyntaxScriptCompiler(config.compile.root, config.compile.out, config.compile.format);
+    const compiler = new SyntaxScriptCompiler(config.compile.root, config.compile.out, config.compile.format,true);
     let alreadyCompiling = false;
 
     const dir = join(process.cwd(), config.compile.root);

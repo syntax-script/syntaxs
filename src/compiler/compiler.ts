@@ -16,16 +16,18 @@ export class SyntaxScriptCompiler {
      */
     private readonly outDir: string;
     private readonly mainFileFormat: string;
+    private readonly watchMode:boolean;
 
     /**
      * Stores exports for every .syx file.
      */
     public readonly exportData: Record<string, AnyExportable[]> = {};
 
-    constructor(rootDir: string, outDir: string, format: string) {
+    constructor(rootDir: string, outDir: string, format: string,watch) {
         this.rootDir = join(process.cwd(), rootDir);
         this.outDir = join(process.cwd(), outDir);
         this.mainFileFormat = format;
+        this.watchMode = watch;
     }
 
     public async compile() {
@@ -47,7 +49,7 @@ export class SyntaxScriptCompiler {
     }
 
     public compileSyx(file: string) {
-        const ast = syxparser.parseTokens(tokenizeSyx(readFileSync(file).toString()));
+        const ast = syxparser.parseTokens(tokenizeSyx(readFileSync(file).toString(),this.watchMode),this.watchMode);
         const out: AnyExportable[] = [];
 
         ast.body.forEach(statement => {
@@ -81,7 +83,7 @@ export class SyntaxScriptCompiler {
                         const compileStmt = stmt as CompileStatement;
 
                         compileStmt.formats.forEach(frmt => {
-                            if (operatorStmtExport.outputGenerators[frmt] !== undefined) log.exit.error(`Duplicate file format at compile statement \'${frmt}\'`);
+                            if (operatorStmtExport.outputGenerators[frmt] !== undefined) (this.watchMode?log.thrower:log.exit).error(`Duplicate file format at compile statement \'${frmt}\'`);
 
                             operatorStmtExport.outputGenerators[frmt] = (src) => {
                                 let out = '';
@@ -94,7 +96,7 @@ export class SyntaxScriptCompiler {
                                         const v = src.match(new RegExp(regexes[varExpr.value].source,'g'))[varExpr.index];
                                         log.debug(src.match(new RegExp(regexes[varExpr.value].source,'g')));
                                         
-                                        if (v === undefined) log.exit.error('Unknown statement/expression.');
+                                        if (v === undefined) (this.watchMode?log.thrower:log.exit).error('Unknown statement/expression.');
                                         out += v;
                                     } else if (e.type === NodeType.WhitespaceIdentifier) out += ' ';
                                 });
@@ -108,15 +110,15 @@ export class SyntaxScriptCompiler {
                         const importStmt = stmt as ImportsStatement;
 
                         importStmt.formats.forEach(frmt => {
-                            if (operatorStmtExport.imports[frmt] !== undefined) log.exit.error(`Duplicate file format at imports statement \'${frmt}\'`);
+                            if (operatorStmtExport.imports[frmt] !== undefined) (this.watchMode?log.thrower:log.exit).error(`Duplicate file format at imports statement \'${frmt}\'`);
                             operatorStmtExport.imports[frmt] = importStmt.module;
                         });
 
-                    } else log.exit.error(`Unexpected \'${stmt.type}\' statement insdie operator statement.`);
+                    } else (this.watchMode?log.thrower:log.exit).error(`Unexpected \'${stmt.type}\' statement insdie operator statement.`);
                 });
 
                 out.push(operatorStmtExport);
-            } else log.exit.error(`Unexpected \'${statement.type}\' statement after export statement.`);
+            } else (this.watchMode?log.thrower:log.exit).error(`Unexpected \'${statement.type}\' statement after export statement.`);
 
 
         });
@@ -136,7 +138,7 @@ export class SyntaxScriptCompiler {
     }
 
     public compileSys(file: string) {
-        const ast = sysparser.parseTokens(tokenizeSys(readFileSync(file).toString()));
+        const ast = sysparser.parseTokens(tokenizeSys(readFileSync(file).toString()),this.watchMode);
 
         //# Handle import statements 
         var imported: AnyExportable[] = [];
@@ -145,9 +147,9 @@ export class SyntaxScriptCompiler {
                 const importStmt = stmt as ImportStatement;
 
                 const pathToImport = join(dirname(file), importStmt.path.endsWith('.syx') ? importStmt.path : importStmt.path + '.syx');
-                if (!existsSync(pathToImport)) log.exit.error(`File \'${pathToImport}\' from \'${file}\' does not exist.`);
+                if (!existsSync(pathToImport)) (this.watchMode?log.thrower:log.exit).error(`File \'${pathToImport}\' from \'${file}\' does not exist.`);
                 this.exportData[pathToImport].forEach(exported => {
-                    if (imported.some(i => exported.regexMatcher === i.regexMatcher)) log.exit.error(`There are more than one operators with the same syntax imported to \'${file}\'.`);
+                    if (imported.some(i => exported.regexMatcher === i.regexMatcher)) (this.watchMode?log.thrower:log.exit).error(`There are more than one operators with the same syntax imported to \'${file}\'.`);
                     imported.push(exported);
                 });
             }
@@ -170,7 +172,7 @@ export class SyntaxScriptCompiler {
         imported.forEach(i => {
 
             if (i.type === ExportType.Operator) {
-                if (i.outputGenerators[this.mainFileFormat] === undefined) log.exit.error(`Can't compile operator to target language (${this.mainFileFormat}).`);
+                if (i.outputGenerators[this.mainFileFormat] === undefined) (this.watchMode?log.thrower:log.exit).error(`Can't compile operator to target language (${this.mainFileFormat}).`);
                 log.debug(i.regexMatcher);
                 fileContent = fileContent.replace(new RegExp(i.regexMatcher.source, 'g'), i.outputGenerators[this.mainFileFormat]);
 

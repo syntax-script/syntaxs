@@ -30,7 +30,7 @@ function isInt(src: string) {
     return src.match(/^[0-9]+$/);
 }
 
-export function tokenizeSyx(source: string): Token[] {
+export function tokenizeSyx(source: string,watchMode:boolean): Token[] {
     const tokens: Token[] = [];
     const src = source.split('');
 
@@ -51,7 +51,7 @@ export function tokenizeSyx(source: string): Token[] {
         else if (src[0] == '|') tokens.push({ type: TokenType.VarSeperator, value: src.shift() });
         else if (src[0] == '+' && chars.includes(src[1])) {
             if (src[1] === 's') tokens.push({ type: TokenType.WhitespaceIdentifier, value: '+s' });
-            else log.exit.error(`Unexpected identifier: '${src[1]}'`);
+            else (watchMode?log.thrower:log.exit).error(`Unexpected identifier: '${src[1]}'`);
             src.shift(); src.shift();
         } else if (isInt(src[0])) {
             log.debug('Found int number');
