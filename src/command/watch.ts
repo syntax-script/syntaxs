@@ -38,6 +38,6 @@ export async function runWatch() {
         compiler.compile().then(()=>{
             log.info('Compiled. Waiting for file changes.');
             alreadyCompiling = false;
-        });
+        }).catch((ignored)=>{});
     });
 }

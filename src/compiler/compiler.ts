@@ -23,7 +23,7 @@ export class SyntaxScriptCompiler {
      */
     public readonly exportData: Record<string, AnyExportable[]> = {};
 
-    constructor(rootDir: string, outDir: string, format: string,watch) {
+    constructor(rootDir: string, outDir: string, format: string,watch:boolean = false) {
         this.rootDir = join(process.cwd(), rootDir);
         this.outDir = join(process.cwd(), outDir);
         this.mainFileFormat = format;
