@@ -30,7 +30,6 @@ export class SyntaxScriptCompiler {
 
     public async compile() {
 
-        console.log('root dir is', this.rootDir);
         await this.compileSyxFiles(this.rootDir);
         await this.compileSysFiles(this.rootDir);
 
