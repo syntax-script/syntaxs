@@ -43,4 +43,24 @@ export namespace log {
 
     }
 
+    
+    export namespace thrower {
+        export function error(...message: any[]) {
+            log.error(...message);
+            log.raw('', '', process.cwd(), 'syntaxs@0.0.1-alpha');
+            throw new ProgramError();
+        }
+
+        export function raw(...message: any[]) {
+            log.raw(...message);
+            log.raw('', '', process.cwd(), 'syntaxs@0.0.1-alpha');
+            throw new ProgramError();
+        }
+
+    }
+
+}
+
+export class ProgramError extends Error {
+
 }
