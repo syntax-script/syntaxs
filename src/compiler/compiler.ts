@@ -2,7 +2,7 @@ import { existsSync, readFileSync, readdirSync, stat, statSync, writeFileSync } 
 import { dirname, join } from 'path';
 import { sysparser, syxparser } from './ast.js';
 import { tokenizeSys, tokenizeSyx } from './lexer.js';
-import { CompileStatement, ExportStatement, ImportStatement, ImportsStatement, NodeType, OperatorStatement, PrimitiveTypeExpression, Statement, StringExpression, VariableExpression } from './types.js';
+import { CompileStatement, ExportStatement, FunctionStatement, ImportStatement, ImportsStatement, NodeType, OperatorStatement, PrimitiveTypeExpression, Statement, StringExpression, VariableExpression } from './types.js';
 import { log } from '../log.js';
 
 export class SyntaxScriptCompiler {
@@ -118,6 +118,31 @@ export class SyntaxScriptCompiler {
                 });
 
                 out.push(operatorStmtExport);
+            } else if (exported.type === NodeType.Function) {
+                const stmt = exported as FunctionStatement;
+                const statementExport:Function = {type:ExportType.Function,args:stmt.arguments.map(s=>regexes[s]),name:stmt.name,formatNames:{},imports:{}};
+
+                stmt.body.forEach(statement=>{
+
+                    if(statement.type===NodeType.Compile){
+                        const compileStatement = statement as CompileStatement;
+                        if(compileStatement.body[0].type!==NodeType.String) (this.watchMode?log.thrower:log.exit).error('Expected a string after compile statement parens');
+                        compileStatement.formats.forEach(each=>{
+                            if(statementExport.formatNames[each]!==undefined) (this.watchMode?log.thrower:log.exit).error(`Encountered multiple compile statements for target language '${each}'`);
+                            statementExport.formatNames[each] = compileStatement.body[0].value;
+                        });
+                    } else if (statement.type===NodeType.Imports){
+                        const importsStatement = statement as ImportsStatement;
+                        importsStatement.formats.forEach(each=>{
+                            if(statementExport.imports[each]!==undefined) (this.watchMode?log.thrower:log.exit).error(`Encountered multiple import statements for target language '${each}'`);
+                            statementExport.imports[each] = importsStatement.module;
+                        });
+                    }
+
+                });
+
+
+                out.push(statementExport);                
             } else (this.watchMode?log.thrower:log.exit).error(`Unexpected \'${statement.type}\' statement after export statement.`);
 
 
@@ -149,7 +174,8 @@ export class SyntaxScriptCompiler {
                 const pathToImport = join(dirname(file), importStmt.path.endsWith('.syx') ? importStmt.path : importStmt.path + '.syx');
                 if (!existsSync(pathToImport)) (this.watchMode?log.thrower:log.exit).error(`File \'${pathToImport}\' from \'${file}\' does not exist.`);
                 this.exportData[pathToImport].forEach(exported => {
-                    if (imported.some(i => exported.regexMatcher === i.regexMatcher)) (this.watchMode?log.thrower:log.exit).error(`There are more than one operators with the same syntax imported to \'${file}\'.`);
+                    if(exported.type===ExportType.Operator)
+                    if (imported.filter(r=>r.type===ExportType.Operator).some(i => exported.regexMatcher === (i as Operator).regexMatcher)) (this.watchMode?log.thrower:log.exit).error(`There are more than one operators with the same syntax imported to \'${file}\'.`);
                     imported.push(exported);
                 });
             }
@@ -177,6 +203,10 @@ export class SyntaxScriptCompiler {
                 fileContent = fileContent.replace(new RegExp(i.regexMatcher.source, 'g'), i.outputGenerators[this.mainFileFormat]);
 
                 if(i.imports[this.mainFileFormat]!==undefined&&!imports.includes(i.imports[this.mainFileFormat])) imports.push(i.imports[this.mainFileFormat]); 
+            } else if (i.type === ExportType.Function){
+                if(i.formatNames[this.mainFileFormat] === undefined) (this.watchMode?log.thrower:log.exit).error(`Can't compile function to target language (${this.mainFileFormat}).`);
+                log.debug(i);
+                fileContent = fileContent.replace(new RegExp(i.name+'\\('+i.args.map(m=>m.source).join(',')+'\\)','g'),(m)=>m.replace(i.name,i.formatNames[this.mainFileFormat]));
             }
 
         });
@@ -188,7 +218,8 @@ export class SyntaxScriptCompiler {
 }
 
 export enum ExportType {
-    Operator
+    Operator,
+    Function
 }
 
 export interface Export {
@@ -202,10 +233,18 @@ export interface Operator extends Export {
     imports: Record<string, string>;
 }
 
+export interface Function extends Export {
+    type: ExportType.Function;
+    name:string;
+    args:RegExp[];
+    formatNames:Record<string,string>;
+    imports:Record<string,string>
+}
+
 export type OneParameterMethod<V, R> = (v: V) => R;
 export type ReturnerMethod<R> = () => R;
 
-export type AnyExportable = Operator;
+export type AnyExportable = Operator|Function;
 
 export const regexes: Record<string, RegExp> = {
     int: /([0-9]+)/,
