@@ -42,6 +42,8 @@ export enum NodeType {
     Import, // Import some file
     Imports, // imports() method
     Export,
+    Function,
+    Global,
 
     // expr
     PrimitiveType,
@@ -132,9 +134,16 @@ export interface ExportStatement extends Statement {
     body:Statement
 }
 
+export interface FunctionStatement extends Statement {
+    type:NodeType.Function,
+    name:string,
+    arguments:string[];
+    body:Statement[];
+}
+
 
 export type Node = 
-ProgramStatement|OperatorStatement|CompileStatement|ImportStatement|ExportStatement|ImportsStatement|
+ProgramStatement|OperatorStatement|CompileStatement|ImportStatement|ExportStatement|ImportsStatement|FunctionStatement|
 StringExpression|PrimitiveTypeExpression|VariableExpression|WhitespaceIdentifierExpression|BraceExpression|SquareExpression|ParenExpression;
 
 export interface SyxConfig {

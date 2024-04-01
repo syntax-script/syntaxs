@@ -1,5 +1,5 @@
 import { log } from '../log.js';
-import { BraceExpression, CompileStatement, Expression, ImportsStatement, Node, NodeType, OperatorStatement, ProgramStatement, StringExpression, Token, TokenType, VariableExpression } from './types.js';
+import { BraceExpression, CompileStatement, Expression, FunctionStatement, ImportsStatement, Node, NodeType, OperatorStatement, PrimitiveTypeExpression, ProgramStatement, StringExpression, Token, TokenType, VariableExpression } from './types.js';
 
 export namespace syxparser {
 
@@ -32,6 +32,7 @@ export namespace syxparser {
         return tokens[i];
     }
 
+    const exportable = [NodeType.Operator,NodeType.Function];
 
     export function parseStatement(put: boolean = true): Node {
         if (keywords.includes(at().type)) {
@@ -83,7 +84,7 @@ export namespace syxparser {
                 return node(statement, put);
             } else if (tt == TokenType.ExportKeyword) {
                 const stmt = parseStatement(false);
-                if(stmt.type!=NodeType.Operator) (watchMode?log.thrower:log.exit).error('Expected operator statement after export.');
+                if(!exportable.includes(stmt.type)) (watchMode?log.thrower:log.exit).error('Expected exportable statement after export.');
                 return node({type:NodeType.Export,body:stmt},put);
             } else if (tt == TokenType.ImportsKeyword) {
                 const statement: ImportsStatement = { type: NodeType.Imports, formats: [], module:'' };
@@ -114,7 +115,25 @@ export namespace syxparser {
 
                 return node(statement,put);
             } else if (tt == TokenType.FunctionKeyword) {
-                
+                const statement:FunctionStatement = {type:NodeType.Function,arguments:[],name:'',body:[]};
+
+                if(at().type!==TokenType.Identifier) (watchMode?log.thrower:log.exit).error('Expected identifier after function statement.');
+                statement.name = at().value;
+                tokens.shift();
+
+                while (at().type !== TokenType.OpenBrace) {
+                    const expr = parseExpression(false,false);
+                    if(expr.type !== NodeType.PrimitiveType) (watchMode?log.thrower:log.exit).error('Expected argument types after function name.');
+                    statement.arguments.push((expr as PrimitiveTypeExpression).value);
+                }
+                tokens.shift();
+
+                while (at().type !== TokenType.CloseBrace) {
+                    statement.body.push(parseStatement(false));
+                }
+                tokens.shift();
+
+                return node(statement,put);
             }
 
         }
