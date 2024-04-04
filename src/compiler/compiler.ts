@@ -1,8 +1,8 @@
-import { existsSync, readFileSync, readdirSync, stat, statSync, writeFileSync } from 'fs';
+import { CompileStatement, ExportStatement, FunctionStatement, ImportStatement, ImportsStatement, KeywordStatement, NodeType, OperatorStatement, PrimitiveTypeExpression, StringExpression, VariableExpression } from './types.js';
 import { dirname, join } from 'path';
+import { existsSync, readFileSync, readdirSync, statSync, writeFileSync } from 'fs';
 import { sysparser, syxparser } from './ast.js';
 import { tokenizeSys, tokenizeSyx } from './lexer.js';
-import { CompileStatement, ExportStatement, FunctionStatement, ImportStatement, ImportsStatement, KeywordStatement, NodeType, OperatorStatement, PrimitiveTypeExpression, Statement, StringExpression, VariableExpression } from './types.js';
 import { log } from '../log.js';
 
 export class SyntaxScriptCompiler {

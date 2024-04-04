@@ -1,11 +1,11 @@
-import chalk from 'chalk';
+import { existsSync, readFileSync, writeFileSync } from 'fs';
 import { arg } from '../module/arg.js';
+import chalk from 'chalk';
 import { errorChecks } from '../utils.js';
 import { join } from 'path';
-import { existsSync, readFileSync, writeFile, writeFileSync } from 'fs';
-import { tokenizeSyx } from '../compiler/lexer.js';
 import { log } from '../log.js';
 import { timer } from '../module/timer.js';
+import { tokenizeSyx } from '../compiler/lexer.js';
 
 export async function runTokenize() {
 

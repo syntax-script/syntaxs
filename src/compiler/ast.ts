@@ -1,5 +1,5 @@
-import { log } from '../log.js';
 import { BraceExpression, CompileStatement, Expression, FunctionStatement, ImportsStatement, Node, NodeType, OperatorStatement, PrimitiveTypeExpression, ProgramStatement, StringExpression, Token, TokenType, VariableExpression } from './types.js';
+import { log } from '../log.js';
 
 export namespace syxparser {
 

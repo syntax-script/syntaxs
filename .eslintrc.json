@@ -14,6 +14,7 @@
     "rules": {
         "quotes":["warn","single"],
         "semi":"error",
-        "comma-dangle":"error"
+        "comma-dangle":"error",
+        "sort-imports":"warn"
     }
 }

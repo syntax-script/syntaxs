@@ -1,14 +1,14 @@
 import { arg } from './module/arg.js';
-import { log } from './log.js';
 import chalk from 'chalk';
-import { runLogs } from './command/logs.js';
+import { log } from './log.js';
+import { runCompile } from './command/compile.js';
 import { runHelp } from './command/help.js';
 import { runInit } from './command/init.js';
-import { runTokenize } from './command/tokenize.js';
+import { runLogs } from './command/logs.js';
 import { runParse } from './command/parse.js';
-import { timer } from './module/timer.js';
-import { runCompile } from './command/compile.js';
+import { runTokenize } from './command/tokenize.js';
 import { runWatch } from './command/watch.js';
+import { timer } from './module/timer.js';
 
 timer.start();
 arg.resolve();

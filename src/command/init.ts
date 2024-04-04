@@ -1,10 +1,10 @@
 import { existsSync, mkdirSync, writeFileSync } from 'fs';
-import { join } from 'path';
-import { log } from '../log.js';
-import inquirer from 'inquirer';
 import { arg } from '../module/arg.js';
 import chalk from 'chalk';
 import { errorChecks } from '../utils.js';
+import inquirer from 'inquirer';
+import { join } from 'path';
+import { log } from '../log.js';
 
 export interface InitContext {
     name: string;

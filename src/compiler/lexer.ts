@@ -1,5 +1,5 @@
-import { log } from '../log.js';
 import { Token, TokenType } from './types.js';
+import { log } from '../log.js';
 
 const keywords: Record<string, TokenType> = {
     operator: TokenType.OperatorKeyword,

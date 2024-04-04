@@ -1,13 +1,10 @@
 import { existsSync, readFileSync } from 'fs';
+import { SyntaxScriptCompiler } from '../compiler/compiler.js';
+import { SyxConfig } from '../compiler/types.js';
+import chalk from 'chalk';
+import { errorChecks } from '../utils.js';
 import { join } from 'path';
 import { log } from '../log.js';
-import chalk from 'chalk';
-import { SyxConfig } from '../compiler/types.js';
-import { errorChecks } from '../utils.js';
-import { SyntaxScriptCompiler } from '../compiler/compiler.js';
-import { timer } from '../module/timer.js';
-import { PowerShell } from 'node-powershell';
-import { exec } from 'child_process';
 import { watch } from 'chokidar';
 
 export async function runWatch() {
