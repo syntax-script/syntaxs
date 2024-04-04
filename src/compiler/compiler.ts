@@ -146,7 +146,7 @@ export class SyntaxScriptCompiler {
             } else if (exported.type === NodeType.Keyword) {
                 const stmt = exported as KeywordStatement;
 
-                out.push({type:ExportType.Keyword,word:stmt.word});
+                out.push({ type: ExportType.Keyword, word: stmt.word });
             } else (this.watchMode ? log.thrower : log.exit).error(`Unexpected \'${statement.type}\' statement after export statement.`);
 
         });

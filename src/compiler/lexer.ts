@@ -31,7 +31,7 @@ function isInt(src: string) {
     return src.match(/^[0-9]+$/);
 }
 
-export function tokenizeSyx(source: string,watchMode:boolean): Token[] {
+export function tokenizeSyx(source: string, watchMode: boolean): Token[] {
     const tokens: Token[] = [];
     const src = source.split('');
 
@@ -52,7 +52,7 @@ export function tokenizeSyx(source: string,watchMode:boolean): Token[] {
         else if (src[0] == '|') tokens.push({ type: TokenType.VarSeperator, value: src.shift() });
         else if (src[0] == '+' && chars.includes(src[1])) {
             if (src[1] === 's') tokens.push({ type: TokenType.WhitespaceIdentifier, value: '+s' });
-            else (watchMode?log.thrower:log.exit).error(`Unexpected identifier: '${src[1]}'`);
+            else (watchMode ? log.thrower : log.exit).error(`Unexpected identifier: '${src[1]}'`);
             src.shift(); src.shift();
         } else if (isInt(src[0])) {
             log.debug('Found int number');
@@ -84,7 +84,7 @@ export function tokenizeSys(source: string): Token[] {
     const src = source.split('');
     const tokens: Token[] = [];
 
-    while (src.length > 0 && `${src[0]}${src[1]}${src[2]}`!==':::') {
+    while (src.length > 0 && `${src[0]}${src[1]}${src[2]}` !== ':::') {
         if (!isSkippable(src[0])) log.debug(`Parsing tokenmm: '${src[0]}'`);
         if (src[0] == ';') tokens.push({ type: TokenType.Semicolon, value: src.shift() });
         else if (src[0] == '\'') tokens.push({ type: TokenType.SingleQuote, value: src.shift() });
@@ -104,6 +104,6 @@ export function tokenizeSys(source: string): Token[] {
 
     }
 
-    tokens.push({type:TokenType.EndOfFile,value:'eof'});
+    tokens.push({ type: TokenType.EndOfFile, value: 'eof' });
     return tokens;
 }

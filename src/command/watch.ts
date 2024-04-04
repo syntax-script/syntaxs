@@ -25,40 +25,40 @@ export async function runWatch() {
         ['compile' in config && 'out' in config.compile && !existsSync(join(process.cwd(), config.compile.out)), `Could not find out directory '${join(process.cwd(), config.compile.out)}'`]
     ]);
 
-    const compiler = new SyntaxScriptCompiler(config.compile.root, config.compile.out, config.compile.format,true);
+    const compiler = new SyntaxScriptCompiler(config.compile.root, config.compile.out, config.compile.format, true);
     let alreadyCompiling = false;
     let initializing = true;
 
     const dir = join(process.cwd(), config.compile.root);
-    
-    function cmpl(){
-        if(alreadyCompiling) return;
+
+    function cmpl() {
+        if (alreadyCompiling) return;
         log.info('File change detected, compiling...');
         alreadyCompiling = true;
-        compiler.compile().then(()=>{
+        compiler.compile().then(() => {
             log.info('Compiled. Waiting for file changes.');
             alreadyCompiling = false;
-        }).catch(err=>log.error('Could not compile. Waiting for file changes.'));
+        }).catch(err => log.error('Could not compile. Waiting for file changes.'));
     }
 
-    const watcher = watch(dir,{
-        awaitWriteFinish:{
-            pollInterval:10,
-            stabilityThreshold:50
+    const watcher = watch(dir, {
+        awaitWriteFinish: {
+            pollInterval: 10,
+            stabilityThreshold: 50
         },
-        ignoreInitial:true,
+        ignoreInitial: true,
         disableGlobbing: true
     });
-    watcher.on('change',()=>{
-        if(initializing)return;
+    watcher.on('change', () => {
+        if (initializing) return;
         cmpl();
     });
-    watcher.on('add',()=>{log.debug('Added file');});
-    watcher.on('ready',()=>{
+    watcher.on('add', () => { log.debug('Added file'); });
+    watcher.on('ready', () => {
         initializing = false;
         cmpl();
     });
-    watcher.on('error',()=>{
+    watcher.on('error', () => {
         log.error('Could not compile. Waiting for file changes.');
     });
 }

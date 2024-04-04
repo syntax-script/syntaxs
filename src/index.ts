@@ -20,5 +20,5 @@ const commandMap: Record<string, () => void> = { logs: runLogs, help: runHelp, i
 if (commandMap[arg.getCommand()] !== undefined) await commandMap[arg.getCommand()]();
 else log.exit.error(`Unknown or missing command, use '${chalk.yellow('syntaxs')} help'`);
 
-process.on('SIGINT', () =>{log.raw('', '', process.cwd(), 'syntaxs@0.0.1-alpha');process.exit(556);});
-process.on('beforeExit', (c) =>{if(c!==556)log.raw('', '', process.cwd(), 'syntaxs@0.0.1-alpha');});
+process.on('SIGINT', () => { log.raw('', '', process.cwd(), 'syntaxs@0.0.1-alpha'); process.exit(556); });
+process.on('beforeExit', (c) => { if (c !== 556) log.raw('', '', process.cwd(), 'syntaxs@0.0.1-alpha'); });

@@ -38,8 +38,8 @@ export namespace arg {
         return flags.includes(flag);
     }
 
-    export function getArgument(arg: string,required:boolean = false): string | undefined {
-        if(args[arg]===undefined&&required) log.exit.error(`Argument ${chalk.gray(arg)} required`);
+    export function getArgument(arg: string, required: boolean = false): string | undefined {
+        if (args[arg] === undefined && required) log.exit.error(`Argument ${chalk.gray(arg)} required`);
         return args[arg];
     }
 
