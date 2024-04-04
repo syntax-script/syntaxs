@@ -15,6 +15,7 @@
         "quotes":["warn","single"],
         "semi":"error",
         "comma-dangle":"error",
-        "sort-imports":"warn"
+        "sort-imports":"warn",
+        "@typescript-eslint/consistent-type-exports":"error"
     }
 }

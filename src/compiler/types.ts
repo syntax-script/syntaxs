@@ -1,4 +1,4 @@
-export enum TokenType {
+enum TokenType {
     OpenBrace,
     CloseBrace,
     DefinitionEnd,
@@ -29,12 +29,12 @@ export enum TokenType {
     KeywordKeyword
 }
 
-export interface Token {
+interface Token {
     type: TokenType;
     value: string;
 }
 
-export enum NodeType {
+enum NodeType {
     Program,
 
     // stmt
@@ -57,91 +57,91 @@ export enum NodeType {
     Square
 }
 
-export interface ProgramStatement extends Statement {
+interface ProgramStatement extends Statement {
     type: NodeType.Program,
     body: Statement[];
 }
 
-export interface Statement {
+interface Statement {
     type: NodeType;
 }
 
-export interface Expression extends Statement {
+interface Expression extends Statement {
     value: string;
 }
 
-export interface PrimitiveTypeExpression extends Expression {
+interface PrimitiveTypeExpression extends Expression {
     type: NodeType.PrimitiveType,
     value: string;
 }
 
-export interface VariableExpression extends Expression {
+interface VariableExpression extends Expression {
     type: NodeType.Variable,
     value: string;
     index: number;
 }
 
-export interface WhitespaceIdentifierExpression extends Expression {
+interface WhitespaceIdentifierExpression extends Expression {
     type: NodeType.WhitespaceIdentifier;
 }
 
-export interface StringExpression extends Expression {
+interface StringExpression extends Expression {
     type: NodeType.String,
     value: string;
 }
 
 
-export interface BraceExpression extends Expression {
+interface BraceExpression extends Expression {
     type: NodeType.Brace,
     body: Statement[];
 }
 
 
-export interface ParenExpression extends Expression {
+interface ParenExpression extends Expression {
     type: NodeType.Paren,
     body: Statement[];
 }
 
 
-export interface SquareExpression extends Expression {
+interface SquareExpression extends Expression {
     type: NodeType.Square,
     body: Statement[];
 }
 
-export interface OperatorStatement extends Statement {
+interface OperatorStatement extends Statement {
     type: NodeType.Operator,
     body: Statement[];
     regex: Statement[];
 }
 
-export interface KeywordStatement extends Statement {
+interface KeywordStatement extends Statement {
     word: string;
     type: NodeType.Keyword;
 }
 
-export interface ImportsStatement extends Statement {
+interface ImportsStatement extends Statement {
     type: NodeType.Imports,
     formats: string[];
     module: string;
 }
 
-export interface CompileStatement extends Statement {
+interface CompileStatement extends Statement {
     type: NodeType.Compile,
     formats: string[],
     body: Expression[];
 }
 
-export interface ImportStatement extends Statement {
+interface ImportStatement extends Statement {
     type: NodeType.Import,
     path: string;
 }
 
-export interface ExportStatement extends Statement {
+interface ExportStatement extends Statement {
     type: NodeType.Export,
     body: Statement;
 }
 
-export interface FunctionStatement extends Statement {
+interface FunctionStatement extends Statement {
     type: NodeType.Function,
     name: string,
     arguments: string[];
@@ -149,19 +149,35 @@ export interface FunctionStatement extends Statement {
 }
 
 
-export type Node =
+type Node =
     ProgramStatement | OperatorStatement | CompileStatement | ImportStatement | ExportStatement | ImportsStatement | FunctionStatement | KeywordStatement |
     StringExpression | PrimitiveTypeExpression | VariableExpression | WhitespaceIdentifierExpression | BraceExpression | SquareExpression | ParenExpression;
 
-export interface SyxConfig {
+interface SyxConfig {
     name: string;
     description?: string;
     version: string;
     compile: SyxConfigCompile;
 }
 
-export interface SyxConfigCompile {
+interface SyxConfigCompile {
     root: string;
     out: string;
     format: string;
+}
+
+export type {
+
+    // Enums/Types
+    TokenType,NodeType,Token,Node,
+
+    // Statements
+    Statement,ProgramStatement,OperatorStatement,KeywordStatement,ImportsStatement,CompileStatement,ImportStatement,ExportStatement,FunctionStatement,
+
+    // Expressions
+    Expression,PrimitiveTypeExpression,VariableExpression,WhitespaceIdentifierExpression,StringExpression,BraceExpression,ParenExpression,SquareExpression,
+
+    // Config
+    SyxConfig,SyxConfigCompile
+    
 }
