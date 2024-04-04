@@ -25,7 +25,8 @@ export enum TokenType {
     FunctionKeyword,
     ClassKeyword,
     ImportsKeyword,
-    EndOfFile
+    EndOfFile,
+    KeywordKeyword
 }
 
 export interface Token {
@@ -44,6 +45,7 @@ export enum NodeType {
     Export,
     Function,
     Global,
+    Keyword,
 
     // expr
     PrimitiveType,
@@ -112,6 +114,10 @@ export interface OperatorStatement extends Statement {
     regex:Statement[];
 }
 
+export interface KeywordStatement extends Statement {
+    word:string;
+}
+
 export interface ImportsStatement extends Statement {
     type:NodeType.Imports,
     formats:string[];
@@ -143,7 +149,7 @@ export interface FunctionStatement extends Statement {
 
 
 export type Node = 
-ProgramStatement|OperatorStatement|CompileStatement|ImportStatement|ExportStatement|ImportsStatement|FunctionStatement|
+ProgramStatement|OperatorStatement|CompileStatement|ImportStatement|ExportStatement|ImportsStatement|FunctionStatement|KeywordStatement|
 StringExpression|PrimitiveTypeExpression|VariableExpression|WhitespaceIdentifierExpression|BraceExpression|SquareExpression|ParenExpression;
 
 export interface SyxConfig {

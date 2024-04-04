@@ -9,7 +9,8 @@ const keywords: Record<string, TokenType> = {
     export: TokenType.ExportKeyword,
     global: TokenType.GlobalKeyword,
     class: TokenType.ClassKeyword,
-    function: TokenType.FunctionKeyword
+    function: TokenType.FunctionKeyword,
+    keyword: TokenType.KeywordKeyword
 };
 
 /**
@@ -23,7 +24,7 @@ function isAlphabetic(src: string) {
 }
 
 function isSkippable(src: string) {
-    return src.match(/\s|\\n|\\t/);
+    return src.match(/^\s|\\n|\\t$/);
 }
 
 function isInt(src: string) {
