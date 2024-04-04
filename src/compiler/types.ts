@@ -166,7 +166,7 @@ interface SyxConfigCompile {
     format: string;
 }
 
-export type {
+export {
 
     // Enums/Types
     TokenType,NodeType,Token,Node,
@@ -180,4 +180,4 @@ export type {
     // Config
     SyxConfig,SyxConfigCompile
     
-}
+};
