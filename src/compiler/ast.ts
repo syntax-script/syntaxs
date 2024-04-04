@@ -32,7 +32,7 @@ export namespace syxparser {
         return tokens[i];
     }
 
-    const exportable = [NodeType.Operator, NodeType.Function];
+    const exportable = [NodeType.Operator, NodeType.Function, NodeType.Keyword];
 
     export function parseStatement(put: boolean = true): Node {
         if (keywords.includes(at().type)) {
@@ -40,7 +40,7 @@ export namespace syxparser {
             tokens.shift();
 
             if (tt == TokenType.ImportKeyword) {
-                const ex = parseExpression(false,false);
+                const ex = parseExpression(false, false);
                 if (ex.type !== NodeType.String) (watchMode ? log.thrower : log.exit).error('Expected string after import statement.');
                 return node({ type: NodeType.Import, path: (ex as Expression).value }, put);
             } else if (tt == TokenType.OperatorKeyword) {
@@ -135,11 +135,11 @@ export namespace syxparser {
 
                 return node(statement, put);
             } else if (tt == TokenType.KeywordKeyword) {
-                const ex = parseExpression(false,false,true);
-                if(ex.type !== NodeType.String) {(watchMode ? log.thrower : log.exit).error('Expected identifier after keyword statement.');return;}
-                if(at().type!==TokenType.Semicolon) (watchMode ? log.thrower : log.exit).error('Expected semicolon after statement.');
+                const ex = parseExpression(false, false, true);
+                if (ex.type !== NodeType.String) { (watchMode ? log.thrower : log.exit).error('Expected identifier after keyword statement.'); return; }
+                if (at().type !== TokenType.Semicolon) (watchMode ? log.thrower : log.exit).error('Expected semicolon after statement.');
                 tokens.shift(); // skip semicolon
-                return node({type:NodeType.Keyword,word:ex.value},put);
+                return node({ type: NodeType.Keyword, word: ex.value }, put);
             }
 
         }
@@ -151,7 +151,7 @@ export namespace syxparser {
         return node;
     }
 
-    export function parseExpression(put: boolean = true, statements: boolean = true,expectIdentifier:boolean = false): Node {
+    export function parseExpression(put: boolean = true, statements: boolean = true, expectIdentifier: boolean = false): Node {
         const tt = at().type;
         log.debug(`Parsing expr ${tt}`);
 
@@ -234,8 +234,8 @@ export namespace syxparser {
         } else if (keywords.includes(tt)) {
             if (!statements) (watchMode ? log.thrower : log.exit).error('Unexpected statement.');
             return parseStatement();
-        } else if (tt == TokenType.Identifier && expectIdentifier){
-            return node({type:NodeType.String,value:tokens.shift().value},put);
+        } else if (tt == TokenType.Identifier && expectIdentifier) {
+            return node({ type: NodeType.String, value: tokens.shift().value }, put);
         }
         else (watchMode ? log.thrower : log.exit).error(`Unexpected expression: '${at().value}'`);
 
