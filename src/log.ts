@@ -1,5 +1,6 @@
 import chalk from 'chalk';
 import { arg } from './module/arg.js';
+import { FULL_MODULE_NAME } from './index.js';
 
 export namespace log {
 
@@ -31,13 +32,13 @@ export namespace log {
     export namespace exit {
         export function error(...message: any[]) {
             log.error(...message);
-            log.raw('', '', process.cwd(), 'syntaxs@0.0.1-alpha');
+            log.raw('', '', process.cwd(), FULL_MODULE_NAME);
             process.exit(1);
         }
 
         export function raw(...message: any[]) {
             log.raw(...message);
-            log.raw('', '', process.cwd(), 'syntaxs@0.0.1-alpha');
+            log.raw('', '', process.cwd(), FULL_MODULE_NAME);
             process.exit(0);
         }
 
