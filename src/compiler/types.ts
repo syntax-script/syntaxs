@@ -116,6 +116,7 @@ export interface OperatorStatement extends Statement {
 
 export interface KeywordStatement extends Statement {
     word:string;
+    type:NodeType.Keyword
 }
 
 export interface ImportsStatement extends Statement {
