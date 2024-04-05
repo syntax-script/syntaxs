@@ -40,7 +40,14 @@
                     "FunctionDeclaration",
                     "ModuleDeclaration",
                     "VariableStatement",
-                    "MethodDefinition"
+                    "MethodDefinition",
+                    "TypeAliasDeclaration",
+                    "TSInterfaceDeclaration",
+                    "InterfaceDeclaration",
+                    "PropertySignature",
+                    "TSTypeAliasDeclaration",
+                    "EnumDeclaration",
+                    "TSEnumDeclaration"
                 ]
             }
         ],
