@@ -102,6 +102,7 @@ export namespace log {
 
 }
 
-export class ProgramError extends Error {
-
-}
+/**
+ * An error that is only thrown by {@link log.thrower} functions.
+ */
+export class ProgramError extends Error {}

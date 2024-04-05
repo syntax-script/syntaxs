@@ -7,6 +7,7 @@ export type ErrorCheckData = [boolean, string][];
  * if the given boolean if `true`, logs the given `string` using {@link log.error}. After
  * that, exits the process if any error was present.
  * @param data Error checking data.
+ * @author efekos
  */
 export function errorChecks(data: ErrorCheckData) {
     data.forEach(d => { if (d[0]) log.error(d[1]); });

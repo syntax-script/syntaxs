@@ -5,6 +5,7 @@ import { log } from '../log.js';
 
 /**
  * Runs help command.
+ * @author efekos
  */
 export async function runHelp() {
     await console.clear();

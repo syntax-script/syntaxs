@@ -9,7 +9,7 @@ import { timer } from '../module/timer.js';
 
 /**
  * Runs compile command.
- * @returns 
+ * @author efekos
  */
 export async function runCompile():Promise<void> {
 

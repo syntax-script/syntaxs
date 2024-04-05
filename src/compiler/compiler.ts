@@ -5,6 +5,9 @@ import { sysparser, syxparser } from './ast.js';
 import { tokenizeSys, tokenizeSyx } from './lexer.js';
 import { log } from '../log.js';
 
+/**
+ * Main class used to compile a folder containing syntax script declaration (.syx) and syntax script (.sys) files.
+ */
 export class SyntaxScriptCompiler {
 
     /**
@@ -256,17 +259,38 @@ export type ReturnerMethod<R> = () => R;
 export type AnyExportable = Operator | Function | Keyword;
 
 export const regexes: Record<string, RegExp> = {
+    /**
+     * Regex for `int` primitive type. `int`s can be any number that does not contain
+     */
     int: /([0-9]+)/,
+
+    /**
+     * Regex used for `string` primitive type. `string`s are phrases wrapped with quotation marks that can contain anything.
+     */
     string: /('[\u0000-\uffff]*'|"[\u0000-\uffff]*")/,
+
+    /**
+     * Regex used for `boolean` primitive type. `boolean`s are one bit, but 0 is represented as `false` and 1 is `false`.
+     */
     boolean: /(true|false)/,
+
+    /**
+     * Regex used for `decimal` primitive type. `decimal`s are either integers or numbers with fractional digits.
+     */
     decimal: /([0-9]+(\.[0-9]+)?)/,
+    
+    /**
+     * Regex used for whitespace identifiers, an identifier used to reference any amount of spaces.
+     */
     '+s': /\s*/
+    
 };
 
 /**
  * Escapes every RegExp character at the source string.
  * @param src Source string.
  * @returns Same string with every RegExp character replaced with '\\$&'. 
+ * @author efekos
  */
 export function escapeRegex(src: string): string {
     return src.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');

@@ -10,6 +10,7 @@ import { tokenizeSyx } from '../compiler/lexer.js';
 
 /**
  * Runs parse command.
+ * @author efekos
  */
 export function runParse() {
 

@@ -9,6 +9,7 @@ import { watch } from 'chokidar';
 
 /**
  * Runs watch command, starting a watch session.
+ * @author efekos
  */
 export function runWatch() {
 

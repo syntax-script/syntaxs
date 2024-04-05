@@ -2,6 +2,7 @@ import { log } from '../log.js';
 
 /**
  * Runs logs command.
+ * @author efekos
  */
 export function runLogs() {
     log.error('Error message');
