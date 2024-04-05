@@ -4,7 +4,10 @@
   "description": "Syntax Script Command Line Interface.",
   "main": "./dist/index.js",
   "scripts": {
-    "build": "eslint ./src/**/*.ts --fix && eslint ./src/**/*.ts && tsc && cls"
+    "lint": "eslint ./src/**/*.ts --fix",
+    "prebuild":"npm run lint",
+    "build": "tsc",
+    "postbuild":"cls && echo Builded"
   },
   "keywords": [
     "syntax",
