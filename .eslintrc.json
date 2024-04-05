@@ -10,7 +10,8 @@
         "project":["tsconfig.json"]
     },
     "plugins": [
-        "@typescript-eslint"
+        "@typescript-eslint",
+        "jsdoc"
     ],
     "rules": {
         "quotes":["warn","single"],
@@ -21,10 +22,10 @@
         "no-const-assign":"error",
         "no-constant-condition":"error",
         "@typescript-eslint/require-await":"error",
-        "no-func-assign":"warn",
-        "require-jsdoc":"warn",
-        "sort-imports":"warn",
         "@typescript-eslint/no-useless-constructor":"error",
+        "jsdoc/require-jsdoc":["warn",{"publicOnly":true,"enableFixer":false}],
+        "no-func-assign":"warn",
+        "sort-imports":"warn",
         "@typescript-eslint/prefer-for-of":"warn",
         "prefer-const":"warn"
     }
