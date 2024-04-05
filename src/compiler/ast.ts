@@ -1,5 +1,11 @@
-import { BraceExpression, CompileStatement, Expression, FunctionStatement, ImportsStatement, Node, NodeType, OperatorStatement, PrimitiveTypeExpression, ProgramStatement, StringExpression, Token, TokenType, VariableExpression } from './types.js';
+import { BraceExpression, CompileStatement, ExportStatement, Expression, FunctionStatement, ImportsStatement, KeywordStatement, Node, NodeType, OperatorStatement, PrimitiveTypeExpression, ProgramStatement, StringExpression, Token, TokenType, VariableExpression } from './types.js';
 import { log } from '../log.js';
+
+export const SyxRuleRegistry:Record<string,{value:string,regex?:RegExp}> = {
+    'function-value-return-enabled': {value:'boolean',regex:/^(true|false)$/},
+    'function-value-return-keyword': {value:'keyword'}
+};
+
 
 export namespace syxparser {
 
@@ -140,6 +146,36 @@ export namespace syxparser {
                 if (at().type !== TokenType.Semicolon) (watchMode ? log.thrower : log.exit).error('Expected semicolon after statement.');
                 tokens.shift(); // skip semicolon
                 return node({ type: NodeType.Keyword, word: ex.value }, put);
+            } else if (tt == TokenType.RuleKeyword) {
+                const ruleExpr = parseExpression(false,false);
+                if (ruleExpr.type !== NodeType.String) {(watchMode ? log.thrower : log.exit).error('Expected string after \'rule\'.');return;}
+                if(at().value !== ':') (watchMode ? log.thrower : log.exit).error('Expected \':\' after rule name.');
+                tokens.shift();
+                if(!(ruleExpr.value in SyxRuleRegistry)) (watchMode ? log.thrower : log.exit).error(`Unknown rule '${ruleExpr.value}'.`);
+                const rule = SyxRuleRegistry[ruleExpr.value];
+ 
+                if(rule.value==='boolean'){
+                    const boolEx = parseExpression(false,false,true);
+                    if(!(boolEx.type===NodeType.String&&rule.regex.test(boolEx.value))) {(watchMode ? log.thrower : log.exit).error('Expected boolean as rule value.');return;}
+
+                    
+                    if(at().type!==TokenType.Semicolon) (watchMode ? log.thrower : log.exit).error('Expected semicolon after rule statement.');
+                    tokens.shift();
+                    return node({type:NodeType.Rule,rule:ruleExpr.value,value:boolEx.value},put);
+                } else if (rule.value==='keyword'){
+                    const keyEx = parseExpression(false,false,true);
+                    if(!(
+                        keyEx.type===NodeType.String&&
+                        program.body.some(s=>
+                            (s.type===NodeType.Keyword&&(s as KeywordStatement).word===keyEx.value)||
+                            (s.type===NodeType.Export&&(s as ExportStatement).body.type===NodeType.Keyword&&((s as ExportStatement).body as KeywordStatement).word === keyEx.value)
+                        )
+                    )) {(watchMode ? log.thrower : log.exit).error('Unknown keyword.');return;}
+
+                    if(at().type!==TokenType.Semicolon) (watchMode ? log.thrower : log.exit).error('Expected semicolon after rule statement.');
+                    tokens.shift();
+                    return node({type:NodeType.Rule,rule:ruleExpr.value,value:keyEx.value},put);
+                }
             }
 
         }
@@ -244,7 +280,7 @@ export namespace syxparser {
 
     const primitiveTypes = /^(int|string|boolean|decimal)$/;
 
-    const keywords = [TokenType.ImportKeyword, TokenType.ExportKeyword, TokenType.CompileKeyword, TokenType.OperatorKeyword, TokenType.ImportsKeyword, TokenType.GlobalKeyword, TokenType.FunctionKeyword, TokenType.KeywordKeyword];
+    const keywords = [TokenType.ImportKeyword, TokenType.ExportKeyword, TokenType.CompileKeyword, TokenType.OperatorKeyword, TokenType.ImportsKeyword, TokenType.GlobalKeyword, TokenType.FunctionKeyword, TokenType.KeywordKeyword, TokenType.RuleKeyword];
 
 }
 
