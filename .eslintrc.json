@@ -33,17 +33,18 @@
             {
                 "publicOnly": true,
                 "enableFixer": false,
-                "contexts":["Property","MethodDeclaration","ClassDeclaration","FunctionDeclaration","ModuleDeclaration","VariableStatement"]
-            }
-        ],
-        "jsdoc/check-values": [
-            "warn",
-            {
-                "allowedAuthors": [
-                    "efekos"
+                "contexts": [
+                    "Property",
+                    "MethodDeclaration",
+                    "ClassDeclaration",
+                    "FunctionDeclaration",
+                    "ModuleDeclaration",
+                    "VariableStatement",
+                    "MethodDefinition"
                 ]
             }
         ],
+        "jsdoc/check-values": "warn",
         "no-func-assign": "warn",
         "sort-imports": "warn",
         "@typescript-eslint/prefer-for-of": "warn",
