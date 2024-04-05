@@ -7,27 +7,46 @@
     "parserOptions": {
         "ecmaVersion": "latest",
         "sourceType": "module",
-        "project":["tsconfig.json"]
+        "project": [
+            "tsconfig.json"
+        ]
     },
     "plugins": [
         "@typescript-eslint",
         "jsdoc"
     ],
     "rules": {
-        "quotes":["warn","single"],
-        "semi":"error",
-        "eqeqeq":"error",
-        "comma-dangle":"error",
-        "no-useless-constructor":"error",
-        "no-const-assign":"error",
-        "no-constant-condition":"error",
-        "@typescript-eslint/require-await":"error",
-        "@typescript-eslint/no-useless-constructor":"error",
-        "jsdoc/require-jsdoc":["warn",{"publicOnly":true,"enableFixer":false}],
-        "jsdoc/check-values":"warn",
-        "no-func-assign":"warn",
-        "sort-imports":"warn",
-        "@typescript-eslint/prefer-for-of":"warn",
-        "prefer-const":"warn"
+        "quotes": [
+            "warn",
+            "single"
+        ],
+        "semi": "error",
+        "eqeqeq": "error",
+        "comma-dangle": "error",
+        "no-useless-constructor": "error",
+        "no-const-assign": "error",
+        "no-constant-condition": "error",
+        "@typescript-eslint/require-await": "error",
+        "@typescript-eslint/no-useless-constructor": "error",
+        "jsdoc/require-jsdoc": [
+            "warn",
+            {
+                "publicOnly": true,
+                "enableFixer": false,
+                "contexts":["Property","MethodDeclaration","ClassDeclaration","FunctionDeclaration","ModuleDeclaration","VariableStatement"]
+            }
+        ],
+        "jsdoc/check-values": [
+            "warn",
+            {
+                "allowedAuthors": [
+                    "efekos"
+                ]
+            }
+        ],
+        "no-func-assign": "warn",
+        "sort-imports": "warn",
+        "@typescript-eslint/prefer-for-of": "warn",
+        "prefer-const": "warn"
     }
 }
