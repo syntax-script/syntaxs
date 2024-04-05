@@ -8,6 +8,8 @@ export type ErrorCheckData = [boolean, string][];
  * that, exits the process if any error was present.
  * @param data Error checking data.
  * @author efekos
+ * @version 1.0.0
+ * @since 0.0.1-alpha
  */
 export function errorChecks(data: ErrorCheckData) {
     data.forEach(d => { if (d[0]) log.error(d[1]); });

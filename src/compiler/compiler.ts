@@ -7,23 +7,16 @@ import { log } from '../log.js';
 
 /**
  * Main class used to compile a folder containing syntax script declaration (.syx) and syntax script (.sys) files.
+ * @version 1.0.0
+ * @since 0.0.1-alpha
  */
 export class SyntaxScriptCompiler {
 
-    /**
-     * Root dir to scan for .syx and .sys files
-     */
     private readonly rootDir: string;
-    /**
-     * Out dir to output files.
-     */
     private readonly outDir: string;
     private readonly mainFileFormat: string;
     private readonly watchMode: boolean;
 
-    /**
-     * Stores exports for every .syx file.
-     */
     public readonly exportData: Record<string, AnyExportable[]> = {};
 
     constructor(rootDir: string, outDir: string, format: string, watch: boolean = false) {
@@ -262,30 +255,40 @@ export const regexes: Record<string, RegExp> = {
     /**
      * Regex for `int` primitive type. `int`s can be any number that does not contain fractional digits.
      * @author efekos
+     * @since 0.0.1-alpha
+     * @version 1.0.0
      */
     int: /([0-9]+)/,
 
     /**
      * Regex used for `string` primitive type. `string`s are phrases wrapped with quotation marks that can contain anything.
      * @author efekos
+     * @since 0.0.1-alpha
+     * @version 1.0.0
      */
     string: /('[\u0000-\uffff]*'|"[\u0000-\uffff]*")/,
 
     /**
      * Regex used for `boolean` primitive type. `boolean`s are one bit, but 0 is represented as `false` and 1 is `false`.
      * @author efekos
+     * @since 0.0.1-alpha
+     * @version 1.0.0
      */
     boolean: /(true|false)/,
 
     /**
      * Regex used for `decimal` primitive type. `decimal`s are either integers or numbers with fractional digits.
      * @author efekos
+     * @since 0.0.1-alpha
+     * @version 1.0.0
      */
     decimal: /([0-9]+(\.[0-9]+)?)/,
     
     /**
      * Regex used for whitespace identifiers, an identifier used to reference any amount of spaces.
      * @author efekos
+     * @version 1.0.0
+     * @since 0.0.1-alpha
      */
     '+s': /\s*/
     
@@ -296,6 +299,8 @@ export const regexes: Record<string, RegExp> = {
  * @param src Source string.
  * @returns Same string with every RegExp character replaced with '\\$&'. 
  * @author efekos
+ * @version 1.0.0
+ * @since 0.0.1-alpha
  */
 export function escapeRegex(src: string): string {
     return src.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');

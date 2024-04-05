@@ -3,6 +3,8 @@ import { log } from '../log.js';
 /**
  * Runs logs command.
  * @author efekos
+ * @version 1.0.0
+ * @since 0.0.1-alpha
  */
 export function runLogs() {
     log.error('Error message');

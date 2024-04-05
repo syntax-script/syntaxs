@@ -11,6 +11,8 @@ export const SyxRuleRegistry: Record<string, { value: string, regex?: RegExp; }>
     /**
      * Determines whether it is possible to return a value using functons.
      * @author efekos
+     * @version 1.0.0
+     * @since 0.0.1-alpha
      */
     'function-value-return-enabled': valueTypeDefinitions.boolean,
 
@@ -18,6 +20,8 @@ export const SyxRuleRegistry: Record<string, { value: string, regex?: RegExp; }>
      * Determines the keyword that should be used to return values from a function, similiar to `return` keyword
      * from popular languages such as ts,js,py,java etc.
      * @author efekos
+     * @version 1.0.0
+     * @since 0.0.1-alpha
      */
     'function-value-return-keyword': valueTypeDefinitions.keyword
 };
@@ -31,6 +35,8 @@ export namespace syxparser {
      * Determintes whether the parser can keep parsing tokens.
      * @returns Whether there is a token left.
      * @author efekos
+     * @version 1.0.0
+     * @since 0.0.1-alpha
      */
     function canGo(): boolean {
         return tokens[0].type !== TokenType.EndOfFile;
@@ -46,6 +52,8 @@ export namespace syxparser {
      * @param watch Whether is it watch mode or not. Errors will exit process if it isn't watch mode, throwing an error otherwise.
      * @returns Main {@link ProgramStatement} containing all other statements.
      * @author efekos
+     * @version 1.0.0
+     * @since 0.0.1-alpha
      */
     export function parseTokens(t: Token[], watch: boolean): ProgramStatement {
         tokens = t;
@@ -67,6 +75,8 @@ export namespace syxparser {
      * @param i Token index. Defaults to 0.
      * @returns The token at given index.
      * @author efekos
+     * @version 1.0.0
+     * @since 0.0.1-alpha
      */
     function at(i: number = 0): Token {
         return tokens[i];
@@ -79,6 +89,8 @@ export namespace syxparser {
      * @param put Whether the result should be added to the program statement.
      * @returns A node that is either a statement or an expression if a statement wasn't present.
      * @author efekos
+     * @version 1.0.0
+     * @since 0.0.1-alpha
      */
     export function parseStatement(put: boolean = true): Node {
         if (keywords.includes(at().type)) {
@@ -228,6 +240,8 @@ export namespace syxparser {
      * @param put Whether the node should be added to current program.
      * @returns The node.
      * @author efekos
+     * @version 1.0.0
+     * @since 0.0.1-alpha
      */
     function node<T extends Node>(node: T, put: boolean): T {
         if (put) program.body.push(node);
@@ -241,6 +255,8 @@ export namespace syxparser {
      * @param expectIdentifier Whether identifiers should be allowed. Unknown identifiers will stop the function with this value set to `false`, returning the identifier as a {@link StringExpression} otherwise.
      * @returns The parsed node.
      * @author efekos
+     * @version 1.0.0
+     * @since 0.0.1-alpha
      */
     export function parseExpression(put: boolean = true, statements: boolean = true, expectIdentifier: boolean = false): Node {
         const tt = at().type;
@@ -349,6 +365,8 @@ export namespace sysparser {
      * Determintes whether the parser can keep parsing tokens.
      * @returns Whether there is a token left.
      * @author efekos
+     * @version 1.0.0
+     * @since 0.0.1-alpha
      */
     function canGo(): boolean {
         return tokens[0].type !== TokenType.EndOfFile;
@@ -363,6 +381,8 @@ export namespace sysparser {
      * @param watch Whether is it watch mode or not. Errors will exit process if it isn't watch mode, throwing an error otherwise.
      * @returns Main {@link ProgramStatement} containing all other statements.
      * @author efekos
+     * @version 1.0.0
+     * @since 0.0.1-alpha
      */
     export function parseTokens(t: Token[], watch: boolean): ProgramStatement {
         tokens = t;
@@ -384,6 +404,8 @@ export namespace sysparser {
      * @param i Token index. Defaults to 0.
      * @returns The token at given index.
      * @author efekos
+     * @version 1.0.0
+     * @since 0.0.1-alpha
      */
     function at(i: number = 0): Token {
         return tokens[i];
@@ -395,6 +417,8 @@ export namespace sysparser {
      * @param put Whether the result should be added to the program statement.
      * @returns A node that is either a statement or an expression if a statement wasn't present.
      * @author efekos
+     * @version 1.0.0
+     * @since 0.0.1-alpha
      */
     export function parseStatement(put: boolean = true): Node {
         if (keywords.includes(at().type)) {
@@ -419,6 +443,8 @@ export namespace sysparser {
      * @param put Whether the node should be added to current program.
      * @returns The node.
      * @author efekos
+     * @version 1.0.0
+     * @since 0.0.1-alpha
      */
     function node(node: Node, put: boolean) {
         if (put) program.body.push(node);
@@ -432,6 +458,8 @@ export namespace sysparser {
      * @param expectIdentifier Whether identifiers should be allowed. Unknown identifiers will stop the function with this value set to `false`, returning the identifier as a {@link StringExpression} otherwise.
      * @returns The parsed node.
      * @author efekos
+     * @version 1.0.0
+     * @since 0.0.1-alpha
      */
     export function parseExpression(put: boolean = true, statements: boolean = true): Node {
         const tt = at().type;

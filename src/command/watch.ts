@@ -10,6 +10,8 @@ import { watch } from 'chokidar';
 /**
  * Runs watch command, starting a watch session.
  * @author efekos
+ * @version 1.0.0
+ * @since 0.0.1-alpha
  */
 export function runWatch() {
 

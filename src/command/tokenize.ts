@@ -10,6 +10,8 @@ import { tokenizeSyx } from '../compiler/lexer.js';
 /**
  * Runs tokenize command.
  * @author efekos
+ * @version 1.0.0
+ * @since 0.0.1-alpha
  */
 export async function runTokenize() {
 

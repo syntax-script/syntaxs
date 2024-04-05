@@ -17,6 +17,8 @@ export interface InitContext {
 /**
  * Runs init command.
  * @author efekos
+ * @version 1.0.0
+ * @since 0.0.1-alpha
  */
 export async function runInit() {
     if (existsSync(join(process.cwd(), 'syxconfig.json'))) log.exit.error('There is already a \'syxconfig.json\' file, delete it.');

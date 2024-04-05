@@ -15,6 +15,8 @@ export namespace arg {
     /**
      * Parses all the arguemnts given at the command line. Exits the process if an argument is given with a wrong syntax.
      * @author efekos
+     * @version 1.0.0
+     * @since 0.0.1-alpha
      */
     export function resolve() {
 
@@ -38,6 +40,8 @@ export namespace arg {
      * Returns the command, the first command line argument that isn't a flag nor an argument.
      * @returns The command if present. `''` otherwise. 
      * @author efekos
+     * @version 1.0.0
+     * @since 0.0.1-alpha
      */
     export function getCommand() {
         return command ?? '';
@@ -48,6 +52,8 @@ export namespace arg {
      * @param flag Flag to search. Do not include hyphens.
      * @returns Whether the flag was given.
      * @author efekos
+     * @version 1.0.0
+     * @since 0.0.1-alpha
      */
     export function hasFlag(flag: string): boolean {
         return flags.includes(flag);
@@ -59,6 +65,8 @@ export namespace arg {
      * @param required Whether this argument is required. Function will end the process if the argument isn't present with this value set to `true`.
      * @returns The argument found.
      * @author efekos
+     * @version 1.0.0
+     * @since 0.0.1-alpha
      */
     export function getArgument(arg: string, required: boolean = false): string | undefined {
         if (args[arg] === undefined && required) log.exit.error(`Argument ${chalk.gray(arg)} required`);
