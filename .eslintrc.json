@@ -24,6 +24,7 @@
         "@typescript-eslint/require-await":"error",
         "@typescript-eslint/no-useless-constructor":"error",
         "jsdoc/require-jsdoc":["warn",{"publicOnly":true,"enableFixer":false}],
+        "jsdoc/check-values":"warn",
         "no-func-assign":"warn",
         "sort-imports":"warn",
         "@typescript-eslint/prefer-for-of":"warn",
