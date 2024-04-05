@@ -39,13 +39,15 @@ export enum TokenType {
 
 /**
  * Base token interface.
- * @version 1.0.0
+ * @version 1.0.1
  * @since 0.0.1-alpha
  * @author efekos
  */
 export interface Token {
     type: TokenType;
     value: string;
+    pos:number;
+    end:number;
 }
 
 /**
