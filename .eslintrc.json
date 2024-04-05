@@ -47,7 +47,9 @@
                     "PropertySignature",
                     "TSTypeAliasDeclaration",
                     "EnumDeclaration",
-                    "TSEnumDeclaration"
+                    "TSEnumDeclaration",
+                    "EnumMember",
+                    "TSEnumMember"
                 ]
             }
         ],
