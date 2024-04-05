@@ -10,12 +10,14 @@ export const SyxRuleRegistry: Record<string, { value: string, regex?: RegExp; }>
 
     /**
      * Determines whether it is possible to return a value using functons.
+     * @author efekos
      */
     'function-value-return-enabled': valueTypeDefinitions.boolean,
 
     /**
      * Determines the keyword that should be used to return values from a function, similiar to `return` keyword
      * from popular languages such as ts,js,py,java etc.
+     * @author efekos
      */
     'function-value-return-keyword': valueTypeDefinitions.keyword
 };

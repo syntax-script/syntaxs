@@ -17,6 +17,7 @@ const keywords: Record<string, TokenType> = {
 /**
  * Characters that can be lexed into a token if used with '+'.
  * @example +s will mean WhitespaceIdentifier.
+ * @author efekos
  */
 const chars = ['s'];
 
@@ -24,6 +25,7 @@ const chars = ['s'];
  * Determines whether the given source is an alphabetic identifier.
  * @param src The source string. 
  * @returns Whether the identifier matches `/^[a-zA-Z]+$/`.
+ * @author efekos
  */
 function isAlphabetic(src: string) {
     return src.match(/^[a-zA-Z]+$/);
@@ -33,6 +35,7 @@ function isAlphabetic(src: string) {
  * Determines whether the given source can be skippable by tokenizers.
  * @param src Source string.
  * @returns Whether the source matches `/^\s|\\n|\\t$/`.
+ * @author efekos
  */
 function isSkippable(src: string) {
     return src.match(/^\s|\\n|\\t$/);
@@ -42,6 +45,7 @@ function isSkippable(src: string) {
  * Determines whether the given source is a number.
  * @param src Source string.
  * @returns Whether the source matches `/^[0-9]+$/`.
+ * @author efekos
  */
 function isInt(src: string) {
     return src.match(/^[0-9]+$/);
@@ -52,6 +56,7 @@ function isInt(src: string) {
  * @param source Source string.
  * @param watchMode Whether is it watch mode or not. Errors will throw an error instead of exiting if this value is set to `true`.
  * @returns A list of tokens generated from source string.
+ * @author efekos
  */
 export function tokenizeSyx(source: string, watchMode: boolean): Token[] {
     const tokens: Token[] = [];
@@ -106,6 +111,7 @@ export function tokenizeSyx(source: string, watchMode: boolean): Token[] {
  * Tokenizes a .sys file. Stops when the file end marker (:::) is encountered.
  * @param source Source string.
  * @returns A list of tokens generated from th esource file.
+ * @author efekos
  */
 export function tokenizeSys(source: string): Token[] {
     const src = source.split('');
