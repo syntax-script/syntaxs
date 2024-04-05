@@ -19,7 +19,6 @@
         "no-useless-constructor":"error",
         "@typescript-eslint/no-useless-constructor":"error",
         "@typescript-eslint/prefer-for-of":"warn",
-        "@typescript-eslint/prefer-string-starts-ends-with":"warn",
         "prefer-const":"warn"
     }
 }
