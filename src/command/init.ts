@@ -6,6 +6,12 @@ import inquirer from 'inquirer';
 import { join } from 'path';
 import { log } from '../log.js';
 
+/**
+ * An interface containing data collected from init command inquiry.
+ * @author efekos
+ * @version 1.0.0
+ * @since 0.0.1-alpha
+ */
 export interface InitContext {
     name: string;
     description: string;

@@ -19,6 +19,16 @@ export class SyntaxScriptCompiler {
 
     public readonly exportData: Record<string, AnyExportable[]> = {};
 
+    /**
+     * Constructs a new compiler.
+     * @param rootDir Root dir to search for source files.
+     * @param outDir Out dir to write compiled files.
+     * @param format File format to compile.
+     * @param watch Whether is it watch mode or not. Will affect how errors are handled.
+     * @author efekos
+     * @version 1.0.0
+     * @since 0.0.1-alpha
+     */
     constructor(rootDir: string, outDir: string, format: string, watch: boolean = false) {
         this.rootDir = join(process.cwd(), rootDir);
         this.outDir = join(process.cwd(), outDir);
@@ -26,13 +36,25 @@ export class SyntaxScriptCompiler {
         this.watchMode = watch;
     }
 
+    /**
+     * Parses .syx files and compiles .sys files using them.
+     * @author efekos
+     * @since 0.0.1-alpha
+     * @version 1.0.0
+     */
     public async compile() {
-
         await this.compileSyxFiles(this.rootDir);
         await this.compileSysFiles(this.rootDir);
         return Promise.resolve();
     }
 
+    /**
+     * Compiles every .syx file found in the path.
+     * @param folderPath A folder path to search for .syx files.
+     * @author efekos
+     * @version 1.0.0
+     * @since 0.0.1-alpha
+     */
     public compileSyxFiles(folderPath: string) {
 
         const files = readdirSync(folderPath);
@@ -44,6 +66,13 @@ export class SyntaxScriptCompiler {
         });
     }
 
+    /**
+     * Compiles one .syx file from the path given.
+     * @param file Path to a file to compile.
+     * @author efekos
+     * @version 1.0.0
+     * @since 0.0.1-alpha
+     */
     public compileSyx(file: string) {
         const ast = syxparser.parseTokens(tokenizeSyx(readFileSync(file).toString(), this.watchMode), this.watchMode);
         const out: AnyExportable[] = [];
@@ -151,6 +180,13 @@ export class SyntaxScriptCompiler {
         this.exportData[file] = out;
     }
 
+    /**
+     * Compiles every .sys file found in the given folder.
+     * @param folderPath Folder path to search for .sys files.
+     * @author efekos
+     * @version 1.0.0
+     * @since 0.0.1-alpha
+     */
     public compileSysFiles(folderPath: string) {
         const files = readdirSync(folderPath);
         log.debug('HEREHEREHERE', folderPath, files);
@@ -161,6 +197,13 @@ export class SyntaxScriptCompiler {
         });
     }
 
+    /**
+     * Compiles a .sys file at the path given.
+     * @param file Path to the .sys file to compile.
+     * @author efekos
+     * @since 0.0.1-alpha
+     * @version 1.0.0
+     */
     public compileSys(file: string) {
         const ast = sysparser.parseTokens(tokenizeSys(readFileSync(file).toString()), this.watchMode);
 
@@ -216,16 +259,47 @@ export class SyntaxScriptCompiler {
 
 }
 
+/**
+ * Type of something that can be exported.
+ * @version 1.0.0
+ * @since 0.0.1-alpha
+ * @author efekos
+ */
 export enum ExportType {
+
+    /**
+     * Used for exported operators.
+     */
     Operator,
+
+    /**
+     * Used for exported functions.
+     */
     Function,
+
+    /**
+     * Used for exported keyword.
+     */
     Keyword
+
 }
 
+/**
+ * Base exportable interface.
+ * @author efekos
+ * @version 1.0.0
+ * @since 0.0.1-alpha
+ */
 export interface Export {
     type: ExportType;
 }
 
+/**
+ * Represents an exported operator. Uses type {@link ExportType.Operator}.
+ * @author efekos
+ * @version 1.0.0
+ * @since 0.0.1-alpha
+ */
 export interface Operator extends Export {
     type: ExportType.Operator,
     regexMatcher: RegExp;
@@ -233,6 +307,12 @@ export interface Operator extends Export {
     imports: Record<string, string>;
 }
 
+/**
+ * Represents an exported function. Uses type {@link ExportType.Function}.
+ * @author efekos
+ * @version 1.0.0
+ * @since 0.0.1-alpha
+ */
 export interface Function extends Export {
     type: ExportType.Function;
     name: string;
@@ -241,14 +321,36 @@ export interface Function extends Export {
     imports: Record<string, string>;
 }
 
+/**
+ * Represents an exported keyword. Uses type {@link ExportType.Keyword}.
+ * @author efekos
+ * @version 1.0.0
+ * @since 0.0.1-alpha
+ */
 export interface Keyword extends Export {
     type: ExportType.Keyword;
     word: string;
 }
 
+/**
+ * A method that has one parameter with the type {@link V} and returns {@link R}.
+ * @author efekos
+ * @version 1.0.0
+ * @since 0.0.1-alpha
+ */
 export type OneParameterMethod<V, R> = (v: V) => R;
+
+/**
+ * A method that takes no parameters and returns an {@link R}.
+ * @author efekos
+ * @version 1.0.0
+ * @since 0.0.1-alpha
+ */
 export type ReturnerMethod<R> = () => R;
 
+/**
+ * Any interface that represents something exportable.
+ */
 export type AnyExportable = Operator | Function | Keyword;
 
 export const regexes: Record<string, RegExp> = {

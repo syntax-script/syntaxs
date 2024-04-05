@@ -1,5 +1,8 @@
 import { log } from './log.js';
 
+/**
+ * Type of the data passed in to {@link errorChecks}.
+ */
 export type ErrorCheckData = [boolean, string][];
 
 /**

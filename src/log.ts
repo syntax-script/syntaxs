@@ -89,7 +89,7 @@ export namespace log {
         /**
          * Alias for {@link log.raw}, but exits the process after logging.
          * @param message Messages to log.
-         * @author 
+         * @author efekos
          * @version 1.0.0
          * @since 0.0.1-alpha
          */
