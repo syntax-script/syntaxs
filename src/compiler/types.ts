@@ -26,7 +26,8 @@ enum TokenType {
     ClassKeyword,
     ImportsKeyword,
     EndOfFile,
-    KeywordKeyword
+    KeywordKeyword,
+    RuleKeyword
 }
 
 interface Token {
@@ -46,6 +47,7 @@ enum NodeType {
     Function,
     Global,
     Keyword,
+    Rule,
 
     // expr
     PrimitiveType,
@@ -131,6 +133,12 @@ interface CompileStatement extends Statement {
     body: Expression[];
 }
 
+interface RuleStatement extends Statement {
+    type: NodeType.Rule;
+    rule: string;
+    value: unknown;
+}
+
 interface ImportStatement extends Statement {
     type: NodeType.Import,
     path: string;
@@ -150,7 +158,7 @@ interface FunctionStatement extends Statement {
 
 
 type Node =
-    ProgramStatement | OperatorStatement | CompileStatement | ImportStatement | ExportStatement | ImportsStatement | FunctionStatement | KeywordStatement |
+    ProgramStatement | OperatorStatement | CompileStatement | ImportStatement | ExportStatement | ImportsStatement | FunctionStatement | KeywordStatement | RuleStatement |
     StringExpression | PrimitiveTypeExpression | VariableExpression | WhitespaceIdentifierExpression | BraceExpression | SquareExpression | ParenExpression;
 
 interface SyxConfig {
@@ -172,7 +180,7 @@ export {
     TokenType,NodeType,Token,Node,
 
     // Statements
-    Statement,ProgramStatement,OperatorStatement,KeywordStatement,ImportsStatement,CompileStatement,ImportStatement,ExportStatement,FunctionStatement,
+    Statement,ProgramStatement,OperatorStatement,KeywordStatement,ImportsStatement,CompileStatement,ImportStatement,ExportStatement,FunctionStatement,RuleStatement,
 
     // Expressions
     Expression,PrimitiveTypeExpression,VariableExpression,WhitespaceIdentifierExpression,StringExpression,BraceExpression,ParenExpression,SquareExpression,

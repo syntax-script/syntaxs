@@ -10,7 +10,8 @@ const keywords: Record<string, TokenType> = {
     global: TokenType.GlobalKeyword,
     class: TokenType.ClassKeyword,
     function: TokenType.FunctionKeyword,
-    keyword: TokenType.KeywordKeyword
+    keyword: TokenType.KeywordKeyword,
+    rule: TokenType.RuleKeyword
 };
 
 /**
