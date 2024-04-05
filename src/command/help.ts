@@ -3,6 +3,9 @@ import chalk from 'chalk';
 import figlet from 'figlet';
 import { log } from '../log.js';
 
+/**
+ * Runs help command.
+ */
 export async function runHelp() {
     await console.clear();
     await figlet(`${MODULE_NAME} | ${MODULE_VERSION}`, (e, r) => { log.raw(r); });

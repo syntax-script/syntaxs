@@ -7,6 +7,9 @@ import { log } from '../log.js';
 import { timer } from '../module/timer.js';
 import { tokenizeSyx } from '../compiler/lexer.js';
 
+/**
+ * Runs tokenize command.
+ */
 export async function runTokenize() {
 
     const input = arg.getArgument('input') ?? arg.getArgument('i');

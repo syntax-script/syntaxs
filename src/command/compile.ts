@@ -7,7 +7,11 @@ import { join } from 'path';
 import { log } from '../log.js';
 import { timer } from '../module/timer.js';
 
-export async function runCompile() {
+/**
+ * Runs compile command.
+ * @returns 
+ */
+export async function runCompile():Promise<void> {
 
     if (!existsSync(join(process.cwd(), 'syxconfig.json'))) log.exit.error(`Could not find 'syxconfig.json' file. Try running '${chalk.yellow('syntaxs')} init'. `);
 

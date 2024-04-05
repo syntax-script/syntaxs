@@ -171,7 +171,7 @@ export class SyntaxScriptCompiler {
         //# Handle import statements 
         var imported: AnyExportable[] = [];
         ast.body.forEach(stmt => {
-            if (stmt.type == NodeType.Import) {
+            if (stmt.type === NodeType.Import) {
                 const importStmt = stmt as ImportStatement;
 
                 const pathToImport = join(dirname(file), importStmt.path.endsWith('.syx') ? importStmt.path : importStmt.path + '.syx');
@@ -263,6 +263,11 @@ export const regexes: Record<string, RegExp> = {
     '+s': /\s*/
 };
 
+/**
+ * Escapes every RegExp character at the source string.
+ * @param src Source string.
+ * @returns Same string with every RegExp character replaced with '\\$&'. 
+ */
 export function escapeRegex(src: string): string {
     return src.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }

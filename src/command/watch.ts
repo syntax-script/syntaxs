@@ -7,7 +7,10 @@ import { join } from 'path';
 import { log } from '../log.js';
 import { watch } from 'chokidar';
 
-export async function runWatch() {
+/**
+ * Runs watch command, starting a watch session.
+ */
+export function runWatch() {
 
     if (!existsSync(join(process.cwd(), 'syxconfig.json'))) log.exit.error(`Could not find 'syxconfig.json' file. Try running '${chalk.yellow('syntaxs')} init'. `);
 
@@ -28,6 +31,9 @@ export async function runWatch() {
 
     const dir = join(process.cwd(), config.compile.root);
 
+    /**
+     * Starts a compile process if one isn't running.
+     */
     function cmpl() {
         if (alreadyCompiling) return;
         log.info('File change detected, compiling...');

@@ -14,6 +14,9 @@ export interface InitContext {
     output: string;
 }
 
+/**
+ * Runs init command.
+ */
 export async function runInit() {
     if (existsSync(join(process.cwd(), 'syxconfig.json'))) log.exit.error('There is already a \'syxconfig.json\' file, delete it.');
 

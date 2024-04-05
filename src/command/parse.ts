@@ -8,7 +8,10 @@ import { syxparser } from '../compiler/ast.js';
 import { timer } from '../module/timer.js';
 import { tokenizeSyx } from '../compiler/lexer.js';
 
-export async function runParse() {
+/**
+ * Runs parse command.
+ */
+export function runParse() {
 
     const input = arg.getArgument('input') ?? arg.getArgument('i');
     const write = arg.getArgument('write') ?? '';
