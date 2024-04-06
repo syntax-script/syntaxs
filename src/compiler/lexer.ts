@@ -59,7 +59,7 @@ function isInt(src: string) {
  * @param watchMode Whether is it watch mode or not. Errors will throw an error instead of exiting if this value is set to `true`.
  * @returns A list of tokens generated from source string.
  * @author efekos
- * @version 1.0.3
+ * @version 1.0.4
  * @since 0.0.1-alpha
  */
 export function tokenizeSyx(source: string, watchMode: boolean): Token[] {
@@ -85,7 +85,7 @@ export function tokenizeSyx(source: string, watchMode: boolean): Token[] {
         else if (src[0] === '|') tokens.push({ type: TokenType.VarSeperator, value: src.shift(), pos: curPos, end: ++curPos, line: curLine });
         else if (src[0] === '+' && chars.includes(src[1])) {
             if (src[1] === 's') tokens.push({ type: TokenType.WhitespaceIdentifier, value: '+s', pos: curPos, end: curPos + 2, line: curLine });
-            else (watchMode ? log.thrower : log.exit).error(`${chalk.gray(curPos)} Unexpected identifier: '${src[1]}'`);
+            else (watchMode ? log.thrower : log.exit).error(`${chalk.gray(`(${curLine}:${curPos})`)}} Unexpected identifier: '${src[1]}'`);
             curPos += 2;
             src.shift(); src.shift();
         } else if (isInt(src[0])) {
