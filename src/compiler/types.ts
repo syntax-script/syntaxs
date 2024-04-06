@@ -281,13 +281,14 @@ export interface ProgramStatement extends Statement {
 /**
  * Base statement interface.
  * @author efekos
- * @version 1.0.1
+ * @version 1.0.2
  * @since 0.0.1-alpha
  */
 export interface Statement {
     type: NodeType;
     pos:number;
     end:number;
+    line:number;
 }
 
 /**
