@@ -2,8 +2,8 @@ import { BraceExpression, CompileStatement, ExportStatement, Expression, Functio
 import { log } from '../log.js';
 
 const valueTypeDefinitions = {
-    boolean: {value:'boolean',regex: /^(true|false)$/},
-    keyword: {value: 'keyword'}
+    boolean: { value: 'boolean', regex: /^(true|false)$/ },
+    keyword: { value: 'keyword' }
 };
 
 export const SyxRuleRegistry: Record<string, { value: string, regex?: RegExp; }> = {
@@ -59,7 +59,9 @@ export namespace syxparser {
         tokens = t;
         watchMode = watch;
 
-        program = { body: [], type: NodeType.Program };
+        const eof = t.find(r => r.type === TokenType.EndOfFile);
+        program = { body: [], type: NodeType.Program, pos: 0, end: eof.end };
+
 
         while (canGo()) {
             log.debug(JSON.stringify(tokens[0]));
@@ -388,7 +390,8 @@ export namespace sysparser {
         tokens = t;
         watchMode = watch;
 
-        program = { body: [], type: NodeType.Program };
+        const eof = t.find(r => r.type === TokenType.EndOfFile);
+        program = { body: [], type: NodeType.Program, pos: 0, end: eof.end };
 
         while (canGo()) {
             log.debug(tokens[0]);
