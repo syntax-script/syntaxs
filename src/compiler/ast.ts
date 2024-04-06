@@ -91,7 +91,7 @@ export namespace syxparser {
      * @param put Whether the result should be added to the program statement.
      * @returns A node that is either a statement or an expression if a statement wasn't present.
      * @author efekos
-     * @version 1.0.2
+     * @version 1.0.3
      * @since 0.0.1-alpha
      */
     export function parseStatement(put: boolean = true): Node {
@@ -115,11 +115,12 @@ export namespace syxparser {
                     statement.end = ex.end;
                 }
 
-                const braceExpr = parseExpression(false) as BraceExpression;
-
-                if (braceExpr.body.some(r => r.type === NodeType.Operator || r.type === NodeType.Import || r.type === NodeType.Export)) (watchMode ? log.thrower : log.exit).error('Statement not allowed.');
+                const braceExpr = parseExpression(false);
+                if(braceExpr.type!==NodeType.Brace) {(watchMode ? log.thrower : log.exit).error('Expected braces after \'operator\'.');return;}
+                if (braceExpr.body.some(s=>!([NodeType.Compile,NodeType.Imports].includes(s.type)))) (watchMode ? log.thrower : log.exit).error('Statement not allowed.');
 
                 statement.body = braceExpr.body;
+                statement.end = braceExpr.end;
 
                 return node(statement, put);
             } else if (token.type === TokenType.CompileKeyword) {
@@ -141,9 +142,9 @@ export namespace syxparser {
                 tokens.shift(); // skip CloseParen
 
                 while (at().type !== TokenType.Semicolon) {
-                    const ex = parseExpression(false, false);
-                    statement.body.push(ex as Expression);
-                    statement.end = ex.end;
+                    const expr = parseExpression(false, false);
+                    statement.body.push(expr as Expression);
+                    statement.end = expr.end;
                 }
                 tokens.shift(); // skip Semicolon
 
@@ -193,14 +194,13 @@ export namespace syxparser {
                     if (expr.type !== NodeType.PrimitiveType) (watchMode ? log.thrower : log.exit).error('Expected argument types after function name.');
                     statement.arguments.push((expr as PrimitiveTypeExpression).value);
                 }
-                tokens.shift();
 
-                while (at().type !== TokenType.CloseBrace) {
-                    const stmt = parseStatement(false);
-                    statement.body.push(stmt);
-                    statement.end = stmt.end;
-                }
-                tokens.shift();
+                const braceExpr = parseExpression(false);
+                if(braceExpr.type!==NodeType.Brace) {(watchMode ? log.thrower : log.exit).error('Expected braces after \'function\'.');return;}
+                if (braceExpr.body.some(s=>!([NodeType.Compile,NodeType.Imports].includes(s.type)))) (watchMode ? log.thrower : log.exit).error('Statement not allowed.');
+
+                statement.body = braceExpr.body;
+                statement.end = braceExpr.end;
 
                 return node(statement, put);
             } else if (token.type === TokenType.KeywordKeyword) {
@@ -266,7 +266,7 @@ export namespace syxparser {
      * @param expectIdentifier Whether identifiers should be allowed. Unknown identifiers will stop the function with this value set to `false`, returning the identifier as a {@link StringExpression} otherwise.
      * @returns The parsed node.
      * @author efekos
-     * @version 1.0.2
+     * @version 1.0.3
      * @since 0.0.1-alpha
      */
     export function parseExpression(put: boolean = true, statements: boolean = true, expectIdentifier: boolean = false): Node {
@@ -285,7 +285,7 @@ export namespace syxparser {
                 endPos = _t.end;
             }
             tokens.shift();
-            return node({ type: NodeType.String, value: s, pos: startPos, end: endPos }, put);
+            return node({ type: NodeType.String, value: s, pos: startPos, end: endPos+1 }, put);
 
         } else if (tt === TokenType.DoubleQuote) {
             let s = '';
@@ -300,7 +300,7 @@ export namespace syxparser {
                 endPos = _t.end;
             }
             tokens.shift();
-            return node({ type: NodeType.String, value: s, pos: startPos, end: endPos }, put);
+            return node({ type: NodeType.String, value: s, pos: startPos, end: endPos+1 }, put);
 
         } else if (tt === TokenType.OpenDiamond) {
 
@@ -314,8 +314,8 @@ export namespace syxparser {
 
             return node({ type: NodeType.PrimitiveType, value: newToken.value, pos: newToken.pos - 1, end: newToken.end + 1 }, put);
         } else if (tt === TokenType.WhitespaceIdentifier) {
-            const p = tokens.shift().pos;
-            return node({ type: NodeType.WhitespaceIdentifier, value: '+s', pos: p, end: p + 1 }, put);
+            const p = tokens.shift();
+            return node({ type: NodeType.WhitespaceIdentifier, value: '+s', pos: p.pos, end: p.end }, put);
         } else if (tt === TokenType.OpenBrace) {
             const p = tokens.shift().pos;
 
@@ -326,26 +326,24 @@ export namespace syxparser {
                 expr.body.push(stmt);
                 expr.end = stmt.end;
             }
-            tokens.shift();
+            expr.end =tokens.shift().end;
             return node(expr, put);
 
         } else if (tt === TokenType.OpenParen) {
-            tokens.shift();
             const p = tokens.shift().pos;
-
 
             const expr: ParenExpression = { type: NodeType.Paren, body: [], value: '(', pos: p, end: p };
 
-            while (at().type !== TokenType.OpenParen) {
+            while (at().type !== TokenType.CloseParen) {
                 const stmt = parseStatement(false);
                 expr.body.push(stmt);
                 expr.end = stmt.end;
             }
-            tokens.shift();
+            expr.end =tokens.shift().end;
             return node(expr, put);
 
+
         } else if (tt === TokenType.OpenSquare) {
-            tokens.shift();
             const p = tokens.shift().pos;
 
             const expr: SquareExpression = { type: NodeType.Square, body: [], value: '[', pos: p, end: p };
@@ -355,8 +353,9 @@ export namespace syxparser {
                 expr.body.push(stmt);
                 expr.end = stmt.end;
             }
-            tokens.shift();
+            expr.end =tokens.shift().end;
             return node(expr, put);
+
 
         } else if (tt === TokenType.Identifier && at(1).type === TokenType.VarSeperator) {
 
