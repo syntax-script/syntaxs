@@ -176,6 +176,10 @@ export interface Token {
  * @version 1.0.0
  */
 export enum NodeType {
+
+    /**
+     * {@link ProgramStatement}.
+     */
     Program,
 
     //.# Statements
