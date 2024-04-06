@@ -59,7 +59,7 @@ function isInt(src: string) {
  * @param watchMode Whether is it watch mode or not. Errors will throw an error instead of exiting if this value is set to `true`.
  * @returns A list of tokens generated from source string.
  * @author efekos
- * @version 1.0.2
+ * @version 1.0.3
  * @since 0.0.1-alpha
  */
 export function tokenizeSyx(source: string, watchMode: boolean): Token[] {
@@ -70,32 +70,33 @@ export function tokenizeSyx(source: string, watchMode: boolean): Token[] {
 
     while (src.length > 0) {
         if (!isSkippable(src[0])) log.debug(`Parsing token: '${src[0]}'`);
-        if (src[0] === '(') tokens.push({ type: TokenType.OpenParen, value: src.shift(), pos: ++curPos, end: curPos, line: curLine });
-        else if (src[0] === ')') tokens.push({ type: TokenType.CloseParen, value: src.shift(), pos: ++curPos, end: curPos, line: curLine });
-        else if (src[0] === '{') tokens.push({ type: TokenType.OpenBrace, value: src.shift(), pos: ++curPos, end: curPos, line: curLine });
-        else if (src[0] === '}') tokens.push({ type: TokenType.CloseBrace, value: src.shift(), pos: ++curPos, end: curPos, line: curLine });
-        else if (src[0] === '[') tokens.push({ type: TokenType.OpenSquare, value: src.shift(), pos: ++curPos, end: curPos, line: curLine });
-        else if (src[0] === ']') tokens.push({ type: TokenType.CloseSquare, value: src.shift(), pos: ++curPos, end: curPos, line: curLine });
-        else if (src[0] === ',') tokens.push({ type: TokenType.Comma, value: src.shift(), pos: ++curPos, end: curPos, line: curLine });
-        else if (src[0] === ';') tokens.push({ type: TokenType.Semicolon, value: src.shift(), pos: ++curPos, end: curPos, line: curLine });
-        else if (src[0] === '<') tokens.push({ type: TokenType.OpenDiamond, value: src.shift(), pos: ++curPos, end: curPos, line: curLine });
-        else if (src[0] === '>') tokens.push({ type: TokenType.CloseDiamond, value: src.shift(), pos: ++curPos, end: curPos, line: curLine });
-        else if (src[0] === '\'') tokens.push({ type: TokenType.SingleQuote, value: src.shift(), pos: ++curPos, end: curPos, line: curLine });
-        else if (src[0] === '"') tokens.push({ type: TokenType.DoubleQuote, value: src.shift(), pos: ++curPos, end: curPos, line: curLine });
-        else if (src[0] === '|') tokens.push({ type: TokenType.VarSeperator, value: src.shift(), pos: ++curPos, end: curPos, line: curLine });
+        if (src[0] === '(') tokens.push({ type: TokenType.OpenParen, value: src.shift(), pos: curPos, end: ++curPos, line: curLine });
+        else if (src[0] === ')') tokens.push({ type: TokenType.CloseParen, value: src.shift(), pos: curPos, end: ++curPos, line: curLine });
+        else if (src[0] === '{') tokens.push({ type: TokenType.OpenBrace, value: src.shift(), pos: curPos, end: ++curPos, line: curLine });
+        else if (src[0] === '}') tokens.push({ type: TokenType.CloseBrace, value: src.shift(), pos: curPos, end: ++curPos, line: curLine });
+        else if (src[0] === '[') tokens.push({ type: TokenType.OpenSquare, value: src.shift(), pos: curPos, end: ++curPos, line: curLine });
+        else if (src[0] === ']') tokens.push({ type: TokenType.CloseSquare, value: src.shift(), pos: curPos, end: ++curPos, line: curLine });
+        else if (src[0] === ',') tokens.push({ type: TokenType.Comma, value: src.shift(), pos: curPos, end: ++curPos, line: curLine });
+        else if (src[0] === ';') tokens.push({ type: TokenType.Semicolon, value: src.shift(), pos: curPos, end: ++curPos, line: curLine });
+        else if (src[0] === '<') tokens.push({ type: TokenType.OpenDiamond, value: src.shift(), pos: curPos, end: ++curPos, line: curLine });
+        else if (src[0] === '>') tokens.push({ type: TokenType.CloseDiamond, value: src.shift(), pos: curPos, end: ++curPos, line: curLine });
+        else if (src[0] === '\'') tokens.push({ type: TokenType.SingleQuote, value: src.shift(), pos: curPos, end: ++curPos, line: curLine });
+        else if (src[0] === '"') tokens.push({ type: TokenType.DoubleQuote, value: src.shift(), pos: curPos, end: ++curPos, line: curLine });
+        else if (src[0] === '|') tokens.push({ type: TokenType.VarSeperator, value: src.shift(), pos: curPos, end: ++curPos, line: curLine });
         else if (src[0] === '+' && chars.includes(src[1])) {
-            if (src[1] === 's') tokens.push({ type: TokenType.WhitespaceIdentifier, value: '+s', pos: ++curPos, end: curPos + 1, line: curLine });
+            if (src[1] === 's') tokens.push({ type: TokenType.WhitespaceIdentifier, value: '+s', pos: curPos, end: curPos + 2, line: curLine });
             else (watchMode ? log.thrower : log.exit).error(`${chalk.gray(curPos)} Unexpected identifier: '${src[1]}'`);
+            curPos+=2;
             src.shift(); src.shift();
         } else if (isInt(src[0])) {
             log.debug('Found int number');
             let ident = '';
-            const startPos = ++curPos;
+            const startPos = curPos;
             while (src.length > 0 && isInt(src[0])) {
                 ident += src.shift();
-                curPos++;
             }
 
+            curPos += ident.length;
             tokens.push({ type: TokenType.IntNumber, value: ident, pos: startPos, end: curPos, line: curLine });
         } else if (isAlphabetic(src[0])) {
             log.debug('Found identifier');
@@ -115,7 +116,7 @@ export function tokenizeSyx(source: string, watchMode: boolean): Token[] {
             curPos++;
             if (src[0] === '\n') curLine++;
         }
-        else tokens.push({ type: TokenType.Raw, value: src.shift(), pos: ++curPos, end: curPos, line: curLine });
+        else tokens.push({ type: TokenType.Raw, value: src.shift(), pos: curPos, end: ++curPos, line: curLine });
     }
 
     tokens.push({ type: TokenType.EndOfFile, value: 'EOF', pos: source.length, end: source.length, line: curLine });
@@ -139,9 +140,9 @@ export function tokenizeSys(source: string): Token[] {
 
     while (src.length > 0 && `${src[0]}${src[1]}${src[2]}` !== ':::') {
         if (!isSkippable(src[0])) log.debug(`Parsing tokenmm: '${src[0]}'`);
-        if (src[0] === ';') tokens.push({ type: TokenType.Semicolon, value: src.shift(), pos: ++curPos, end: curPos, line: curLine });
-        else if (src[0] === '\'') tokens.push({ type: TokenType.SingleQuote, value: src.shift(), pos: ++curPos, end: curPos, line: curLine });
-        else if (src[0] === '"') tokens.push({ type: TokenType.DoubleQuote, value: src.shift(), pos: ++curPos, end: curPos, line: curLine });
+        if (src[0] === ';') tokens.push({ type: TokenType.Semicolon, value: src.shift(), pos: curPos, end: ++curPos, line: curLine });
+        else if (src[0] === '\'') tokens.push({ type: TokenType.SingleQuote, value: src.shift(), pos: curPos, end: ++curPos, line: curLine });
+        else if (src[0] === '"') tokens.push({ type: TokenType.DoubleQuote, value: src.shift(), pos: curPos, end: ++curPos, line: curLine });
         else if (isAlphabetic(src[0])) {
             log.debug('Found identifier');
             let ident = '';
@@ -160,10 +161,10 @@ export function tokenizeSys(source: string): Token[] {
             curPos++;
             if(src[0]==='\n') curLine++;
         }
-        else tokens.push({ type: TokenType.Raw, value: src.shift(), pos: ++curPos, end: curPos, line: curLine });
+        else tokens.push({ type: TokenType.Raw, value: src.shift(), pos: curPos, end: ++curPos, line: curLine });
 
     }
 
-    tokens.push({ type: TokenType.EndOfFile, value: 'eof', pos: ++curPos, end: curPos, line: curLine });
+    tokens.push({ type: TokenType.EndOfFile, value: 'eof', pos: curPos, end: ++curPos, line: curLine });
     return tokens;
 }
