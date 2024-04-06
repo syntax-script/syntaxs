@@ -6,34 +6,152 @@
  * @since 0.0.1-alpha
  */
 export enum TokenType {
+
+    /**
+     * `{`.
+     */
     OpenBrace,
+
+    /**
+     * `}`.
+     */
     CloseBrace,
+
+    /**
+     * `:::`.
+     */
     DefinitionEnd,
+
+    /**
+     * `;`.
+     */
     Semicolon,
+
+    /**
+     * `,`.
+     */
     Comma,
+
+    /**
+     * `(`.
+     */
     OpenParen,
+
+    /**
+     * `)`.
+     */
     CloseParen,
+
+    /**
+     * `[`.
+     */
     OpenSquare,
+
+    /**
+     * `]`.
+     */
     CloseSquare,
+
+    /**
+     * `operator`.
+     */
     OperatorKeyword,
+
+    /**
+     * `compile`.
+     */
     CompileKeyword,
+
+    /**
+     * Anything alphabetical. Can be used for various purposes, such as referencing a keyword or a string value.
+     */
     Identifier,
+
+    /**
+     * `<`.
+     */
     OpenDiamond,
+
+    /**
+     * `>`.
+     */
     CloseDiamond,
+
+    /**
+     * `+s`.
+     */
     WhitespaceIdentifier,
+
+    /**
+     * Any numeric value that does not contain frictional digits, such as `3.14`.
+     */
     IntNumber,
+
+    /**
+     * `'`.
+     */
     SingleQuote,
+
+    /**
+     * `"`.
+     */
     DoubleQuote,
+
+    /**
+     * `import`.
+     */
     ImportKeyword,
+
+    /**
+     * `export`.
+     */
     ExportKeyword,
+
+    /**
+     * Can be anything. Only characters that can't be assigned to any other token is assigned to a raw token. Using this token instead
+     * of errors allow programmer to use any character they want in the string.
+     */
     Raw,
+
+    /**
+     * `|`.
+     */
     VarSeperator,
+
+    /**
+     * `global`.
+     */
     GlobalKeyword,
+
+    /**
+     * `function`.
+     */
     FunctionKeyword,
+
+    /**
+     * `class`.
+     */
     ClassKeyword,
+
+    /**
+     * `imports`
+     */
     ImportsKeyword,
+
+    /**
+     * Represents end of the file. There can't be any tokens after this token. It is not an actual token included in a source file,
+     * rather a virtual token added by tokenizers.
+     */
     EndOfFile,
+
+    /**
+     * `keyword`.
+     */
     KeywordKeyword,
+
+    /**
+     * `rule`.
+     */
     RuleKeyword
 }
 
@@ -60,24 +178,88 @@ export interface Token {
 export enum NodeType {
     Program,
 
-    // stmt
+    //.# Statements
+
+    /**
+     * {@link OperatorStatement}.
+     */
     Operator,
+
+    /**
+     * {@link CompileStatement}.
+     */
     Compile,
+
+    /**
+     * {@link ImportStatement}.
+     */
     Import, // Import some file
+
+    /**
+     * {@link ImportsStatement}.
+     */
     Imports, // imports() method
+
+    /**
+     * {@link ExportStatement}.
+     */
     Export,
+
+    /**
+     * {@link FunctionStatement}.
+     */
     Function,
+
+    /**
+     * {@link GlobalStatement}.
+     */
     Global,
+
+    /**
+     * {@link KeywordStatement}.
+     */
     Keyword,
+
+    /**
+     * {@link RuleStatement}.
+     */
     Rule,
 
-    // expr
+    //.# Expressions
+
+    /**
+     * {@link PrimitiveTypeExpression}.
+     */
     PrimitiveType,
+    
+    /**
+     * {@link WhitespaceIdentifierExpression}.
+     */
     WhitespaceIdentifier,
+    
+    /**
+     * {@link VariableExpression}.
+     */
     Variable,
+
+    /**
+     * {@link StringExpression}.
+     */
     String,
+
+    /**
+     * {@link BraceExpression}.
+     */
     Brace,
+
+    /**
+     * {@link ParenExpression}.
+     */
     Paren,
+
+    /**
+     * {@link SquareExpression}.
+     */
     Square
 }
 

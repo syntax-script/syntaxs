@@ -268,17 +268,17 @@ export class SyntaxScriptCompiler {
 export enum ExportType {
 
     /**
-     * Used for exported operators.
+     * {@link Operator}.
      */
     Operator,
 
     /**
-     * Used for exported functions.
+     * {@link Function}.
      */
     Function,
 
     /**
-     * Used for exported keyword.
+     * {@link Keyword}.
      */
     Keyword
 
