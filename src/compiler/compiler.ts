@@ -385,7 +385,7 @@ export const regexes: Record<string, RegExp> = {
      * @version 1.0.0
      */
     decimal: /([0-9]+(\.[0-9]+)?)/,
-    
+
     /**
      * Regex used for whitespace identifiers, an identifier used to reference any amount of spaces.
      * @author efekos
@@ -393,7 +393,7 @@ export const regexes: Record<string, RegExp> = {
      * @since 0.0.1-alpha
      */
     '+s': /\s*/
-    
+
 };
 
 /**

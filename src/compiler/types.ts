@@ -164,9 +164,9 @@ export enum TokenType {
 export interface Token {
     type: TokenType;
     value: string;
-    pos:number;
-    end:number;
-    line:number;
+    pos: number;
+    end: number;
+    line: number;
 }
 
 /**
@@ -235,12 +235,12 @@ export enum NodeType {
      * {@link PrimitiveTypeExpression}.
      */
     PrimitiveType,
-    
+
     /**
      * {@link WhitespaceIdentifierExpression}.
      */
     WhitespaceIdentifier,
-    
+
     /**
      * {@link VariableExpression}.
      */
@@ -286,9 +286,9 @@ export interface ProgramStatement extends Statement {
  */
 export interface Statement {
     type: NodeType;
-    pos:number;
-    end:number;
-    line:number;
+    pos: number;
+    end: number;
+    line: number;
 }
 
 /**

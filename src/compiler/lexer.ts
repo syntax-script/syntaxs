@@ -86,7 +86,7 @@ export function tokenizeSyx(source: string, watchMode: boolean): Token[] {
         else if (src[0] === '+' && chars.includes(src[1])) {
             if (src[1] === 's') tokens.push({ type: TokenType.WhitespaceIdentifier, value: '+s', pos: curPos, end: curPos + 2, line: curLine });
             else (watchMode ? log.thrower : log.exit).error(`${chalk.gray(curPos)} Unexpected identifier: '${src[1]}'`);
-            curPos+=2;
+            curPos += 2;
             src.shift(); src.shift();
         } else if (isInt(src[0])) {
             log.debug('Found int number');

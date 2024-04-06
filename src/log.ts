@@ -138,4 +138,4 @@ export namespace log {
  * @version 1.0.0
  * @since 0.0.1-alpha
  */
-export class ProgramError extends Error {}
+export class ProgramError extends Error { }

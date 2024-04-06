@@ -13,7 +13,7 @@ import { timer } from '../module/timer.js';
  * @version 1.0.0
  * @since 0.0.1-alpha
  */
-export async function runCompile():Promise<void> {
+export async function runCompile(): Promise<void> {
 
     if (!existsSync(join(process.cwd(), 'syxconfig.json'))) log.exit.error(`Could not find 'syxconfig.json' file. Try running '${chalk.yellow('syntaxs')} init'. `);
 
