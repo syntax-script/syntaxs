@@ -4,6 +4,7 @@ import { existsSync, readFileSync, readdirSync, statSync, writeFileSync } from '
 import { sysparser, syxparser } from './ast.js';
 import { tokenizeSys, tokenizeSyx } from './lexer.js';
 import { log } from '../module/log.js';
+import chalk from 'chalk';
 
 /**
  * Main class used to compile a folder containing syntax script declaration (.syx) and syntax script (.sys) files.
@@ -70,7 +71,7 @@ export class SyntaxScriptCompiler {
      * Compiles one .syx file from the path given.
      * @param file Path to a file to compile.
      * @author efekos
-     * @version 1.0.0
+     * @version 1.0.1
      * @since 0.0.1-alpha
      */
     public compileSyx(file: string) {
@@ -108,7 +109,7 @@ export class SyntaxScriptCompiler {
                         const compileStmt = stmt as CompileStatement;
 
                         compileStmt.formats.forEach(frmt => {
-                            if (operatorStmtExport.outputGenerators[frmt] !== undefined) (this.watchMode ? log.thrower : log.exit).error(`Duplicate file format at compile statement \'${frmt}\'`);
+                            if (operatorStmtExport.outputGenerators[frmt] !== undefined) (this.watchMode ? log.thrower : log.exit).error(`(${chalk.gray(stmt.line)}) Duplicate file format at compile statement \'${frmt}\'`);
 
                             operatorStmtExport.outputGenerators[frmt] = (src) => {
                                 let out = '';
@@ -121,7 +122,7 @@ export class SyntaxScriptCompiler {
                                         const v = src.match(new RegExp(regexes[varExpr.value].source, 'g'))[varExpr.index];
                                         log.debug(src.match(new RegExp(regexes[varExpr.value].source, 'g')));
 
-                                        if (v === undefined) (this.watchMode ? log.thrower : log.exit).error('Unknown statement/expression.');
+                                        if (v === undefined) (this.watchMode ? log.thrower : log.exit).error(`(${chalk.gray(stmt.line)}) Unknown statement/expression.`);
                                         out += v;
                                     } else if (e.type === NodeType.WhitespaceIdentifier) out += ' ';
                                 });
@@ -135,11 +136,11 @@ export class SyntaxScriptCompiler {
                         const importStmt = stmt as ImportsStatement;
 
                         importStmt.formats.forEach(frmt => {
-                            if (operatorStmtExport.imports[frmt] !== undefined) (this.watchMode ? log.thrower : log.exit).error(`Duplicate file format at imports statement \'${frmt}\'`);
+                            if (operatorStmtExport.imports[frmt] !== undefined) (this.watchMode ? log.thrower : log.exit).error(`(${chalk.gray(stmt.line)}) Duplicate file format at imports statement \'${frmt}\'`);
                             operatorStmtExport.imports[frmt] = importStmt.module;
                         });
 
-                    } else (this.watchMode ? log.thrower : log.exit).error(`Unexpected \'${stmt.type}\' statement insdie operator statement.`);
+                    } else (this.watchMode ? log.thrower : log.exit).error(`(${chalk.gray(stmt.line)}) Unexpected \'${stmt.type}\' statement insdie operator statement.`);
                 });
 
                 out.push(operatorStmtExport);
@@ -214,7 +215,7 @@ export class SyntaxScriptCompiler {
                 const importStmt = stmt as ImportStatement;
 
                 const pathToImport = join(dirname(file), importStmt.path.endsWith('.syx') ? importStmt.path : importStmt.path + '.syx');
-                if (!existsSync(pathToImport)) (this.watchMode ? log.thrower : log.exit).error(`File \'${pathToImport}\' from \'${file}\' does not exist.`);
+                if (!existsSync(pathToImport)) (this.watchMode ? log.thrower : log.exit).error(`(${chalk.gray(importStmt.line)}) File \'${pathToImport}\' imported from \'${file}\' does not exist.`);
                 this.exportData[pathToImport].forEach(exported => {
                     if (exported.type === ExportType.Operator)
                         if (imported.filter(r => r.type === ExportType.Operator).some(i => exported.regexMatcher === (i as Operator).regexMatcher)) (this.watchMode ? log.thrower : log.exit).error(`There are more than one operators with the same syntax imported to \'${file}\'.`);
