@@ -1,6 +1,6 @@
 import { Token, TokenType } from './types.js';
 import chalk from 'chalk';
-import { log } from '../log.js';
+import { log } from '../module/log.js';
 
 const keywords: Record<string, TokenType> = {
     operator: TokenType.OperatorKeyword,

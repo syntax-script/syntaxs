@@ -1,7 +1,7 @@
 import { MODULE_NAME, MODULE_VERSION } from '../index.js';
 import chalk from 'chalk';
 import figlet from 'figlet';
-import { log } from '../log.js';
+import { log } from '../module/log.js';
 
 /**
  * Runs help command.

@@ -1,5 +1,5 @@
 import chalk from 'chalk';
-import { log } from '../log.js';
+import { log } from './log.js';
 
 export namespace arg {
 

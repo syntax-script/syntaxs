@@ -3,7 +3,7 @@ import { dirname, join } from 'path';
 import { existsSync, readFileSync, readdirSync, statSync, writeFileSync } from 'fs';
 import { sysparser, syxparser } from './ast.js';
 import { tokenizeSys, tokenizeSyx } from './lexer.js';
-import { log } from '../log.js';
+import { log } from '../module/log.js';
 
 /**
  * Main class used to compile a folder containing syntax script declaration (.syx) and syntax script (.sys) files.

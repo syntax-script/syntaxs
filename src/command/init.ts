@@ -4,7 +4,7 @@ import chalk from 'chalk';
 import { errorChecks } from '../utils.js';
 import inquirer from 'inquirer';
 import { join } from 'path';
-import { log } from '../log.js';
+import { log } from '../module/log.js';
 
 /**
  * An interface containing data collected from init command inquiry.

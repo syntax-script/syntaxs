@@ -1,5 +1,5 @@
 import { BraceExpression, CompileStatement, ExportStatement, Expression, FunctionStatement, ImportsStatement, KeywordStatement, Node, NodeType, OperatorStatement, ParenExpression, PrimitiveTypeExpression, ProgramStatement, SquareExpression, StringExpression, Token, TokenType, VariableExpression } from './types.js';
-import { log } from '../log.js';
+import { log } from '../module/log.js';
 
 const valueTypeDefinitions = {
     boolean: { value: 'boolean', regex: /^(true|false)$/ },

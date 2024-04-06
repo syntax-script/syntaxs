@@ -1,4 +1,4 @@
-import { log } from './log.js';
+import { log } from './module/log.js';
 
 /**
  * Type of the data passed in to {@link errorChecks}.

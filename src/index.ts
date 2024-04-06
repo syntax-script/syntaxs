@@ -1,6 +1,6 @@
 import { arg } from './module/arg.js';
 import chalk from 'chalk';
-import { log } from './log.js';
+import { log } from './module/log.js';
 import { runCompile } from './command/compile.js';
 import { runHelp } from './command/help.js';
 import { runInit } from './command/init.js';

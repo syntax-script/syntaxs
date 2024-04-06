@@ -1,5 +1,5 @@
-import { FULL_MODULE_NAME } from './index.js';
-import { arg } from './module/arg.js';
+import { FULL_MODULE_NAME } from '../index.js';
+import { arg } from './arg.js';
 import chalk from 'chalk';
 
 export namespace log {

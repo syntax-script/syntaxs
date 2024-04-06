@@ -1,4 +1,4 @@
-import { log } from '../log.js';
+import { log } from '../module/log.js';
 
 /**
  * Runs logs command.
