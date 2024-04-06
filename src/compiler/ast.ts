@@ -447,7 +447,7 @@ export namespace sysparser {
      * @param put Whether the result should be added to the program statement.
      * @returns A node that is either a statement or an expression if a statement wasn't present.
      * @author efekos
-     * @version 1.0.1
+     * @version 1.0.2
      * @since 0.0.1-alpha
      */
     export function parseStatement(put: boolean = true): Node {
@@ -456,11 +456,11 @@ export namespace sysparser {
             tokens.shift();
 
             if (token.type === TokenType.ImportKeyword) {
-                const ex = parseExpression(false);
+
+                const ex = parseExpression(false, false);
                 if (ex.type !== NodeType.String) (watchMode ? log.thrower : log.exit).error('Expected string after import statement.');
-                if (at().type !== TokenType.Semicolon) (watchMode ? log.thrower : log.exit).error('Expected semicolon after import statement.');
-                tokens.shift();
                 return node({ type: NodeType.Import, path: (ex as Expression).value, pos: token.pos, end: ex.end }, put);
+
             }
 
         }
@@ -488,7 +488,7 @@ export namespace sysparser {
      * @param expectIdentifier Whether identifiers should be allowed. Unknown identifiers will stop the function with this value set to `false`, returning the identifier as a {@link StringExpression} otherwise.
      * @returns The parsed node.
      * @author efekos
-     * @version 1.0.1
+     * @version 1.0.2
      * @since 0.0.1-alpha
      */
     export function parseExpression(put: boolean = true, statements: boolean = true): Node {
@@ -507,7 +507,7 @@ export namespace sysparser {
                 endPos = _t.end;
             }
             tokens.shift();
-            return node({ type: NodeType.String, value: s, pos: startPos, end: endPos }, put);
+            return node({ type: NodeType.String, value: s, pos: startPos, end: endPos+1 }, put);
 
         } else if (tt === TokenType.DoubleQuote) {
             let s = '';
@@ -522,7 +522,7 @@ export namespace sysparser {
                 endPos = _t.end;
             }
             tokens.shift();
-            return node({ type: NodeType.String, value: s, pos: startPos, end: endPos }, put);
+            return node({ type: NodeType.String, value: s, pos: startPos, end: endPos+1 }, put);
 
         } else if (keywords.includes(tt)) {
             if (!statements) (watchMode ? log.thrower : log.exit).error('Unexpected statement.');

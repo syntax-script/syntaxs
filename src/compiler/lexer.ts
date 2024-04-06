@@ -128,7 +128,7 @@ export function tokenizeSyx(source: string, watchMode: boolean): Token[] {
  * @param source Source string.
  * @returns A list of tokens generated from th esource file.
  * @author efekos
- * @version 1.0.1
+ * @version 1.0.2
  * @since 0.0.1-alpha
  */
 export function tokenizeSys(source: string): Token[] {
@@ -146,7 +146,7 @@ export function tokenizeSys(source: string): Token[] {
         else if (isAlphabetic(src[0])) {
             log.debug('Found identifier');
             let ident = '';
-            const startPost = ++curPos;
+            const startPos = curPos;
             while (src.length > 0 && isAlphabetic(src[0])) {
                 ident += src.shift();
                 curPos++;
@@ -154,12 +154,12 @@ export function tokenizeSys(source: string): Token[] {
 
             const reserved = keywords[ident];
             if (reserved !== undefined) log.debug(`Found keyword: '${reserved}'`);
-            tokens.push({ type: reserved ?? TokenType.Identifier, value: ident, pos: startPost, end: curPos, line: curLine });
+            tokens.push({ type: reserved ?? TokenType.Identifier, value: ident, pos: startPos, end: curPos, line: curLine });
         } else if (isSkippable(src[0])) {
             log.debug('Found skippable char');
             src.shift();
             curPos++;
-            if(src[0]==='\n') curLine++;
+            if (src[0] === '\n') curLine++;
         }
         else tokens.push({ type: TokenType.Raw, value: src.shift(), pos: curPos, end: ++curPos, line: curLine });
 
