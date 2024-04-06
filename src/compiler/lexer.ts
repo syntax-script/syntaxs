@@ -59,13 +59,13 @@ function isInt(src: string) {
  * @param watchMode Whether is it watch mode or not. Errors will throw an error instead of exiting if this value is set to `true`.
  * @returns A list of tokens generated from source string.
  * @author efekos
- * @version 1.0.1
+ * @version 1.0.2
  * @since 0.0.1-alpha
  */
 export function tokenizeSyx(source: string, watchMode: boolean): Token[] {
     const tokens: Token[] = [];
     const src = source.split('');
-    let curPos = -1;
+    let curPos = 0;
     let curLine = 0;
 
     while (src.length > 0) {
@@ -100,7 +100,7 @@ export function tokenizeSyx(source: string, watchMode: boolean): Token[] {
         } else if (isAlphabetic(src[0])) {
             log.debug('Found identifier');
             let ident = '';
-            const startPos = ++curPos;
+            const startPos = curPos;
             while (src.length > 0 && isAlphabetic(src[0])) {
                 ident += src.shift();
                 curPos++;

@@ -91,7 +91,7 @@ export namespace syxparser {
      * @param put Whether the result should be added to the program statement.
      * @returns A node that is either a statement or an expression if a statement wasn't present.
      * @author efekos
-     * @version 1.0.1
+     * @version 1.0.2
      * @since 0.0.1-alpha
      */
     export function parseStatement(put: boolean = true): Node {
@@ -103,10 +103,10 @@ export namespace syxparser {
 
                 const ex = parseExpression(false, false);
                 if (ex.type !== NodeType.String) (watchMode ? log.thrower : log.exit).error('Expected string after import statement.');
-                return node({ type: NodeType.Import, path: (ex as Expression).value ,pos:token.pos,end:ex.end}, put);
+                return node({ type: NodeType.Import, path: (ex as Expression).value, pos: token.pos, end: ex.end }, put);
 
             } else if (token.type === TokenType.OperatorKeyword) {
-                const statement: OperatorStatement = { type: NodeType.Operator, regex: [], body: [],pos:token.pos,end:token.end };
+                const statement: OperatorStatement = { type: NodeType.Operator, regex: [], body: [], pos: token.pos, end: token.end };
 
 
                 while (at().type !== TokenType.OpenBrace) {
@@ -123,7 +123,7 @@ export namespace syxparser {
 
                 return node(statement, put);
             } else if (token.type === TokenType.CompileKeyword) {
-                const statement: CompileStatement = { type: NodeType.Compile, formats: [], body: [], pos:token.pos, end:token.pos+3 };
+                const statement: CompileStatement = { type: NodeType.Compile, formats: [], body: [], pos: token.pos, end: token.pos + 3 };
 
                 log.debug(at());
                 if (at().type !== TokenType.OpenParen) (watchMode ? log.thrower : log.exit).error('Expected parens after \'compile\' statement.');
@@ -135,7 +135,7 @@ export namespace syxparser {
                     if (t.type === TokenType.Comma && at().type !== TokenType.Identifier) (watchMode ? log.thrower : log.exit).error('Expected identifier after comma.');
                     else if (t.type === TokenType.Comma && statement.formats.length === 0) (watchMode ? log.thrower : log.exit).error('Can\'t start with comma.');
                     else if (t.type === TokenType.Comma) statement.end++;
-                    else if (t.type === TokenType.Identifier) {statement.formats.push(t.value);statement.end+=t.value.length;}
+                    else if (t.type === TokenType.Identifier) { statement.formats.push(t.value); statement.end = t.end; }
                     else { log.debug(t); (watchMode ? log.thrower : log.exit).error('Unexpected token.'); }
                 }
                 tokens.shift(); // skip CloseParen
@@ -143,7 +143,7 @@ export namespace syxparser {
                 while (at().type !== TokenType.Semicolon) {
                     const ex = parseExpression(false, false);
                     statement.body.push(ex as Expression);
-                    statement.end += (ex.end-ex.pos);
+                    statement.end = ex.end;
                 }
                 tokens.shift(); // skip Semicolon
 
@@ -151,9 +151,9 @@ export namespace syxparser {
             } else if (token.type === TokenType.ExportKeyword) {
                 const stmt = parseStatement(false);
                 if (!exportable.includes(stmt.type)) (watchMode ? log.thrower : log.exit).error('Expected exportable statement after export.');
-                return node({ type: NodeType.Export, body: stmt,pos:token.pos,end:stmt.end }, put);
+                return node({ type: NodeType.Export, body: stmt, pos: token.pos, end: stmt.end }, put);
             } else if (token.type === TokenType.ImportsKeyword) {
-                const statement: ImportsStatement = { type: NodeType.Imports, formats: [], module: '', pos:token.pos,end:token.end+3 };
+                const statement: ImportsStatement = { type: NodeType.Imports, formats: [], module: '', pos: token.pos, end: token.end + 3 };
 
                 log.debug(at());
                 if (at().type !== TokenType.OpenParen) (watchMode ? log.thrower : log.exit).error('Expected parens after \'imports\' statement.');
@@ -172,17 +172,17 @@ export namespace syxparser {
 
                 const moduleExpr = parseExpression(false, false);
 
-                if (moduleExpr.type !== NodeType.String) {(watchMode ? log.thrower : log.exit).error('Expected string after parens of imports statement.');return;}
+                if (moduleExpr.type !== NodeType.String) { (watchMode ? log.thrower : log.exit).error('Expected string after parens of imports statement.'); return; }
 
                 statement.module = moduleExpr.value;
-                statement.end += (moduleExpr.end-moduleExpr.pos);
+                statement.end = moduleExpr.end;
 
                 if (at().type !== TokenType.Semicolon) (watchMode ? log.thrower : log.exit).error('Expected \';\' after imports statement.');
                 tokens.shift();
 
                 return node(statement, put);
             } else if (token.type === TokenType.FunctionKeyword) {
-                const statement: FunctionStatement = { type: NodeType.Function, arguments: [], name: '', body: [],pos:token.pos,end:token.end };
+                const statement: FunctionStatement = { type: NodeType.Function, arguments: [], name: '', body: [], pos: token.pos, end: token.end };
 
                 if (at().type !== TokenType.Identifier) (watchMode ? log.thrower : log.exit).error('Expected identifier after function statement.');
                 statement.name = at().value;
@@ -208,7 +208,7 @@ export namespace syxparser {
                 if (ex.type !== NodeType.String) { (watchMode ? log.thrower : log.exit).error('Expected identifier after keyword statement.'); return; }
                 if (at().type !== TokenType.Semicolon) (watchMode ? log.thrower : log.exit).error('Expected semicolon after statement.');
                 tokens.shift(); // skip semicolon
-                return node({ type: NodeType.Keyword, word: ex.value,pos:token.pos,end:ex.end+1 }, put);
+                return node({ type: NodeType.Keyword, word: ex.value, pos: token.pos, end: ex.end + 1 }, put);
             } else if (token.type === TokenType.RuleKeyword) {
                 const ruleExpr = parseExpression(false, false);
                 if (ruleExpr.type !== NodeType.String) { (watchMode ? log.thrower : log.exit).error('Expected string after \'rule\'.'); return; }
@@ -224,7 +224,7 @@ export namespace syxparser {
 
                     if (at().type !== TokenType.Semicolon) (watchMode ? log.thrower : log.exit).error('Expected semicolon after rule statement.');
                     tokens.shift();
-                    return node({ type: NodeType.Rule, rule: ruleExpr.value, value: boolEx.value,pos:token.pos,end:boolEx.end }, put);
+                    return node({ type: NodeType.Rule, rule: ruleExpr.value, value: boolEx.value, pos: token.pos, end: boolEx.end }, put);
                 } else if (rule.value === 'keyword') {
                     const keyEx = parseExpression(false, false, true);
                     if (!(
@@ -237,7 +237,7 @@ export namespace syxparser {
 
                     if (at().type !== TokenType.Semicolon) (watchMode ? log.thrower : log.exit).error('Expected semicolon after rule statement.');
                     tokens.shift();
-                    return node({ type: NodeType.Rule, rule: ruleExpr.value, value: keyEx.value,pos:token.pos,end:keyEx.end }, put);
+                    return node({ type: NodeType.Rule, rule: ruleExpr.value, value: keyEx.value, pos: token.pos, end: keyEx.end }, put);
                 }
             }
 
@@ -266,7 +266,7 @@ export namespace syxparser {
      * @param expectIdentifier Whether identifiers should be allowed. Unknown identifiers will stop the function with this value set to `false`, returning the identifier as a {@link StringExpression} otherwise.
      * @returns The parsed node.
      * @author efekos
-     * @version 1.0.1
+     * @version 1.0.2
      * @since 0.0.1-alpha
      */
     export function parseExpression(put: boolean = true, statements: boolean = true, expectIdentifier: boolean = false): Node {
@@ -282,7 +282,7 @@ export namespace syxparser {
             while (at().type !== TokenType.SingleQuote) {
                 const _t = tokens.shift();
                 s += _t.value;
-                endPos += (_t.end - _t.pos);
+                endPos = _t.end;
             }
             tokens.shift();
             return node({ type: NodeType.String, value: s, pos: startPos, end: endPos }, put);
@@ -297,7 +297,7 @@ export namespace syxparser {
             while (at().type !== TokenType.DoubleQuote) {
                 const _t = tokens.shift();
                 s += _t.value;
-                endPos += (_t.end - _t.pos);
+                endPos = _t.end;
             }
             tokens.shift();
             return node({ type: NodeType.String, value: s, pos: startPos, end: endPos }, put);
@@ -312,48 +312,48 @@ export namespace syxparser {
             tokens.shift();
             tokens.shift();
 
-            return node({ type: NodeType.PrimitiveType, value: newToken.value, pos:newToken.pos-1, end: newToken.end+1 }, put);
+            return node({ type: NodeType.PrimitiveType, value: newToken.value, pos: newToken.pos - 1, end: newToken.end + 1 }, put);
         } else if (tt === TokenType.WhitespaceIdentifier) {
             const p = tokens.shift().pos;
-            return node({ type: NodeType.WhitespaceIdentifier, value: '+s', pos:p,end:p+1 }, put);
+            return node({ type: NodeType.WhitespaceIdentifier, value: '+s', pos: p, end: p + 1 }, put);
         } else if (tt === TokenType.OpenBrace) {
-            const p =tokens.shift().pos;
+            const p = tokens.shift().pos;
 
-            const expr: BraceExpression = { type: NodeType.Brace, body: [], value: '{', pos:p, end:p };
+            const expr: BraceExpression = { type: NodeType.Brace, body: [], value: '{', pos: p, end: p };
 
             while (at().type !== TokenType.CloseBrace) {
                 const stmt = parseStatement(false);
                 expr.body.push(stmt);
-                expr.end += stmt.end-stmt.pos;
+                expr.end = stmt.end;
             }
             tokens.shift();
             return node(expr, put);
 
         } else if (tt === TokenType.OpenParen) {
             tokens.shift();
-            const p =tokens.shift().pos;
+            const p = tokens.shift().pos;
 
 
-            const expr: ParenExpression = { type: NodeType.Paren, body: [], value: '(', pos:p,end:p };
+            const expr: ParenExpression = { type: NodeType.Paren, body: [], value: '(', pos: p, end: p };
 
             while (at().type !== TokenType.OpenParen) {
                 const stmt = parseStatement(false);
                 expr.body.push(stmt);
-                expr.end += stmt.end-stmt.pos;
+                expr.end = stmt.end;
             }
             tokens.shift();
             return node(expr, put);
 
         } else if (tt === TokenType.OpenSquare) {
             tokens.shift();
-            const p =tokens.shift().pos;
+            const p = tokens.shift().pos;
 
-            const expr: SquareExpression = { type: NodeType.Square, body: [], value: '[' ,pos:p,end:p};
+            const expr: SquareExpression = { type: NodeType.Square, body: [], value: '[', pos: p, end: p };
 
             while (at().type !== TokenType.CloseSquare) {
                 const stmt = parseStatement(false);
                 expr.body.push(stmt);
-                expr.end += stmt.end-stmt.pos;
+                expr.end = stmt.end;
             }
             tokens.shift();
             return node(expr, put);
@@ -361,8 +361,8 @@ export namespace syxparser {
         } else if (tt === TokenType.Identifier && at(1).type === TokenType.VarSeperator) {
 
             if (at(2).type !== TokenType.IntNumber) (watchMode ? log.thrower : log.exit).error(`Expected index after variable '${at().value}|'`);
-            
-            const expr: VariableExpression = { index: parseInt(at(2).value), type: NodeType.Variable, value: at().value,pos:at().pos,end:at().end+1+(at(2).end*at(2).pos) };
+
+            const expr: VariableExpression = { index: parseInt(at(2).value), type: NodeType.Variable, value: at().value, pos: at().pos, end: at().end + 1 + (at(2).end - at(2).pos) };
             tokens.shift(); // id
             tokens.shift(); // sep
             tokens.shift(); // index
@@ -371,8 +371,8 @@ export namespace syxparser {
             if (!statements) (watchMode ? log.thrower : log.exit).error('Unexpected statement.');
             return parseStatement();
         } else if (tt === TokenType.Identifier && expectIdentifier) {
-            const {value,pos,end} = tokens.shift();
-            return node({ type: NodeType.String, value,pos,end  }, put);
+            const { value, pos, end } = tokens.shift();
+            return node({ type: NodeType.String, value, pos, end }, put);
         }
         else (watchMode ? log.thrower : log.exit).error(`Unexpected expression: '${at().value}'`);
 
@@ -461,7 +461,7 @@ export namespace sysparser {
                 if (ex.type !== NodeType.String) (watchMode ? log.thrower : log.exit).error('Expected string after import statement.');
                 if (at().type !== TokenType.Semicolon) (watchMode ? log.thrower : log.exit).error('Expected semicolon after import statement.');
                 tokens.shift();
-                return node({ type: NodeType.Import, path: (ex as Expression).value,pos:token.pos,end:ex.end }, put);
+                return node({ type: NodeType.Import, path: (ex as Expression).value, pos: token.pos, end: ex.end }, put);
             }
 
         }
@@ -505,7 +505,7 @@ export namespace sysparser {
             while (at().type !== TokenType.SingleQuote) {
                 const _t = tokens.shift();
                 s += _t.value;
-                endPos += (_t.end - _t.pos);
+                endPos = _t.end;
             }
             tokens.shift();
             return node({ type: NodeType.String, value: s, pos: startPos, end: endPos }, put);
@@ -520,7 +520,7 @@ export namespace sysparser {
             while (at().type !== TokenType.DoubleQuote) {
                 const _t = tokens.shift();
                 s += _t.value;
-                endPos += (_t.end - _t.pos);
+                endPos = _t.end;
             }
             tokens.shift();
             return node({ type: NodeType.String, value: s, pos: startPos, end: endPos }, put);
