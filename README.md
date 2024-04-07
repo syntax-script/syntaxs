@@ -2,7 +2,7 @@
 
 Main library required to use SyntaxScript.
 
-> This project is still in alpha. If you would like to contribute to this project, or get help about using it, please consider our discord server.
+> This project is still in alpha. If you would like to contribute to this project, or get help about using it, please consider [our discord server](https://discord.gg/tPSn7HPc).
 
 # Introduction
 
