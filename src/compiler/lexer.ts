@@ -19,7 +19,7 @@ const chars = ['s'];
 
 /**
  * Determines whether the given source is an alphabetic identifier.
- * @param src The source string. 
+ * @param {string} src The source string. 
  * @returns Whether the identifier matches `/^[a-zA-Z]+$/`.
  * @author efekos
  * @version 1.0.0
@@ -31,7 +31,7 @@ function isAlphabetic(src: string) {
 
 /**
  * Determines whether the given source can be skippable by tokenizers.
- * @param src Source string.
+ * @param {string} src Source string.
  * @returns Whether the source matches `/^\s|\\n|\\t$/`.
  * @author efekos
  * @version 1.0.0
@@ -43,7 +43,7 @@ function isSkippable(src: string) {
 
 /**
  * Determines whether the given source is a number.
- * @param src Source string.
+ * @param {string} src Source string.
  * @returns Whether the source matches `/^[0-9]+$/`.
  * @author efekos
  * @version 1.0.0
@@ -55,8 +55,8 @@ function isInt(src: string) {
 
 /**
  * Tokenizes a .syx file.
- * @param source Source string.
- * @param watchMode Whether is it watch mode or not. Errors will throw an error instead of exiting if this value is set to `true`.
+ * @param {string} source Source string.
+ * @param {boolean} watchMode Whether is it watch mode or not. Errors will throw an error instead of exiting if this value is set to `true`.
  * @returns A list of tokens generated from source string.
  * @author efekos
  * @version 1.0.4
@@ -125,7 +125,7 @@ export function tokenizeSyx(source: string, watchMode: boolean): Token[] {
 
 /**
  * Tokenizes a .sys file. Stops when the file end marker (:::) is encountered.
- * @param source Source string.
+ * @param {string} source Source string.
  * @returns A list of tokens generated from th esource file.
  * @author efekos
  * @version 1.0.2

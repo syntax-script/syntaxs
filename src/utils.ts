@@ -9,7 +9,7 @@ export type ErrorCheckData = [boolean, string][];
  * A handler function to check for multiple errors at the same time. For every list entry,
  * if the given boolean if `true`, logs the given `string` using {@link log.error}. After
  * that, exits the process if any error was present.
- * @param data Error checking data.
+ * @param {ErrorCheckData} data Error checking data.
  * @author efekos
  * @version 1.0.0
  * @since 0.0.1-alpha

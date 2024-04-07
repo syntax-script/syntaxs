@@ -49,7 +49,7 @@ export namespace arg {
 
     /**
      * Searches for a flag through all the flags given from commnad line.
-     * @param flag Flag to search. Do not include hyphens.
+     * @param {string} flag Flag to search. Do not include hyphens.
      * @returns Whether the flag was given.
      * @author efekos
      * @version 1.0.0
@@ -61,8 +61,8 @@ export namespace arg {
 
     /**
      * Searches for an argument given from command line.
-     * @param arg Argument name to search. Do not include hyphens.
-     * @param required Whether this argument is required. Function will end the process if the argument isn't present with this value set to `true`.
+     * @param {string} arg Argument name to search. Do not include hyphens.
+     * @param {boolean} required Whether this argument is required. Function will end the process if the argument isn't present with this value set to `true`.
      * @returns The argument found.
      * @author efekos
      * @version 1.0.0

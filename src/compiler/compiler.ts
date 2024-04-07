@@ -22,10 +22,10 @@ export class SyntaxScriptCompiler {
 
     /**
      * Constructs a new compiler.
-     * @param rootDir Root dir to search for source files.
-     * @param outDir Out dir to write compiled files.
-     * @param format File format to compile.
-     * @param watch Whether is it watch mode or not. Will affect how errors are handled.
+     * @param {string} rootDir Root dir to search for source files.
+     * @param {string} outDir Out dir to write compiled files.
+     * @param {string} format File format to compile.
+     * @param {boolean} watch Whether is it watch mode or not. Will affect how errors are handled.
      * @author efekos
      * @version 1.0.0
      * @since 0.0.1-alpha
@@ -51,7 +51,7 @@ export class SyntaxScriptCompiler {
 
     /**
      * Compiles every .syx file found in the path.
-     * @param folderPath A folder path to search for .syx files.
+     * @param {string} folderPath A folder path to search for .syx files.
      * @author efekos
      * @version 1.0.0
      * @since 0.0.1-alpha
@@ -69,7 +69,7 @@ export class SyntaxScriptCompiler {
 
     /**
      * Compiles one .syx file from the path given.
-     * @param file Path to a file to compile.
+     * @param {string} file Path to a file to compile.
      * @author efekos
      * @version 1.0.1
      * @since 0.0.1-alpha
@@ -183,7 +183,7 @@ export class SyntaxScriptCompiler {
 
     /**
      * Compiles every .sys file found in the given folder.
-     * @param folderPath Folder path to search for .sys files.
+     * @param {string} folderPath Folder path to search for .sys files.
      * @author efekos
      * @version 1.0.0
      * @since 0.0.1-alpha
@@ -200,7 +200,7 @@ export class SyntaxScriptCompiler {
 
     /**
      * Compiles a .sys file at the path given.
-     * @param file Path to the .sys file to compile.
+     * @param {string} file Path to the .sys file to compile.
      * @author efekos
      * @since 0.0.1-alpha
      * @version 1.0.0

@@ -6,7 +6,7 @@ export namespace log {
 
     /**
      * Logs every message given as an error.
-     * @param message Messages to log.
+     * @param {any[]} message Messages to log.
      * @author efekos
      * @version 1.0.0
      * @since 0.0.1-alpha
@@ -17,7 +17,7 @@ export namespace log {
 
     /**
      * Alias for {@link console.log}.
-     * @param message Messages to log.
+     * @param {any[]} message Messages to log.
      * @author efekos
      * @version 1.0.0
      * @since 0.0.1-alpha
@@ -28,7 +28,7 @@ export namespace log {
 
     /**
      * Logs every message given as an info.
-     * @param message Messages to log.
+     * @param {any[]} message Messages to log.
      * @author efekos
      * @version 1.0.0
      * @since 0.0.1-alpha
@@ -39,7 +39,7 @@ export namespace log {
 
     /**
      * Logs every message given as a warning.
-     * @param message Messages to log.
+     * @param {any[]} message Messages to log.
      * @author efekos
      * @version 1.0.0
      * @since 0.0.1-alpha
@@ -50,7 +50,7 @@ export namespace log {
 
     /**
      * Logs every message given as a debug message. No need to check for debug flag.
-     * @param message Messages to log.
+     * @param {any[]} message Messages to log.
      * @author efekos
      * @version 1.0.0
      * @since 0.0.1-alpha
@@ -62,7 +62,7 @@ export namespace log {
 
     /**
      * Logs every message given as a notice message.
-     * @param message Messages to log.
+     * @param {any[]} message Messages to log.
      * @author efekos
      * @version 1.0.0
      * @since 0.0.1-alpha
@@ -75,7 +75,7 @@ export namespace log {
 
         /**
          * Alias for {@link log.error}, but exits the process after logging.
-         * @param message Messages to log.
+         * @param {any[]} message Messages to log.
          * @author efekos
          * @version 1.0.0
          * @since 0.0.1-alpha
@@ -88,7 +88,7 @@ export namespace log {
 
         /**
          * Alias for {@link log.raw}, but exits the process after logging.
-         * @param message Messages to log.
+         * @param {any[]} message Messages to log.
          * @author efekos
          * @version 1.0.0
          * @since 0.0.1-alpha
@@ -106,7 +106,7 @@ export namespace log {
 
         /**
          * Alias for {@link log.error}, but throws an error after logging.
-         * @param message Messages to log.
+         * @param {any[]} message Messages to log.
          * @author efekos
          * @version 1.0.0
          * @since 0.0.1-alpha
@@ -118,7 +118,7 @@ export namespace log {
 
         /**
          * Alias for {@link log.raw}, but throws an error after logging.
-         * @param message Messages to log.
+         * @param {any[]} message Messages to log.
          * @author efekos
          * @version 1.0.0
          * @since 0.0.1-alpha

@@ -26,7 +26,7 @@ export namespace timer {
 
     /**
      * Returns the time since a marker was set. Will return the time since start if the marker isn't present.
-     * @param marker Marker name.
+     * @param {string} marker Marker name.
      * @returns The time since marker.
      * @author efekos
      * @version 1.0.0
@@ -38,7 +38,7 @@ export namespace timer {
 
     /**
      * Creates a marker in the timer.
-     * @param marker Marker name.
+     * @param {string} marker Marker name.
      * @author efekos
      * @version 1.0.0
      * @since 0.0.1-alpha

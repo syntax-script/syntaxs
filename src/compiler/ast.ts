@@ -49,8 +49,8 @@ export namespace syxparser {
 
     /**
      * Parses the token list given into statements and expressions.
-     * @param t Token list to parse.
-     * @param watch Whether is it watch mode or not. Errors will exit process if it isn't watch mode, throwing an error otherwise.
+     * @param {Token[]} t Token list to parse.
+     * @param {boolean} watch Whether is it watch mode or not. Errors will exit process if it isn't watch mode, throwing an error otherwise.
      * @returns Main {@link ProgramStatement} containing all other statements.
      * @author efekos
      * @version 1.0.0
@@ -75,7 +75,7 @@ export namespace syxparser {
 
     /**
      * Returns the token at given index. Alias for `tokens[i]`.
-     * @param i Token index. Defaults to 0.
+     * @param {number} i Token index. Defaults to 0.
      * @returns The token at given index.
      * @author efekos
      * @version 1.0.0
@@ -89,7 +89,7 @@ export namespace syxparser {
 
     /**
      * Parses a statement from the most recent token. Will call {@link parseExpression} if no statement is present.
-     * @param put Whether the result should be added to the program statement.
+     * @param {boolean} put Whether the result should be added to the program statement.
      * @returns A node that is either a statement or an expression if a statement wasn't present.
      * @author efekos
      * @version 1.0.4
@@ -248,8 +248,8 @@ export namespace syxparser {
 
     /**
      * An alias function to handle different cases of calling {@link parseStatement} and {@link parseExpression}.
-     * @param node The node.
-     * @param put Whether the node should be added to current program.
+     * @param {T} node The node.
+     * @param {boolean} put Whether the node should be added to current program.
      * @returns The node.
      * @author efekos
      * @version 1.0.0
@@ -262,9 +262,9 @@ export namespace syxparser {
 
     /**
      * Parses the most recent expression at the token list. Goes to {@link parseStatement} if a keyword is found.
-     * @param put Whether the result should be put into current program.
-     * @param statements Whether statements should be allowed. Function will stop if a keyword found with this value set to `true`.
-     * @param expectIdentifier Whether identifiers should be allowed. Unknown identifiers will stop the function with this value set to `false`, returning the identifier as a {@link StringExpression} otherwise.
+     * @param {boolean} put Whether the result should be put into current program.
+     * @param {boolean} statements Whether statements should be allowed. Function will stop if a keyword found with this value set to `true`.
+     * @param {boolean} expectIdentifier Whether identifiers should be allowed. Unknown identifiers will stop the function with this value set to `false`, returning the identifier as a {@link StringExpression} otherwise.
      * @returns The parsed node.
      * @author efekos
      * @version 1.0.5
@@ -406,8 +406,8 @@ export namespace sysparser {
 
     /**
      * Parses the token list given into statements and expressions.
-     * @param t Token list to parse.
-     * @param watch Whether is it watch mode or not. Errors will exit process if it isn't watch mode, throwing an error otherwise.
+     * @param {Token[]} t Token list to parse.
+     * @param {boolean} watch Whether is it watch mode or not. Errors will exit process if it isn't watch mode, throwing an error otherwise.
      * @returns Main {@link ProgramStatement} containing all other statements.
      * @author efekos
      * @version 1.0.0
@@ -431,7 +431,7 @@ export namespace sysparser {
 
     /**
      * Returns the token at given index. Alias for `tokens[i]`.
-     * @param i Token index. Defaults to 0.
+     * @param {number} i Token index. Defaults to 0.
      * @returns The token at given index.
      * @author efekos
      * @version 1.0.0
@@ -444,7 +444,7 @@ export namespace sysparser {
 
     /**
      * Parses a statement from the most recent token. Will call {@link parseExpression} if no statement is present.
-     * @param put Whether the result should be added to the program statement.
+     * @param {boolean} put Whether the result should be added to the program statement.
      * @returns A node that is either a statement or an expression if a statement wasn't present.
      * @author efekos
      * @version 1.0.3
@@ -469,8 +469,8 @@ export namespace sysparser {
 
     /**
      * An alias function to handle different cases of calling {@link parseStatement} and {@link parseExpression}.
-     * @param node The node.
-     * @param put Whether the node should be added to current program.
+     * @param {Node} node The node.
+     * @param {boolean} put Whether the node should be added to current program.
      * @returns The node.
      * @author efekos
      * @version 1.0.0
@@ -483,9 +483,9 @@ export namespace sysparser {
 
     /**
      * Parses the most recent expression at the token list. Goes to {@link parseStatement} if a keyword is found.
-     * @param put Whether the result should be put into current program.
-     * @param statements Whether statements should be allowed. Function will stop if a keyword found with this value set to `true`.
-     * @param expectIdentifier Whether identifiers should be allowed. Unknown identifiers will stop the function with this value set to `false`, returning the identifier as a {@link StringExpression} otherwise.
+     * @param {boolean} put Whether the result should be put into current program.
+     * @param {boolean} statements Whether statements should be allowed. Function will stop if a keyword found with this value set to `true`.
+     * @param {boolean} expectIdentifier Whether identifiers should be allowed. Unknown identifiers will stop the function with this value set to `false`, returning the identifier as a {@link StringExpression} otherwise.
      * @returns The parsed node.
      * @author efekos
      * @version 1.0.3
