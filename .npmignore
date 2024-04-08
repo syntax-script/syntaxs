@@ -1,0 +1,13 @@
+# Folders
+/src
+/images
+/syx
+
+# Dev-only or unrelated files
+.gitignore
+tsconfig.json
+.eslintrc.json
+
+# Hidden folders
+/.vscode
+/.git
