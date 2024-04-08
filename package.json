@@ -1,7 +1,7 @@
 {
-  "name": "syntaxs",
+  "name": "@syntaxs/syntaxs",
   "version": "0.0.1-alpha",
-  "description": "Syntax Script Command Line Interface.",
+  "description": "CLI Application to use Syntax Script.",
   "main": "./dist/index.js",
   "scripts": {
     "lint": "eslint ./src/**/*.ts --fix",
