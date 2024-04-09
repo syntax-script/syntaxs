@@ -5,7 +5,7 @@
   "main": "./dist/index.js",
   "scripts": {
     "lint": "eslint ./src/**/*.ts --fix",
-    "prebuild": "npm run lint",
+    "prebuild": "npm run lint && node distDeletor",
     "build": "tsc",
     "postbuild": "cls && echo Builded"
   },
@@ -33,8 +33,7 @@
     "chokidar": "^3.6.0",
     "figlet": "^1.7.0",
     "inquirer": "9.2.16",
-    "nanospinner": "1.1.0",
-    "node-powershell": "^5.0.1"
+    "nanospinner": "1.1.0"
   },
   "type": "module",
   "bin": {
