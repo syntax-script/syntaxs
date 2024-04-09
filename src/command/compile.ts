@@ -1,6 +1,6 @@
 import { existsSync, readFileSync } from 'fs';
-import { SyntaxScriptCompiler } from '../compiler/compiler.js';
-import { SyxConfig } from '../compiler/types.js';
+import { SyntaxScriptCompiler } from '@syntaxs/compiler';
+import { SyxConfig } from '@syntaxs/compiler';
 import chalk from 'chalk';
 import { errorChecks } from '../utils.js';
 import { join } from 'path';

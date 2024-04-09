@@ -5,7 +5,7 @@ import { errorChecks } from '../utils.js';
 import { join } from 'path';
 import { log } from '../module/log.js';
 import { timer } from '../module/timer.js';
-import { tokenizeSyx } from '../compiler/lexer.js';
+import { tokenizeSyx } from '@syntaxs/compiler';
 
 /**
  * Runs tokenize command.
