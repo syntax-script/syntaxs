@@ -7,7 +7,9 @@
     "lint": "eslint ./src/**/*.ts --fix",
     "prebuild": "npm run lint && node distDeletor",
     "build": "tsc",
-    "postbuild": "cls && echo Builded"
+    "postbuild": "cls && echo Builded",
+    "prepublish": "npm run build",
+    "postpublish": "npm pack --pack-destination=./package"
   },
   "keywords": [
     "syntax",
@@ -39,5 +41,6 @@
   "type": "module",
   "bin": {
     "syntaxs": "./dist/index.js"
-  }
+  },
+  "pack-destination":"./package"
 }
