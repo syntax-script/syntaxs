@@ -1,10 +1,10 @@
 import { existsSync, readFileSync, writeFileSync } from 'fs';
+import { isCompilerError, syxparser } from '@syntaxs/compiler';
 import { arg } from '../module/arg.js';
 import chalk from 'chalk';
 import { errorChecks } from '../utils.js';
 import { join } from 'path';
 import { log } from '../module/log.js';
-import { isCompilerError, syxparser } from '@syntaxs/compiler';
 import { timer } from '../module/timer.js';
 import { tokenizeSyx } from '@syntaxs/compiler';
 

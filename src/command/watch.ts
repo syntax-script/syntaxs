@@ -1,5 +1,5 @@
-import { existsSync, readFileSync } from 'fs';
 import { SyntaxScriptCompiler, isCompilerError } from '@syntaxs/compiler';
+import { existsSync, readFileSync } from 'fs';
 import { SyxConfig } from '@syntaxs/compiler';
 import chalk from 'chalk';
 import { errorChecks } from '../utils.js';
