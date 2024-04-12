@@ -1,3 +1,4 @@
+import { CompilerError } from '@syntaxs/compiler';
 import { FULL_MODULE_NAME } from '../index.js';
 import { arg } from './arg.js';
 import chalk from 'chalk';
@@ -35,6 +36,17 @@ export namespace log {
      */
     export function info(...message: any[]) {
         message.forEach(m => console.info(`${chalk.bgBlue(' INFO ')}`, m));
+    }
+
+    /**
+     * Logs a {@link CompilerError} as an error.
+     * @param e The error.
+     * @author efekos
+     * @version 1.0.0
+     * @since 0.0.1-alpha
+     */
+    export function compilerError(e: CompilerError) {
+        log.error(`${chalk.gray(`(${e.file}:${e.range.start.line}:${e.range.start.character})`)} ${e.message}`);
     }
 
     /**
@@ -86,6 +98,20 @@ export namespace log {
             process.exit(1);
         }
 
+
+        /**
+         * Alias for {@link log.compilerError}, but exits the process after logging.
+         * @param e The error.
+         * @author efekos
+         * @version 1.0.0
+         * @since 0.0.1-alpha
+         */
+        export function compilerError(e: CompilerError) {
+            log.compilerError(e);
+            log.raw('', '', process.cwd(), FULL_MODULE_NAME);
+            process.exit(1);
+        }
+
         /**
          * Alias for {@link log.raw}, but exits the process after logging.
          * @param {any[]} message Messages to log.
@@ -115,6 +141,21 @@ export namespace log {
             log.error(...message);
             throw new ProgramError();
         }
+
+
+
+        /**
+         * Alias for {@link log.compilerError}, but throws an error after logging.
+         * @param e The error.
+         * @author efekos
+         * @version 1.0.0
+         * @since 0.0.1-alpha
+         */
+        export function compilerError(e: CompilerError) {
+            log.compilerError(e);
+            throw new ProgramError();
+        }
+
 
         /**
          * Alias for {@link log.raw}, but throws an error after logging.
