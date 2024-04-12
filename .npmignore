@@ -1,12 +1,17 @@
 # Folders
 /src
-/images
+/image
 /syx
+/package
 
 # Dev-only or unrelated files
 .gitignore
 tsconfig.json
 .eslintrc.json
+.eslintignore
+syxconfig.json
+distDeletor.js
+*.tgz
 
 # Hidden folders
 /.vscode
