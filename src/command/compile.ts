@@ -1,5 +1,5 @@
+import { SyntaxScriptCompiler, isCompilerError } from '@syntaxs/compiler';
 import { existsSync, readFileSync } from 'fs';
-import { SyntaxScriptCompiler } from '@syntaxs/compiler';
 import { SyxConfig } from '@syntaxs/compiler';
 import chalk from 'chalk';
 import { errorChecks } from '../utils.js';
@@ -30,6 +30,11 @@ export async function runCompile(): Promise<void> {
 
     log.info('Starting compilation');
     timer.mark('compilerstart');
-    await compiler.compile();
-    log.info(`Compilation successful in ${timer.sinceMarker('compilerstart')}ms`);
+    try {
+        await compiler.compile();
+        log.info(`Compilation successful in ${timer.sinceMarker('compilerstart')}ms`);
+    } catch(e) {
+        if(isCompilerError(e)) log.exit.compilerError(e);
+    }
+    
 }

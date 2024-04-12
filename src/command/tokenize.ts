@@ -30,7 +30,7 @@ export async function runTokenize() {
 
 
     timer.mark('tokenize');
-    const tokens = await tokenizeSyx(readFileSync(inputPath).toString(), false);
+    const tokens = await tokenizeSyx(readFileSync(inputPath).toString());
     if (write === '') log.info('', ...JSON.stringify(tokens, undefined, 4).split('\n'), '');
     log.info(`Created ${tokens.length} tokens from source file '${inputPath}' in ${timer.sinceMarker('tokenize')}ms`);
     if (write !== '') {

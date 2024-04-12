@@ -1,5 +1,5 @@
 import { existsSync, readFileSync } from 'fs';
-import { SyntaxScriptCompiler } from '@syntaxs/compiler';
+import { SyntaxScriptCompiler, isCompilerError } from '@syntaxs/compiler';
 import { SyxConfig } from '@syntaxs/compiler';
 import chalk from 'chalk';
 import { errorChecks } from '../utils.js';
@@ -28,7 +28,7 @@ export function runWatch() {
         ['compile' in config && 'out' in config.compile && !existsSync(join(process.cwd(), config.compile.out)), `Could not find out directory '${join(process.cwd(), config.compile.out)}'`]
     ]);
 
-    const compiler = new SyntaxScriptCompiler(config.compile.root, config.compile.out, config.compile.format, true);
+    const compiler = new SyntaxScriptCompiler(config.compile.root, config.compile.out, config.compile.format);
     let alreadyCompiling = false;
     let initializing = true;
 
@@ -64,7 +64,8 @@ export function runWatch() {
         initializing = false;
         cmpl();
     });
-    watcher.on('error', () => {
+    watcher.on('error', (e) => {
+        if(isCompilerError(e)) log.compilerError(e);
         log.error('Could not compile. Waiting for file changes.');
     });
 }
