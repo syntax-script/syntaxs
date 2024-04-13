@@ -32,7 +32,7 @@ export function runParse() {
 
     timer.mark('parse');
     try {
-        const parsed = syxparser.parseTokens(tokenizeSyx(readFileSync(inputPath).toString()));
+        const parsed = syxparser.parseTokens(tokenizeSyx(readFileSync(inputPath).toString()),inputPath);
         if (write === '') log.info('', ...JSON.stringify(parsed, undefined, 4).split('\n'), '');
         log.info(`Created ${parsed.body.length} statements from source file '${inputPath}' in ${timer.sinceMarker('parse')}ms`);
         if (write !== '') {
