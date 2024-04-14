@@ -47,6 +47,7 @@ export namespace log {
      */
     export function compilerError(e: CompilerError) {
         log.error(`${chalk.gray(`(${e.file}:${e.range.start.line}:${e.range.start.character})`)} ${e.message}`);
+        log.error('Possible Solutions:',...e.actions.map(a=>`  ${a.title}`));
     }
 
     /**
