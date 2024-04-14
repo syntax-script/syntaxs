@@ -45,7 +45,7 @@ npm i -g syntaxs
 # Usage
 
 ```bat
-syntaxs help -- help command
-syntaxs init -- create config file
+syntaxs help    -- help command
+syntaxs init    -- create config file
 syntaxs compile -- compile
 ```
