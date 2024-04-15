@@ -34,7 +34,10 @@ export async function runCompile(): Promise<void> {
         await compiler.compile();
         log.info(`Compilation successful in ${timer.sinceMarker('compilerstart')}ms`);
     } catch(e) {
-        if(isCompilerError(e)) log.exit.compilerError(e);
+        if(isCompilerError(e)) {
+            log.compilerError(e);
+            log.error('','',`A complete log including debug messages can be found in ${log.path()}`);
+        }
     }
     
 }

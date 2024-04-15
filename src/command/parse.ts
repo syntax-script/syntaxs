@@ -43,6 +43,9 @@ export function runParse() {
         }
         log.info(`Done in ${timer.sinceStart()}ms total.`);
     } catch (error) {
-        if(isCompilerError(error)) log.exit.compilerError(error);
+        if(isCompilerError(error)) {
+            log.compilerError(error);
+            log.error('','',`A complete log including debug messages can be found in ${log.path()}`);
+        }
     }
 }
