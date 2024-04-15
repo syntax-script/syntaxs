@@ -1,6 +1,7 @@
 import { arg } from './module/arg.js';
 import chalk from 'chalk';
 import { log } from './module/log.js';
+import { runClean } from './command/clean.js';
 import { runCompile } from './command/compile.js';
 import { runHelp } from './command/help.js';
 import { runInit } from './command/init.js';
@@ -20,7 +21,7 @@ export const MODULE_NAME = 'syntaxs';
 
 if (arg.getCommand() === 'version' || arg.hasFlag('v') || arg.hasFlag('version')) log.exit.raw(MODULE_VERSION);
 
-const commandMap: Record<string, () => void> = { logs: runLogs, help: runHelp, init: runInit, tokenize: runTokenize, parse: runParse, compile: runCompile, c: runCompile, watch: runWatch, w: runWatch };
+const commandMap: Record<string, () => void> = { logs: runLogs, help: runHelp, init: runInit, tokenize: runTokenize, parse: runParse, compile: runCompile, c: runCompile, watch: runWatch, w: runWatch, clean:runClean };
 
 if (commandMap[arg.getCommand()] !== undefined) await commandMap[arg.getCommand()]();
 else log.exit.error(`Unknown or missing command, use '${chalk.yellow('syntaxs')} help'`);
