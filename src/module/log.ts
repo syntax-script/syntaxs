@@ -40,7 +40,7 @@ export namespace log {
      * Returns the path that the log will be saved.
      * @returns Path that the log will be saved.
      * @author efekos
-     * @since 0.0.2-alpha
+     * @since 0.0.1-alpha
      * @version 1.0.0
      */
     export function path(): string {
