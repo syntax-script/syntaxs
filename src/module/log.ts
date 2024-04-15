@@ -123,8 +123,8 @@ export namespace log {
      * @since 0.0.1-alpha
      */
     export function debug(...message: any[]) {
-        if (arg.hasFlag('debug')) message.forEach(m => {
-            console.debug(`${chalk.whiteBright(chalk.bgYellowBright(' DEBUG '))}`, m);
+        message.forEach(m => {
+            if (arg.hasFlag('debug')) console.debug(`${chalk.whiteBright(chalk.bgYellowBright(' DEBUG '))}`, m);
             logLines.push(`${date()} [DEBUG] ${typeof m === 'object' ? JSON.stringify(m) : m}`);
         });
     }
