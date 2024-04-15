@@ -1,3 +1,5 @@
+import { homedir } from 'os';
+import { join } from 'path';
 import { log } from './module/log.js';
 
 /**
@@ -17,4 +19,25 @@ export type ErrorCheckData = [boolean, string][];
 export function errorChecks(data: ErrorCheckData) {
     data.forEach(d => { if (d[0]) log.error(d[1]); });
     if (data.some(d => d[0])) process.exit(1);
+}
+
+
+
+/**
+ * Finds the local appdata path for the current operating system. Supports Windows, MacOS and Linux.
+ * @returns The local appdata path.
+ * @version 1.0.0
+ * @since 0.0.1-alpha
+ */
+export function getLocalAppDataPath() {
+    switch (process.platform) {
+        case 'win32':
+            return process.env.LOCALAPPDATA || join(homedir(), 'AppData', 'Local');
+        case 'darwin':
+            return join(homedir(), 'Library', 'Application Support');
+        case 'linux':
+            return process.env.XDG_DATA_HOME || join(homedir(), '.local', 'share');
+        default:
+            return null;
+    }
 }

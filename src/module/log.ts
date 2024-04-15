@@ -3,23 +3,11 @@ import { CompilerError } from '@syntaxs/compiler';
 import { FULL_MODULE_NAME } from '../index.js';
 import { arg } from './arg.js';
 import chalk from 'chalk';
-import { homedir } from 'os';
+import { getLocalAppDataPath } from '../utils.js';
 import { join } from 'path';
 
-function getLocalAppDataPath() {
-    switch (process.platform) {
-        case 'win32':
-            return process.env.LOCALAPPDATA || join(homedir(), 'AppData', 'Local');
-        case 'darwin':
-            return join(homedir(), 'Library', 'Application Support');
-        case 'linux':
-            return process.env.XDG_DATA_HOME || join(homedir(), '.local', 'share');
-        default:
-            return null;
-    }
-}
 
-const dirPath = join(getLocalAppDataPath(), 'syntaxs-logs', 'logs');
+const dirPath = join(getLocalAppDataPath(), 'syntaxs-cache','logs');
 const logPath = join(dirPath, new Date().toISOString().replace(/:/g, '-') + '.log');
 const logLines: string[] = [];
 
@@ -45,6 +33,14 @@ export namespace log {
      */
     export function path(): string {
         return logPath;
+    }
+
+    /**
+     * Returns the main directory that stores logs.
+     * @returns 
+     */
+    export function dir(): string {
+        return dirPath;
     }
 
     /**
