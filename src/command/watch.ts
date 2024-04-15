@@ -44,7 +44,10 @@ export function runWatch() {
         compiler.compile().then(() => {
             log.info('Compiled. Waiting for file changes.');
             alreadyCompiling = false;
-        }).catch(err => log.error('Could not compile. Waiting for file changes.'));
+        }).catch(err => {
+            if(isCompilerError(err)) log.compilerError(err);
+            log.error('Could not compile. Waiting for file changes.');
+        });
     }
 
     const watcher = watch(dir, {
