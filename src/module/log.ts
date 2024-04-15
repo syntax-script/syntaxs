@@ -20,12 +20,12 @@ function getLocalAppDataPath() {
 }
 
 const dirPath = join(getLocalAppDataPath(), 'syntaxs-logs', 'logs');
-const logPath = join(dirPath,new Date().toISOString().replace(/:/g,'-') + '.log');
+const logPath = join(dirPath, new Date().toISOString().replace(/:/g, '-') + '.log');
 const logLines: string[] = [];
 
 process.on('exit', () => {
-    if(!existsSync(dirPath)) mkdirSync(dirPath,{recursive:true});
-    writeFileSync(logPath, logLines.map((s,i)=>`${i+1} ${s}`).join('\n'));
+    if (!existsSync(dirPath)) mkdirSync(dirPath, { recursive: true });
+    writeFileSync(logPath, logLines.map((s, i) => `${i + 1} ${s}`).join('\n'));
 });
 
 export namespace log {
@@ -34,6 +34,17 @@ export namespace log {
         const d = new Date();
 
         return `[${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}:${d.getMilliseconds()}]`;
+    }
+
+    /**
+     * Returns the path that the log will be saved.
+     * @returns Path that the log will be saved.
+     * @author efekos
+     * @since 0.0.2-alpha
+     * @version 1.0.0
+     */
+    export function path(): string {
+        return logPath;
     }
 
     /**
@@ -87,7 +98,7 @@ export namespace log {
      */
     export function compilerError(e: CompilerError) {
         log.error(`${chalk.gray(`(${e.file}:${e.range.start.line}:${e.range.start.character})`)} ${e.message}`);
-        log.error('Possible Solutions:', ...e.actions.map(a => `  ${a.title}`));
+        if (e.actions.length > 0) log.error('Possible Solutions:', ...e.actions.map(a => `  ${a.title}`));
     }
 
     /**
