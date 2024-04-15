@@ -6,7 +6,7 @@ import { log } from '../module/log.js';
 /**
  * Runs help command.
  * @author efekos
- * @version 1.0.0
+ * @version 1.0.1
  * @since 0.0.1-alpha
  */
 export async function runHelp() {
@@ -25,6 +25,7 @@ export async function runHelp() {
         `   tokenize ${chalk.gray('-input')},${chalk.gray('-i')} <path> ${chalk.gray('-write')} [path]      Tokenize source file`,
         `   parse ${chalk.gray('-input')},${chalk.gray('-i')} <path> ${chalk.gray('-write')} [path]         Parse source file`,
         '   compile                                      Compile code',
-        '   watch                                        Compile code in watch mode'
+        '   watch                                        Compile code in watch mode',
+        '   clean                                        Clean cache folder'
     );
 }
