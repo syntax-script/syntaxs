@@ -10,21 +10,21 @@ import { log } from '../module/log.js';
  * @version 1.0.0
  * @since 0.0.1-alpha
  */
-export function runClean(){
-    
-    const path = join(getLocalAppDataPath(),'syntaxs-cache');
+export function runClean() {
+
+    const path = join(getLocalAppDataPath(), 'syntaxs-cache');
     log.invisible('checking if the path exists');
-    if(!existsSync(path)) {
+    if (!existsSync(path)) {
         log.info('There is nothing to clean.');
     }
 
-    function del(p:string){
+    function del(p: string) {
         log.invisible(`deleting dir ${p}`);
         const files = readdirSync(p);
-        files.forEach(f=>{
-            const fPath = join(p,f);
+        files.forEach(f => {
+            const fPath = join(p, f);
             const stat = statSync(fPath);
-            if(stat.isFile()) {
+            if (stat.isFile()) {
                 log.info(`Deleting file: ${chalk.gray(fPath)}`); rmSync(fPath);
             } else del(fPath);
         });
@@ -33,5 +33,5 @@ export function runClean(){
     log.info('Starting clean');
     del(path);
     log.info('Successfully cleaned all cache files and log files.');
-    
+
 }

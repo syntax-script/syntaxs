@@ -47,7 +47,7 @@ export function runWatch() {
             log.info('Compiled. Waiting for file changes.');
             alreadyCompiling = false;
         }).catch(err => {
-            if(isCompilerError(err)) log.compilerError(err);
+            if (isCompilerError(err)) log.compilerError(err);
             log.error('Could not compile. Waiting for file changes.');
         });
     }
@@ -60,7 +60,7 @@ export function runWatch() {
         ignoreInitial: true,
         disableGlobbing: true
     });
-    
+
     watcher.on('change', () => {
         log.invisible('file changes');
         if (initializing) return;
@@ -74,7 +74,7 @@ export function runWatch() {
     });
     watcher.on('error', (e) => {
         log.invisible(`watcher error: ${JSON.stringify(e)}`);
-        if(isCompilerError(e)) log.compilerError(e);
+        if (isCompilerError(e)) log.compilerError(e);
         log.error('Could not compile. Waiting for file changes.');
     });
 }

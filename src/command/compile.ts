@@ -37,14 +37,14 @@ export async function runCompile(): Promise<void> {
         log.invisible('compiling');
         await compiler.compile();
         log.info(`Compilation successful in ${timer.sinceMarker('compilerstart')}ms`);
-    } catch(e) {
+    } catch (e) {
         log.invisible('there is an error');
         log.invisible(`${JSON.stringify(e)}`);
-        if(isCompilerError(e)) {
+        if (isCompilerError(e)) {
             log.invisible('this is a compiler error, logging the error');
             log.compilerError(e);
-            log.error('','',`A complete log including debug messages can be found in ${log.path()}`);
+            log.error('', '', `A complete log including debug messages can be found in ${log.path()}`);
         }
     }
-    
+
 }

@@ -8,7 +8,7 @@ import { join } from 'path';
 import { timer } from './timer.js';
 
 
-const dirPath = join(getLocalAppDataPath(), 'syntaxs-cache','logs');
+const dirPath = join(getLocalAppDataPath(), 'syntaxs-cache', 'logs');
 const logPath = join(dirPath, new Date().toISOString().replace(/:/g, '-') + '.log');
 const logLines: string[] = [];
 const ansiEscape = /\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])/g;
@@ -16,7 +16,7 @@ const ansiEscape = /\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])/g;
 process.on('exit', (c) => {
     log.invisible(`process end with code ${c}`, `end time: ${new Date().toISOString()}`, `time passed (in ms): ${timer.sinceStart()}`);
     if (!existsSync(dirPath)) mkdirSync(dirPath, { recursive: true });
-    writeFileSync(logPath, logLines.map((s, i) => `${i + 1} ${s}`.replace(ansiEscape,'')).join('\n'));
+    writeFileSync(logPath, logLines.map((s, i) => `${i + 1} ${s}`.replace(ansiEscape, '')).join('\n'));
 });
 
 export namespace log {
@@ -24,12 +24,12 @@ export namespace log {
     function date() {
         const d = new Date();
 
-        function a(n:number):string {
-            return `${n<10?'0':''}${n}`;
+        function a(n: number): string {
+            return `${n < 10 ? '0' : ''}${n}`;
         }
 
-        function b(n:number):string {
-            return `${n<10?'0':''}${n<100?'0':''}${n}`;
+        function b(n: number): string {
+            return `${n < 10 ? '0' : ''}${n < 100 ? '0' : ''}${n}`;
         }
 
         return `[${a(d.getHours())}:${a(d.getMinutes())}:${a(d.getSeconds())}.${b(d.getMilliseconds())}]`;
@@ -42,8 +42,8 @@ export namespace log {
      * @since 0.0.1-alpha
      * @version 1.0.0
      */
-    export function invisible(...message:any[]){
-        message.forEach(m=>{
+    export function invisible(...message: any[]) {
+        message.forEach(m => {
             logLines.push(`${date()} [INFO] ${typeof m === 'object' ? JSON.stringify(m) : m}`);
         });
     }

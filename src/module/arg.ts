@@ -80,7 +80,7 @@ export namespace arg {
      * @since 0.0.1-alpha
      * @version 1.0.0
      */
-    export function getFlags(){
+    export function getFlags() {
         return flags;
     }
 
@@ -91,7 +91,7 @@ export namespace arg {
      * @since 0.0.1-alpha
      * @version 1.0.0
      */
-    export function getArgs(){
+    export function getArgs() {
         return args;
     }
 
