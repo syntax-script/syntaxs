@@ -25,6 +25,20 @@ export namespace log {
     }
 
     /**
+     * Does not log the given message at any way, but adds it into the log file with [INFO] tag.
+     * @param message Message to add.
+     * @author efekos
+     * @since 0.0.1-alpha
+     * @version 1.0.0
+     */
+    export function invisible(...message:any[]){
+        message.forEach(m=>{
+            logLines.push(`${date()} [INFO] ${typeof m === 'object' ? JSON.stringify(m) : m}`);
+        });
+    }
+
+
+    /**
      * Returns the path that the log will be saved.
      * @returns Path that the log will be saved.
      * @author efekos
