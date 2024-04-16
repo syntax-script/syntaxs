@@ -23,7 +23,6 @@ export async function runHelp() {
         '',
         '   help                                         Print this',
         `   version,${chalk.gray('--version')},${chalk.gray('--v')}                        Print version`,
-        '   logs                                         Test all log types',
         `   tokenize ${chalk.gray('-input')},${chalk.gray('-i')} <path> ${chalk.gray('-write')} [path]      Tokenize source file`,
         `   parse ${chalk.gray('-input')},${chalk.gray('-i')} <path> ${chalk.gray('-write')} [path]         Parse source file`,
         '   compile                                      Compile code',

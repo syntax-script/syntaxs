@@ -5,7 +5,6 @@ import { runClean } from './command/clean.js';
 import { runCompile } from './command/compile.js';
 import { runHelp } from './command/help.js';
 import { runInit } from './command/init.js';
-import { runLogs } from './command/logs.js';
 import { runParse } from './command/parse.js';
 import { runTokenize } from './command/tokenize.js';
 import { runWatch } from './command/watch.js';
@@ -30,7 +29,7 @@ if (arg.getCommand() === 'version' || arg.hasFlag('v') || arg.hasFlag('version')
     process.exit(556);
 }
 
-const commandMap: Record<string, () => void> = { logs: runLogs, help: runHelp, init: runInit, tokenize: runTokenize, parse: runParse, compile: runCompile, c: runCompile, watch: runWatch, w: runWatch, clean: runClean };
+const commandMap: Record<string, () => void> = { help: runHelp, init: runInit, tokenize: runTokenize, parse: runParse, compile: runCompile, c: runCompile, watch: runWatch, w: runWatch, clean: runClean };
 
 log.invisible('adding SIGINT, beforeExit and exit listeners');
 process.on('SIGINT', () => { log.raw('', '', process.cwd(), FULL_MODULE_NAME); process.exit(556); });
