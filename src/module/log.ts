@@ -5,15 +5,18 @@ import { arg } from './arg.js';
 import chalk from 'chalk';
 import { getLocalAppDataPath } from '../utils.js';
 import { join } from 'path';
+import { timer } from './timer.js';
 
 
 const dirPath = join(getLocalAppDataPath(), 'syntaxs-cache','logs');
 const logPath = join(dirPath, new Date().toISOString().replace(/:/g, '-') + '.log');
 const logLines: string[] = [];
+const ansiEscape = /\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])/g;
 
-process.on('exit', () => {
+process.on('exit', (c) => {
+    log.invisible(`process end with code ${c}`, `end time: ${new Date().toISOString()}`, `time passed (in ms): ${timer.sinceStart()}`);
     if (!existsSync(dirPath)) mkdirSync(dirPath, { recursive: true });
-    writeFileSync(logPath, logLines.map((s, i) => `${i + 1} ${s}`).join('\n'));
+    writeFileSync(logPath, logLines.map((s, i) => `${i + 1} ${s}`.replace(ansiEscape,'')).join('\n'));
 });
 
 export namespace log {
@@ -21,7 +24,15 @@ export namespace log {
     function date() {
         const d = new Date();
 
-        return `[${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}:${d.getMilliseconds()}]`;
+        function a(n:number):string {
+            return `${n<10?'0':''}${n}`;
+        }
+
+        function b(n:number):string {
+            return `${n<10?'0':''}${n<100?'0':''}${n}`;
+        }
+
+        return `[${a(d.getHours())}:${a(d.getMinutes())}:${a(d.getSeconds())}.${b(d.getMilliseconds())}]`;
     }
 
     /**

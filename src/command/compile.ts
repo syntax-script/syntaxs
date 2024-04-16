@@ -15,10 +15,12 @@ import { timer } from '../module/timer.js';
  */
 export async function runCompile(): Promise<void> {
 
+    log.invisible('checking for syxconfig.json in process.cwd');
     if (!existsSync(join(process.cwd(), 'syxconfig.json'))) log.exit.error(`Could not find 'syxconfig.json' file. Try running '${chalk.yellow('syntaxs')} init'. `);
 
     const config = JSON.parse(readFileSync(join(process.cwd(), 'syxconfig.json')).toString()) as SyxConfig;
 
+    log.invisible('checking for required properties in config');
     errorChecks([
         [!('compile' in config), 'syxconfig.json.compile: Missing'],
         ['compile' in config && !('root' in config.compile), 'syxconfig.json.compile.root: Missing'],
@@ -26,15 +28,20 @@ export async function runCompile(): Promise<void> {
         ['compile' in config && !('format' in config.compile), 'syxconfig.json.compile.format: Missing']
     ]);
 
+    log.invisible('creating compiler instance');
     const compiler = new SyntaxScriptCompiler(config.compile.root, config.compile.out, config.compile.format);
 
     log.info('Starting compilation');
     timer.mark('compilerstart');
     try {
+        log.invisible('compiling');
         await compiler.compile();
         log.info(`Compilation successful in ${timer.sinceMarker('compilerstart')}ms`);
     } catch(e) {
+        log.invisible('there is an error');
+        log.invisible(`${JSON.stringify(e)}`);
         if(isCompilerError(e)) {
+            log.invisible('this is a compiler error, logging the error');
             log.compilerError(e);
             log.error('','',`A complete log including debug messages can be found in ${log.path()}`);
         }

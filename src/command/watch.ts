@@ -38,9 +38,11 @@ export function runWatch() {
      * Starts a compile process if one isn't running.
      */
     function cmpl() {
+        log.invisible('checking if already compiling');
         if (alreadyCompiling) return;
         log.info('File change detected, compiling...');
         alreadyCompiling = true;
+        log.invisible('compiling');
         compiler.compile().then(() => {
             log.info('Compiled. Waiting for file changes.');
             alreadyCompiling = false;
@@ -58,16 +60,20 @@ export function runWatch() {
         ignoreInitial: true,
         disableGlobbing: true
     });
+    
     watcher.on('change', () => {
+        log.invisible('file changes');
         if (initializing) return;
         cmpl();
     });
     watcher.on('add', () => { log.debug('Added file'); });
     watcher.on('ready', () => {
+        log.invisible('watcher ready');
         initializing = false;
         cmpl();
     });
     watcher.on('error', (e) => {
+        log.invisible(`watcher error: ${JSON.stringify(e)}`);
         if(isCompilerError(e)) log.compilerError(e);
         log.error('Could not compile. Waiting for file changes.');
     });

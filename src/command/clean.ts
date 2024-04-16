@@ -13,12 +13,13 @@ import { log } from '../module/log.js';
 export function runClean(){
     
     const path = join(getLocalAppDataPath(),'syntaxs-cache');
-
+    log.invisible('checking if the path exists');
     if(!existsSync(path)) {
         log.info('There is nothing to clean.');
     }
 
     function del(p:string){
+        log.invisible(`deleting dir ${p}`);
         const files = readdirSync(p);
         files.forEach(f=>{
             const fPath = join(p,f);
@@ -29,7 +30,7 @@ export function runClean(){
         });
     }
 
-    log.info('Stating clean');
+    log.info('Starting clean');
     del(path);
     log.info('Successfully cleaned all cache files and log files.');
     

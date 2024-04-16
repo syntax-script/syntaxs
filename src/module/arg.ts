@@ -73,4 +73,26 @@ export namespace arg {
         return args[arg];
     }
 
+    /**
+     * Returns all the flags.
+     * @returns an array of given flags.
+     * @author efekos
+     * @since 0.0.1-alpha
+     * @version 1.0.0
+     */
+    export function getFlags(){
+        return flags;
+    }
+
+    /**
+     * Returns all the arguments.
+     * @returns a record of given arguments.
+     * @author efekos
+     * @since 0.0.1-alpha
+     * @version 1.0.0
+     */
+    export function getArgs(){
+        return args;
+    }
+
 }

@@ -18,23 +18,28 @@ export async function runTokenize() {
     const input = arg.getArgument('input') ?? arg.getArgument('i');
     const write = arg.getArgument('write') ?? '';
 
+    log.invisible('checking for -input');
     errorChecks([
         [input === undefined, `Missing argument ${chalk.gray('-input')} or ${chalk.gray('-i')}`]
     ]);
 
     const inputPath = join(process.cwd(), input);
 
+    log.invisible('checking for file existence');
     errorChecks([
         [!existsSync(inputPath), `File not found: ${inputPath}`]
     ]);
 
 
+    log.invisible('tokenizing file');
     timer.mark('tokenize');
     const tokens = await tokenizeSyx(readFileSync(inputPath).toString());
+    log.invisible('tokenized file');
     if (write === '') log.info('', ...JSON.stringify(tokens, undefined, 4).split('\n'), '');
     log.info(`Created ${tokens.length} tokens from source file '${inputPath}' in ${timer.sinceMarker('tokenize')}ms`);
     if (write !== '') {
 
+        log.invisible('writing file');
         timer.mark('writeo');
         writeFileSync(join(process.cwd(), write), JSON.stringify(tokens, undefined, 4));
         log.info(`Wrote the output into the file ${join(process.cwd(), write)} in ${timer.sinceMarker('writeo')}ms`);

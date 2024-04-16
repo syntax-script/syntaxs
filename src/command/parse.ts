@@ -19,12 +19,14 @@ export function runParse() {
     const input = arg.getArgument('input') ?? arg.getArgument('i');
     const write = arg.getArgument('write') ?? '';
 
+    log.invisible('checking for -input');
     errorChecks([
         [input === undefined, `Missing argument ${chalk.gray('-input')} or ${chalk.gray('-i')}`]
     ]);
 
     const inputPath = join(process.cwd(), input);
 
+    log.invisible('checking for file');
     errorChecks([
         [!existsSync(inputPath), `File not found: ${inputPath}`]
     ]);
@@ -32,6 +34,7 @@ export function runParse() {
 
     timer.mark('parse');
     try {
+        log.invisible('parsing tokens');
         const parsed = syxparser.parseTokens(tokenizeSyx(readFileSync(inputPath).toString()),inputPath);
         if (write === '') log.info('', ...JSON.stringify(parsed, undefined, 4).split('\n'), '');
         log.info(`Created ${parsed.body.length} statements from source file '${inputPath}' in ${timer.sinceMarker('parse')}ms`);
@@ -45,7 +48,7 @@ export function runParse() {
     } catch (error) {
         if(isCompilerError(error)) {
             log.compilerError(error);
-            log.error('','',`A complete log including debug messages can be found in ${log.path()}`);
+            log.error('',`A complete log including debug messages can be found in ${log.path()}`);
         }
     }
 }

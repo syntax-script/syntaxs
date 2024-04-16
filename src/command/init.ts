@@ -27,12 +27,8 @@ export interface InitContext {
  * @since 0.0.1-alpha
  */
 export async function runInit() {
+    log.invisible('checking if there is already a file');
     if (existsSync(join(process.cwd(), 'syxconfig.json'))) log.exit.error('There is already a \'syxconfig.json\' file, delete it.');
-
-    if (arg.hasFlag('y')) errorChecks([
-        [existsSync(join(process.cwd(), 'src')), `Folder already exists: src. Define another folder by running without ${chalk.gray('--y')}.`],
-        [existsSync(join(process.cwd(), 'out')), `Folder already exists: out. Define another folder by running without ${chalk.gray('--y')}.`]
-    ]);
 
     const context: InitContext = !arg.hasFlag('y') ? await inquirer.prompt([
         {
@@ -64,8 +60,8 @@ export async function runInit() {
             default: './out',
             name: 'output'
         }
-    ]) : { name: process.cwd().split('\\').pop(), description: '', version: '', input: './src', output: './out' };
-
+    ]) : { name: process.cwd().split('\\').pop(), description: 'New syntax script project', version: '1.0.0', input: './src', output: './out' };
+    log.invisible(`data from inquirer prompt: ${JSON.stringify(context)}`);
     const file = { name: context.name, description: context.description, version: context.version, compiler: { root: context.input, out: context.output, outFormat: 'ts' } };
 
     const fileToWrite = JSON.stringify(file, undefined, 4);
@@ -78,6 +74,7 @@ export async function runInit() {
     });
 
     if (r.r) {
+        log.invisible('writing file');
         writeFileSync(join(process.cwd(), 'syxconfig.json'), fileToWrite, { encoding: 'utf8' });
         log.info('Created syxconfig.json file.');
 

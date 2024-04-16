@@ -1,3 +1,5 @@
+import { log } from './log.js';
+
 export namespace timer {
 
     var startTime: number;
@@ -11,6 +13,7 @@ export namespace timer {
      */
     export function start() {
         startTime = Date.now();
+        log.debug(`timer started at ${new Date(startTime).toISOString()}`);
     }
 
     /**
@@ -45,6 +48,7 @@ export namespace timer {
      */
     export function mark(marker: string): void {
         markers[marker] = Date.now();
+        log.debug(`timer mark '${marker}' at ${new Date(markers[marker]).toISOString()}`);
     }
 
 }

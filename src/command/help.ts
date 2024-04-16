@@ -10,7 +10,9 @@ import { log } from '../module/log.js';
  * @since 0.0.1-alpha
  */
 export async function runHelp() {
+    log.invisible('clearing console');
     await console.clear();
+    log.invisible('creating figlet');
     await figlet(`${MODULE_NAME} | ${MODULE_VERSION}`, (e, r) => { log.raw(r); });
 
 
