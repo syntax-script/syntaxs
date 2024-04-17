@@ -12,6 +12,7 @@ tsconfig.json
 syxconfig.json
 distDeletor.js
 *.tgz
+*.test.js
 
 # Hidden folders
 /.vscode
