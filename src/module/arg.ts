@@ -18,16 +18,16 @@ export namespace arg {
      * @version 1.0.0
      * @since 0.0.1-alpha
      */
-    export function resolve() {
+    export function resolve(_args: string[] = full) {
 
-        for (let i = 0; i < full.length; i++) {
-            const s = full[i];
+        for (let i = 0; i < _args.length; i++) {
+            const s = _args[i];
 
             if (!s.startsWith('-') && command === undefined) command = s;
 
             if (s.match(argumentRegex)) {
-                if (full[i + 1] === undefined || full[i + 1].match(argumentRegex) || full[i + 1].match(flagRegex)) log.exit.error(`Argument ${chalk.gray(s)} not specified`);
-                args[s.slice(1)] = full[i + 1];
+                if (_args[i + 1] === undefined || _args[i + 1].match(argumentRegex) || _args[i + 1].match(flagRegex)) log.exit.error(`Argument ${chalk.gray(s)} not specified`);
+                args[s.slice(1)] = _args[i + 1];
                 i++;
             }
 
