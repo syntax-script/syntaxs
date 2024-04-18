@@ -1,4 +1,4 @@
-import { describe, it } from 'es-test/lib/testRunner.js';
+import { describe, it } from '@efekos/es-test/bin/testRunner.js';
 import { environment } from '../env.js';
 import { expect } from 'chai';
 
