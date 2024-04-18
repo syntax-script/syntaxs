@@ -1,5 +1,5 @@
 import { describe, it } from 'es-test/lib/testRunner.js';
-import { arg } from './arg.js';
+import { arg } from '../module/arg.js';
 import { expect } from 'chai';
 
 describe('Argument handler', () => {
