@@ -3,6 +3,7 @@
 /image
 /syx
 /package
+/dist/test
 
 # Dev-only or unrelated files
 .gitignore
@@ -12,8 +13,6 @@ tsconfig.json
 syxconfig.json
 distDeletor.js
 *.tgz
-*.test.js
-*.test.d.ts
 
 # Hidden folders
 /.vscode
