@@ -11,6 +11,7 @@
     "postbuild": "cls && echo Builded",
     "prepublish": "npm run build",
     "postpublish": "npm pack --pack-destination=./package",
+    "pretest": "tsc",
     "test": "node node_modules/es-test/lib/index.js dist"
   },
   "keywords": [
