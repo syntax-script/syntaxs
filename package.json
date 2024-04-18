@@ -5,6 +5,7 @@
   "main": "./dist/index.js",
   "scripts": {
     "lint": "eslint ./src/**/*.ts --fix",
+    "circ": "dpdm ./src/index.ts",
     "prebuild": "npm run lint && node distDeletor",
     "build": "tsc",
     "postbuild": "cls && echo Builded",
