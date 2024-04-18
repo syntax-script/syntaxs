@@ -1,4 +1,5 @@
 import chalk from 'chalk';
+import { environment } from '../env.js';
 import { log } from './log.js';
 
 export namespace arg {
@@ -34,6 +35,7 @@ export namespace arg {
             if (s.match(flagRegex)) flags.push(s.slice(2));
         }
 
+        environment.DEBUG = hasFlag('debug');
     }
 
     /**

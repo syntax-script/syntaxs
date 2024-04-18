@@ -21,8 +21,6 @@ export function errorChecks(data: ErrorCheckData) {
     if (data.some(d => d[0])) process.exit(1);
 }
 
-
-
 /**
  * Finds the local appdata path for the current operating system. Supports Windows, MacOS and Linux.
  * @returns The local appdata path.

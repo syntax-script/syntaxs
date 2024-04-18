@@ -1,20 +1,34 @@
 import { existsSync, mkdirSync, writeFileSync } from 'fs';
 import { CompilerError } from '@syntaxs/compiler';
-import { arg } from './arg.js';
 import chalk from 'chalk';
 import { environment } from '../env.js';
-import { getLocalAppDataPath } from '../utils.js';
+import { homedir } from 'os';
 import { join } from 'path';
-import { timer } from './timer.js';
 
+/**
+ * Same function in utils.ts, pasted here to prevent a circular dependency chain between utils and log
+ */
+function getLocalAppDataPath() {
+    switch (process.platform) {
+        case 'win32':
+            return process.env.LOCALAPPDATA || join(homedir(), 'AppData', 'Local');
+        case 'darwin':
+            return join(homedir(), 'Library', 'Application Support');
+        case 'linux':
+            return process.env.XDG_DATA_HOME || join(homedir(), '.local', 'share');
+        default:
+            return null;
+    }
+}
 
 const dirPath = join(getLocalAppDataPath(), 'syntaxs-cache', 'logs');
 const logPath = join(dirPath, new Date().toISOString().replace(/:/g, '-') + '.log');
 const logLines: string[] = [];
 const ansiEscape = /\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])/g;
+const time = Date.now();
 
 process.on('exit', (c) => {
-    log.invisible(`process end with code ${c}`, `end time: ${new Date().toISOString()}`, `time passed (in ms): ${timer.sinceStart()}`);
+    log.invisible(`process end with code ${c}`, `end time: ${new Date().toISOString()}`, `time passed (in ms): ${Date.now()-time}`);
     if (!existsSync(dirPath)) mkdirSync(dirPath, { recursive: true });
     writeFileSync(logPath, logLines.map((s, i) => `${i + 1} ${s}`.replace(ansiEscape, '')).join('\n'));
 });
@@ -145,7 +159,7 @@ export namespace log {
      */
     export function debug(...message: any[]) {
         message.forEach(m => {
-            if (arg.hasFlag('debug')) console.debug(`${chalk.whiteBright(chalk.bgYellowBright(' DEBUG '))}`, m);
+            if (environment.DEBUG) console.debug(`${chalk.whiteBright(chalk.bgYellowBright(' DEBUG '))}`, m);
             logLines.push(`${date()} [DEBUG] ${typeof m === 'object' ? JSON.stringify(m) : m}`);
         });
     }
