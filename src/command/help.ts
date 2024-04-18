@@ -1,5 +1,5 @@
-import { MODULE_NAME, MODULE_VERSION } from '../index.js';
 import chalk from 'chalk';
+import { environment } from '../env.js';
 import figlet from 'figlet';
 import { log } from '../module/log.js';
 
@@ -13,7 +13,7 @@ export async function runHelp() {
     log.invisible('clearing console');
     await console.clear();
     log.invisible('creating figlet');
-    await figlet(`${MODULE_NAME} | ${MODULE_VERSION}`, (e, r) => { log.raw(r); });
+    await figlet(`${environment.MODULE_NAME} | ${environment.MODULE_VERSION}`, (e, r) => { log.raw(r); });
 
 
     log.raw('');

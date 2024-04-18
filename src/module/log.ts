@@ -1,8 +1,8 @@
 import { existsSync, mkdirSync, writeFileSync } from 'fs';
 import { CompilerError } from '@syntaxs/compiler';
-import { FULL_MODULE_NAME } from '../index.js';
 import { arg } from './arg.js';
 import chalk from 'chalk';
+import { environment } from '../env.js';
 import { getLocalAppDataPath } from '../utils.js';
 import { join } from 'path';
 import { timer } from './timer.js';
@@ -175,7 +175,7 @@ export namespace log {
          */
         export function error(...message: any[]) {
             log.error(...message);
-            log.raw('', '', process.cwd(), FULL_MODULE_NAME);
+            log.raw('', '', process.cwd(), environment.FULL_MODULE_NAME);
             process.exit(1);
         }
 
@@ -189,7 +189,7 @@ export namespace log {
          */
         export function compilerError(e: CompilerError) {
             log.compilerError(e);
-            log.raw('', '', process.cwd(), FULL_MODULE_NAME);
+            log.raw('', '', process.cwd(), environment.FULL_MODULE_NAME);
             process.exit(1);
         }
 
@@ -202,7 +202,7 @@ export namespace log {
          */
         export function raw(...message: any[]) {
             log.raw(...message);
-            log.raw('', '', process.cwd(), FULL_MODULE_NAME);
+            log.raw('', '', process.cwd(), environment.FULL_MODULE_NAME);
             process.exit(0);
         }
 
