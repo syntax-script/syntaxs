@@ -9,7 +9,8 @@
     "build": "tsc",
     "postbuild": "cls && echo Builded",
     "prepublish": "npm run build",
-    "postpublish": "npm pack --pack-destination=./package"
+    "postpublish": "npm pack --pack-destination=./package",
+    "test": "node node_modules/es-test/lib/index.js dist"
   },
   "keywords": [
     "syntax",
@@ -26,6 +27,8 @@
     "@types/node": "^20.12.7",
     "@typescript-eslint/eslint-plugin": "^7.7.0",
     "@typescript-eslint/parser": "^7.7.0",
+    "chai": "^5.1.0",
+    "es-test": "file:../../../npmmodules/estest/es-test-1.0.0.tgz",
     "eslint": "^8.57.0",
     "eslint-plugin-jsdoc": "^48.2.3",
     "lsp-types": "^3.17.0-f3"
