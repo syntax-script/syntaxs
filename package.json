@@ -22,7 +22,7 @@
   "author": "efekos",
   "license": "MIT",
   "devDependencies": {
-    "@efekos/es-test": "^1.0.0-r1",
+    "@efekos/es-test": "^1.0.2",
     "@types/chai": "^4.3.14",
     "@types/chalk": "^2.2.0",
     "@types/chokidar": "^2.1.3",
