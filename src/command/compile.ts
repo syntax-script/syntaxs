@@ -1,6 +1,7 @@
 import { SyntaxScriptCompiler, isCompilerError } from '@syntaxs/compiler';
 import { existsSync, readFileSync } from 'fs';
 import { SyxConfig } from '@syntaxs/compiler';
+import { arg } from '../module/arg.js';
 import chalk from 'chalk';
 import { errorChecks } from '../utils.js';
 import { join } from 'path';
@@ -10,7 +11,7 @@ import { timer } from '../module/timer.js';
 /**
  * Runs compile command.
  * @author efekos
- * @version 1.0.0
+ * @version 1.0.1
  * @since 0.0.1-alpha
  */
 export async function runCompile(): Promise<void> {
@@ -23,13 +24,13 @@ export async function runCompile(): Promise<void> {
     log.invisible('checking for required properties in config');
     errorChecks([
         [!('compile' in config), 'syxconfig.json.compile: Missing'],
-        ['compile' in config && !('root' in config.compile), 'syxconfig.json.compile.root: Missing'],
-        ['compile' in config && !('out' in config.compile), 'syxconfig.json.compile.out: Missing'],
-        ['compile' in config && !('format' in config.compile), 'syxconfig.json.compile.format: Missing']
+        [!arg.getArgument('root')&&!arg.getArgument('r')&& 'compile' in config && !('root' in config.compile), 'syxconfig.json.compile.root: Missing'],
+        [!arg.getArgument('out')&&!arg.getArgument('o')&&'compile' in config && !('out' in config.compile), 'syxconfig.json.compile.out: Missing'],
+        [!arg.getArgument('language')&&!arg.getArgument('lang')&&!arg.getArgument('lng')&&!arg.getArgument('l')&&'compile' in config && !('format' in config.compile), 'syxconfig.json.compile.format: Missing']
     ]);
 
     log.invisible('creating compiler instance');
-    const compiler = new SyntaxScriptCompiler(config.compile.root, config.compile.out, config.compile.format);
+    const compiler = new SyntaxScriptCompiler(arg.getArgument('root')??arg.getArgument('r')??config.compile.root, arg.getArgument('out')??arg.getArgument('o')??config.compile.out, arg.getArgument('language')??arg.getArgument('lang')??arg.getArgument('lng')??arg.getArgument('l')??config.compile.format);
 
     log.info('Starting compilation');
     timer.mark('compilerstart');
