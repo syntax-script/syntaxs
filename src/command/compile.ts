@@ -24,13 +24,13 @@ export async function runCompile(): Promise<void> {
     log.invisible('checking for required properties in config');
     errorChecks([
         [!('compile' in config), 'syxconfig.json.compile: Missing'],
-        [!arg.getArgument('root')&&!arg.getArgument('r')&& 'compile' in config && !('root' in config.compile), 'syxconfig.json.compile.root: Missing'],
-        [!arg.getArgument('out')&&!arg.getArgument('o')&&'compile' in config && !('out' in config.compile), 'syxconfig.json.compile.out: Missing'],
-        [!arg.getArgument('language')&&!arg.getArgument('lang')&&!arg.getArgument('lng')&&!arg.getArgument('l')&&'compile' in config && !('format' in config.compile), 'syxconfig.json.compile.format: Missing']
+        [!arg.getArgument('root') && !arg.getArgument('r') && 'compile' in config && !('root' in config.compile), 'syxconfig.json.compile.root: Missing'],
+        [!arg.getArgument('out') && !arg.getArgument('o') && 'compile' in config && !('out' in config.compile), 'syxconfig.json.compile.out: Missing'],
+        [!arg.getArgument('language') && !arg.getArgument('lang') && !arg.getArgument('lng') && !arg.getArgument('l') && 'compile' in config && !('format' in config.compile), 'syxconfig.json.compile.format: Missing']
     ]);
 
     log.invisible('creating compiler instance');
-    const compiler = new SyntaxScriptCompiler(arg.getArgument('root')??arg.getArgument('r')??config.compile.root, arg.getArgument('out')??arg.getArgument('o')??config.compile.out, arg.getArgument('language')??arg.getArgument('lang')??arg.getArgument('lng')??arg.getArgument('l')??config.compile.format);
+    const compiler = new SyntaxScriptCompiler(arg.getArgument('root') ?? arg.getArgument('r') ?? config.compile.root, arg.getArgument('out') ?? arg.getArgument('o') ?? config.compile.out, arg.getArgument('language') ?? arg.getArgument('lang') ?? arg.getArgument('lng') ?? arg.getArgument('l') ?? config.compile.format);
 
     log.info('Starting compilation');
     timer.mark('compilerstart');

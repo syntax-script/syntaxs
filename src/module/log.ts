@@ -28,7 +28,7 @@ const ansiEscape = /\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])/g;
 const time = Date.now();
 
 process.on('exit', (c) => {
-    log.invisible(`process end with code ${c}`, `end time: ${new Date().toISOString()}`, `time passed (in ms): ${Date.now()-time}`);
+    log.invisible(`process end with code ${c}`, `end time: ${new Date().toISOString()}`, `time passed (in ms): ${Date.now() - time}`);
     if (!existsSync(dirPath)) mkdirSync(dirPath, { recursive: true });
     writeFileSync(logPath, logLines.map((s, i) => `${i + 1} ${s}`.replace(ansiEscape, '')).join('\n'));
 });
