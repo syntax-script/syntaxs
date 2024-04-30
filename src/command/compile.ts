@@ -45,6 +45,13 @@ export async function runCompile(): Promise<void> {
             log.invisible('this is a compiler error, logging the error');
             log.compilerError(e);
             log.error('', '', `A complete log including debug messages can be found in ${log.path()}`);
+        } else {
+            log.invisible(e);
+            log.invisible('Unexpected error.');
+            log.error(`${e.name}: ${e.message}`,'','',
+            'This is an unexpected error. It might be due to an error on the compiler.',
+            'You can report it to https://github.com/syntax-script/compiler or','https://github.com/syntax-script/syntaxs.','',
+            `A complete log including debug messages can be found in ${log.path()}`);
         }
     }
 
