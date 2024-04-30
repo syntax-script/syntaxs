@@ -37,7 +37,7 @@
     "lsp-types": "^3.17.0-f3"
   },
   "dependencies": {
-    "@syntaxs/compiler": "file:../compiler/syntaxs-compiler-0.0.2-alpha.tgz",
+    "@syntaxs/compiler": "file:../compiler/syntaxs-compiler-0.0.3-alpha.tgz",
     "chalk": "^5.3.0",
     "chokidar": "^3.6.0",
     "figlet": "^1.7.0",
